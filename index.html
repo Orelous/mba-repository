@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBA Knowledge Repository</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+            color: #2c3e50;
+        }
+
+        .nav-tab.active {
+            color: #3498db;
+            background: white;
+            border-bottom-color: #3498db;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px;
+            min-height: 600px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .recent-activity {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .activity-item {
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .activity-meta {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        .search-controls {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: end;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .filter-tag {
+            padding: 8px 16px;
+            background: #e9ecef;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tag.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .lesson-card {
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .lesson-card:hover {
+            border-color: #3498db;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.1);
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .lesson-meta {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .lesson-rating {
+            display: flex;
+            gap: 2px;
+            margin-left: auto;
+        }
+
+        .star {
+            color: #f39c12;
+            font-size: 1.2em;
+        }
+
+        .lesson-summary {
+            color: #2c3e50;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .lesson-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-tag {
+            background: #ecf0f1;
+            color: #7f8c8d;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+
+        .lesson-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            border-top: 1px solid #e1e8ed;
+            padding-top: 15px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            background: none;
+            border: none;
+            color: white;
+        }
+
+        .close:hover {
+            opacity: 0.7;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .detail-section:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .detail-content {
+            color: #34495e;
+            line-height: 1.6;
+        }
+
+        .detail-content ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            padding: 20px 30px;
+            border-top: 1px solid #e1e8ed;
+            background: #f8f9fa;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+        }
+
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .tags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tag-item:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .tag-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .rating-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .rating-option {
+            text-align: center;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .rating-option:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .rating-option.selected {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+
+        .export-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .export-card {
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .export-card:hover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .export-icon {
+            font-size: 2.5em;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .export-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .export-desc {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .btn-secondary:hover {
+            background: #d5dbdb;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        .btn-view {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .btn-edit {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #e67e22;
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .submit-section {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #e1e8ed;
+            margin-top: 30px;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 12px;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .search-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MBA Knowledge Repository</h1>
+            <p>Good Enough Learning System for Consulting Excellence</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+            <button class="nav-tab" data-tab="practice">Retrieval Practice</button>
+            <button class="nav-tab" data-tab="search">Search & Review</button>
+            <button class="nav-tab" data-tab="add">Add Lesson</button>
+            <button class="nav-tab" data-tab="manage">Manage & Export</button>
+        </div>
+
+        <div class="tab-content active" id="dashboard">
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalLessons">0</div>
+                    <div class="stat-label">Total Lessons</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="thisWeek">0</div>
+                    <div class="stat-label">Added This Week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgRating">0</div>
+                    <div class="stat-label">Avg Consulting Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeCourses">0</div>
+                    <div class="stat-label">Active Courses</div>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <div id="recentActivityList">
+                    <p style="text-align: center; color: #7f8c8d; padding: 20px;">No recent activity</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="practice">
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+                    <h3 style="color: #856404; margin-bottom: 10px;">Retrieval Practice Mode</h3>
+                    <p style="color: #856404; margin: 0;">This is for testing your memory, not reviewing content. Close your notes and try to recall from memory. Struggle before checking answers.</p>
+                </div>
+
+                <div class="form-section">
+                    <h3>Session Timer</h3>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div id="practiceTimer" style="font-size: 3em; font-weight: bold; color: #3498db; margin-bottom: 15px;">30:00</div>
+                        <div style="display: flex; gap: 15px; justify-content: center;">
+                            <button class="btn btn-primary" onclick="startPracticeTimer()">Start 30-Minute Session</button>
+                            <button class="btn btn-secondary" onclick="resetPracticeTimer()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Warm-Up Retrieval (Minutes 0-5)</h3>
+                    <p style="margin-bottom: 15px;">Select 3-5 random concepts and answer out loud:</p>
+                    <button class="btn btn-primary" onclick="generateRandomLessons()" style="margin-bottom: 20px;">Generate Random Lessons</button>
+                    <div id="randomLessons"></div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Cross-Course Interleaving (Minutes 5-15)</h3>
+                    <p style="margin-bottom: 15px;">Force connections between courses:</p>
+                    <button class="btn btn-primary" onclick="generateInterleavingPrompt()" style="margin-bottom: 20px;">Generate Connection Prompt</button>
+                    <div id="interleavingPrompt"></div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Deep Retrieval Questions (Minutes 15-25)</h3>
+                    <button class="btn btn-primary" onclick="generateDeepQuestions()" style="margin-bottom: 20px;">Generate Challenge Questions</button>
+                    <div id="deepQuestions"></div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Reflection Notes (Minutes 25-30)</h3>
+                    <textarea id="reflectionNotes" placeholder="What surprised me today? What connections did I make? What needs more review?" style="width: 100%; min-height: 120px; padding: 15px; border: 2px solid #e1e8ed; border-radius: 8px;"></textarea>
+                    <button class="btn btn-primary" onclick="saveReflection()" style="margin-top: 10px;">Save Reflection</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="search">
+            <div class="search-controls">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search lessons by title, content, or tags...">
+                <select id="courseFilter" class="btn btn-secondary">
+                    <option value="">All Courses</option>
+                    <option value="ACCEXEC">Accounting for Executives</option>
+                    <option value="APPECO">Applied Economics for Executives</option>
+                    <option value="SUPPLY">Creating Value Through Supply Chain</option>
+                    <option value="ENTREP">Entrepreneurship</option>
+                    <option value="FINMGT">Financial Management</option>
+                    <option value="LEGAL">Legal and Ethical Issues in Business</option>
+                    <option value="MGCONS">Management Consulting</option>
+                    <option value="MGTSTAT">Management Statistics and Data Analysis</option>
+                    <option value="TECHINN">Managing Technology and Innovation</option>
+                    <option value="GLOBAL">Managing the Global Business Environment</option>
+                    <option value="MKTSTR">Marketing Strategy</option>
+                    <option value="ORGLEAD">Organizational Behavior and Leadership</option>
+                    <option value="STRATCOM">Strategic Communications</option>
+                    <option value="STRATCAP">Strategic Management Capstone</option>
+                </select>
+                <select id="ratingFilter" class="btn btn-secondary">
+                    <option value="">All Ratings</option>
+                    <option value="5">Essential (5)</option>
+                    <option value="4">Very Useful (4)</option>
+                    <option value="3">Situational (3)</option>
+                    <option value="2">Limited Use (2)</option>
+                    <option value="1">Academic Only (1)</option>
+                </select>
+            </div>
+
+            <div class="filter-tags">
+                <div class="filter-tag" data-tag="Accounting & Finance">Accounting & Finance</div>
+                <div class="filter-tag" data-tag="Economics & Quantitative Analysis">Economics & Quantitative Analysis</div>
+                <div class="filter-tag" data-tag="Strategy & General Management">Strategy & General Management</div>
+                <div class="filter-tag" data-tag="Leadership & Organizational Behavior">Leadership & Organizational Behavior</div>
+                <div class="filter-tag" data-tag="Operations Technology & Innovation">Operations Technology & Innovation</div>
+                <div class="filter-tag" data-tag="Entrepreneurship & Value Creation">Entrepreneurship & Value Creation</div>
+                <div class="filter-tag" data-tag="Marketing & Customer Strategy">Marketing & Customer Strategy</div>
+                <div class="filter-tag" data-tag="Legal Ethical & Governance">Legal Ethical & Governance</div>
+            </div>
+
+            <div id="searchResults"></div>
+        </div>
+
+        <div class="tab-content" id="add">
+            <form id="lessonForm">
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="course">Course <span class="required">*</span></label>
+                        <select id="course" required>
+                            <option value="">Select Course...</option>
+                            <option value="ACCEXEC">Accounting for Executives</option>
+                            <option value="APPECO">Applied Economics for Executives</option>
+                            <option value="SUPPLY">Creating Value Through Supply Chain</option>
+                            <option value="ENTREP">Entrepreneurship</option>
+                            <option value="FINMGT">Financial Management</option>
+                            <option value="LEGAL">Legal and Ethical Issues in Business</option>
+                            <option value="MGCONS">Management Consulting</option>
+                            <option value="MGTSTAT">Management Statistics and Data Analysis</option>
+                            <option value="TECHINN">Managing Technology and Innovation</option>
+                            <option value="GLOBAL">Managing the Global Business Environment</option>
+                            <option value="MKTSTR">Marketing Strategy</option>
+                            <option value="ORGLEAD">Organizational Behavior and Leadership</option>
+                            <option value="STRATCOM">Strategic Communications</option>
+                            <option value="STRATCAP">Strategic Management Capstone</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="week">Week Number <span class="required">*</span></label>
+                        <select id="week" required>
+                            <option value="">Select Week...</option>
+                            <option value="1">Week 1</option>
+                            <option value="2">Week 2</option>
+                            <option value="3">Week 3</option>
+                            <option value="4">Week 4</option>
+                            <option value="5">Week 5</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Lesson Title <span class="required">*</span></label>
+                        <input type="text" id="title" placeholder="e.g., Four Management Functions Framework" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Content Details</h3>
+                    
+                    <div class="form-group">
+                        <label for="claudeSummary">Claude Summary <span class="required">*</span></label>
+                        <textarea id="claudeSummary" placeholder="2-3 sentences focusing on practical application..." maxlength="300" required></textarea>
+                        <div class="char-counter"><span id="summaryCount">0</span>/300 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="keyInsights">Key Insights <span class="required">*</span></label>
+                        <textarea id="keyInsights" placeholder="2-3 specific, quantified takeaways with real examples..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sourceLinks">Source Links</label>
+                        <input type="text" id="sourceLinks" placeholder="e.g., Module 1 study guide">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Classification & Rating</h3>
+                    
+                    <div class="form-group">
+                        <label>Tags (Select all that apply)</label>
+                        <div class="tags-grid">
+                            <div class="tag-item">
+                                <input type="checkbox" id="tag1" value="Accounting & Finance">
+                                <label for="tag1">Accounting & Finance</label>
+                            </div>
+                            <div class="tag-item">
+                                <input type="checkbox" id="tag2" value="Economics & Quantitative Analysis">
+                                <label for="tag2">Economics & Quantitative Analysis</label>
+                            </div>
+                            <div class="tag-item">
+                                <input type="checkbox" id="tag3" value="Strategy & General Management">
+                                <label for="tag3">Strategy & General Management</label>
+                            </div>
+                            <div class="tag-item">
+                                <input type="checkbox" id="tag4" value="Leadership & Organizational Behavior">
+                                <label for="tag4">Leadership & Organizational Behavior</label>
+                            </div>
+                            <div class="tag-item">
+                                <input type="checkbox" id="tag5" value="Operations Technology & Innovation">
+                                <label for="tag5">Operations Technology & Innovation</label>
+                            </div>
+                            <div class="tag-item">
+                                <input type="checkbox" id="tag6" value="Entrepreneurship & Value Creation">
+                                <label for="tag6">Entrepreneurship & Value Creation</label>
+                            </div>
+                            <div class="tag-item">
+                                <input type="checkbox" id="tag7" value="Marketing & Customer Strategy">
+                                <label for="tag7">Marketing & Customer Strategy</label>
+                            </div>
+                            <div class="tag-item">
+                                <input type="checkbox" id="tag8" value="Legal Ethical & Governance">
+                                <label for="tag8">Legal Ethical & Governance</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Consulting Relevance Rating <span class="required">*</span></label>
+                        <div class="rating-grid">
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="5" required>
+                                <div>5<br><small>Essential</small></div>
+                            </label>
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="4">
+                                <div>4<br><small>Very Useful</small></div>
+                            </label>
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="3">
+                                <div>3<br><small>Situational</small></div>
+                            </label>
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="2">
+                                <div>2<br><small>Limited Use</small></div>
+                            </label>
+                            <label class="rating-option">
+                                <input type="radio" name="rating" value="1">
+                                <div>1<br><small>Academic Only</small></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Application Context</h3>
+                    
+                    <div class="form-group">
+                        <label for="quickRef">Quick Reference</label>
+                        <input type="text" id="quickRef" placeholder="One-line summary for quick recall..." maxlength="150">
+                        <div class="char-counter"><span id="quickRefCount">0</span>/150 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientScenarios">Client Scenarios</label>
+                        <textarea id="clientScenarios" placeholder="When/where you'd use this with clients..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="limitations">Limitation Notes</label>
+                        <textarea id="limitations" placeholder="When NOT to use; documented failure patterns..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="crossCourse">Cross-Course Connections</label>
+                        <textarea id="crossCourse" placeholder="How this relates to other MBA concepts..."></textarea>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                    <button type="submit" class="btn btn-primary">Add Lesson to Repository</button>
+                    <div id="statusMessage" class="status-message"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-content" id="manage">
+            <div class="export-section">
+                <h3>Export Options</h3>
+                <p>Download your repository data in various formats for backup, analysis, or sharing.</p>
+                
+                <div class="export-options">
+                    <div class="export-card" onclick="exportData('csv')">
+                        <div class="export-icon">📊</div>
+                        <div class="export-title">CSV Export</div>
+                        <div class="export-desc">Spreadsheet format for analysis</div>
+                    </div>
+                    
+                    <div class="export-card" onclick="exportData('json')">
+                        <div class="export-icon">💾</div>
+                        <div class="export-title">JSON Backup</div>
+                        <div class="export-desc">Complete data backup</div>
+                    </div>
+                    
+                    <div class="export-card" onclick="exportData('study')">
+                        <div class="export-icon">📚</div>
+                        <div class="export-title">Study Guide</div>
+                        <div class="export-desc">Text formatted for review</div>
+                    </div>
+                    
+                    <div class="export-card" onclick="exportData('quick')">
+                        <div class="export-icon">⚡</div>
+                        <div class="export-title">Quick Reference</div>
+                        <div class="export-desc">Essential frameworks only</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <h3>Repository Management</h3>
+                
+                <div class="form-group">
+                    <label for="importFile">Import from File</label>
+                    <input type="file" id="importFile" accept=".json,application/json,text/plain" onchange="importData(this)">
+                    <p style="font-size: 0.9em; color: #7f8c8d; margin-top: 5px;">Select your JSON backup file</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="pasteJson">Or Paste JSON Data</label>
+                    <textarea id="pasteJson" placeholder="Paste your JSON backup data here..." style="min-height: 150px; font-family: monospace; font-size: 12px;"></textarea>
+                    <button class="btn btn-primary" onclick="importFromPaste()" style="margin-top: 10px;">Import from Pasted Data</button>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="clearAllData()">Clear All Data</button>
+                    <button class="btn btn-primary" onclick="backupData()">Create Backup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lessonModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">Lesson Details</span>
+                <button class="close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                <button class="btn btn-delete" onclick="deleteLesson()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLessonId = null;
+
+        function initializeData() {
+            updateDashboard();
+            renderSearchResults();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+
+            initializeData();
+            setupEventHandlers();
+        });
+
+        function setupEventHandlers() {
+            const summaryInput = document.getElementById('claudeSummary');
+            const quickRefInput = document.getElementById('quickRef');
+            
+            if (summaryInput) {
+                summaryInput.addEventListener('input', function() {
+                    document.getElementById('summaryCount').textContent = this.value.length;
+                });
+            }
+
+            if (quickRefInput) {
+                quickRefInput.addEventListener('input', function() {
+                    document.getElementById('quickRefCount').textContent = this.value.length;
+                });
+            }
+
+            document.querySelectorAll('.rating-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const grid = this.closest('.rating-grid');
+                    grid.querySelectorAll('.rating-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                });
+            });
+
+            document.querySelectorAll('.tag-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'INPUT') {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                    }
+                });
+            });
+
+            const searchInput = document.getElementById('searchInput');
+            const courseFilter = document.getElementById('courseFilter');
+            const ratingFilter = document.getElementById('ratingFilter');
+            
+            if (searchInput) searchInput.addEventListener('input', filterLessons);
+            if (courseFilter) courseFilter.addEventListener('change', filterLessons);
+            if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
+
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    filterLessons();
+                });
+            });
+
+            const form = document.getElementById('lessonForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    submitLesson();
+                });
+            }
+
+            window.addEventListener('click', function(event) {
+                const lessonModal = document.getElementById('lessonModal');
+                if (event.target === lessonModal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+
+        function renderSearchResults(lessons = null) {
+            if (!lessons) {
+                lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            }
+            
+            const resultsContainer = document.getElementById('searchResults');
+            
+            if (!resultsContainer) return;
+            
+            if (lessons.length === 0) {
+                resultsContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #7f8c8d;"><h3>No lessons found</h3><p>Add your first lesson to get started.</p></div>';
+                return;
+            }
+            
+            resultsContainer.innerHTML = lessons.map(lesson => `
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div>
+                            <div class="lesson-title">${escapeHtml(lesson.title)}</div>
+                            <div class="lesson-meta">${lesson.course} • Week ${lesson.week}</div>
+                        </div>
+                        <div class="lesson-rating">
+                            ${'★'.repeat(lesson.rating)}${'☆'.repeat(5 - lesson.rating)}
+                        </div>
+                    </div>
+                    <div class="lesson-summary">${escapeHtml(lesson.claudeSummary)}</div>
+                    <div class="lesson-tags">
+                        ${lesson.tags.map(tag => `<span class="lesson-tag">${escapeHtml(tag)}</span>`).join('')}
+                    </div>
+                    <div class="lesson-actions">
+                        <button class="btn btn-small btn-view" onclick="viewLesson('${lesson.id}')">View Details</button>
+                        <button class="btn btn-small btn-delete" onclick="confirmDeleteLesson('${lesson.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function viewLesson(lessonId) {
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            const lesson = lessons.find(l => l.id === lessonId);
+            
+            if (!lesson) return;
+            
+            currentLessonId = lessonId;
+            
+            const modal = document.getElementById('lessonModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = lesson.title;
+            
+            modalBody.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-label">Course & Week</div>
+                    <div class="detail-content">${escapeHtml(lesson.courseName || lesson.course)} - Week ${lesson.week}</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Summary</div>
+                    <div class="detail-content">${escapeHtml(lesson.claudeSummary)}</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Key Insights</div>
+                    <div class="detail-content">
+                        <ul>
+                            ${lesson.keyInsights.split('\n').filter(insight => insight.trim()).map(insight => 
+                                `<li>${escapeHtml(insight)}</li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                </div>
+                
+                ${lesson.quickRef ? `
+                <div class="detail-section">
+                    <div class="detail-label">Quick Reference</div>
+                    <div class="detail-content">${escapeHtml(lesson.quickRef)}</div>
+                </div>` : ''}
+                
+                ${lesson.clientScenarios ? `
+                <div class="detail-section">
+                    <div class="detail-label">Client Scenarios</div>
+                    <div class="detail-content">${escapeHtml(lesson.clientScenarios)}</div>
+                </div>` : ''}
+                
+                ${lesson.limitations ? `
+                <div class="detail-section">
+                    <div class="detail-label">Limitations</div>
+                    <div class="detail-content">${escapeHtml(lesson.limitations)}</div>
+                </div>` : ''}
+                
+                ${lesson.crossCourse ? `
+                <div class="detail-section">
+                    <div class="detail-label">Cross-Course Connections</div>
+                    <div class="detail-content">${escapeHtml(lesson.crossCourse)}</div>
+                </div>` : ''}
+                
+                ${lesson.sourceLinks ? `
+                <div class="detail-section">
+                    <div class="detail-label">Source Links</div>
+                    <div class="detail-content">${escapeHtml(lesson.sourceLinks)}</div>
+                </div>` : ''}
+                
+                <div class="detail-section">
+                    <div class="detail-label">Tags</div>
+                    <div class="detail-content">
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${lesson.tags.map(tag => `<span class="lesson-tag">${escapeHtml(tag)}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Consulting Rating</div>
+                    <div class="detail-content">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.5em;">${'★'.repeat(lesson.rating)}${'☆'.repeat(5 - lesson.rating)}</span>
+                            <span>(${lesson.rating}/5 - ${getRatingLabel(lesson.rating)})</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function getRatingLabel(rating) {
+            const labels = {
+                5: 'Essential',
+                4: 'Very Useful',
+                3: 'Situational',
+                2: 'Limited Use',
+                1: 'Academic Only'
+            };
+            return labels[rating] || 'Unknown';
+        }
+
+        function closeModal() {
+            document.getElementById('lessonModal').style.display = 'none';
+            currentLessonId = null;
+        }
+
+        function deleteLesson() {
+            confirmDeleteLesson(currentLessonId);
+        }
+
+        function confirmDeleteLesson(lessonId) {
+            if (confirm('Are you sure you want to delete this lesson? This action cannot be undone.')) {
+                const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+                const filteredLessons = lessons.filter(lesson => lesson.id !== lessonId);
+                localStorage.setItem('mba_lessons', JSON.stringify(filteredLessons));
+                
+                closeModal();
+                updateDashboard();
+                renderSearchResults();
+            }
+        }
+
+        function filterLessons() {
+            const searchInput = document.getElementById('searchInput');
+            const courseFilter = document.getElementById('courseFilter');
+            const ratingFilter = document.getElementById('ratingFilter');
+            
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            const courseFilterValue = courseFilter ? courseFilter.value : '';
+            const ratingFilterValue = ratingFilter ? ratingFilter.value : '';
+            const activeTags = Array.from(document.querySelectorAll('.filter-tag.active')).map(tag => tag.dataset.tag);
+            
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            
+            const filtered = lessons.filter(lesson => {
+                const matchesSearch = !searchTerm || 
+                    lesson.title.toLowerCase().includes(searchTerm) ||
+                    lesson.claudeSummary.toLowerCase().includes(searchTerm) ||
+                    lesson.keyInsights.toLowerCase().includes(searchTerm);
+                
+                const matchesCourse = !courseFilterValue || lesson.course === courseFilterValue;
+                const matchesRating = !ratingFilterValue || lesson.rating.toString() === ratingFilterValue;
+                const matchesTags = activeTags.length === 0 || activeTags.some(tag => lesson.tags.includes(tag));
+                
+                return matchesSearch && matchesCourse && matchesRating && matchesTags;
+            });
+            
+            renderSearchResults(filtered);
+        }
+
+        function submitLesson() {
+            const formData = collectFormData();
+            
+            if (!validateForm(formData)) {
+                return;
+            }
+
+            showStatus('Processing...', 'info');
+            
+            setTimeout(() => {
+                try {
+                    saveLesson(formData);
+                    showStatus('Lesson added successfully!', 'success');
+                    resetForm();
+                    updateDashboard();
+                    renderSearchResults();
+                } catch (error) {
+                    showStatus('Error saving lesson: ' + error.message, 'error');
+                }
+            }, 500);
+        }
+
+        function collectFormData() {
+            const tags = Array.from(document.querySelectorAll('#add input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+            
+            const rating = document.querySelector('#add input[name="rating"]:checked')?.value;
+            const courseCode = document.getElementById('course').value;
+            
+            const courseNames = {
+                'ACCEXEC': 'Accounting for Executives',
+                'APPECO': 'Applied Economics for Executives',
+                'SUPPLY': 'Creating Value Through Supply Chain',
+                'ENTREP': 'Entrepreneurship',
+                'FINMGT': 'Financial Management',
+                'LEGAL': 'Legal and Ethical Issues in Business',
+                'MGCONS': 'Management Consulting',
+                'MGTSTAT': 'Management Statistics and Data Analysis',
+                'TECHINN': 'Managing Technology and Innovation',
+                'GLOBAL': 'Managing the Global Business Environment',
+                'MKTSTR': 'Marketing Strategy',
+                'ORGLEAD': 'Organizational Behavior and Leadership',
+                'STRATCOM': 'Strategic Communications',
+                'STRATCAP': 'Strategic Management Capstone'
+            };
+
+            return {
+                course: courseCode,
+                courseName: courseNames[courseCode] || courseCode,
+                week: parseInt(document.getElementById('week').value),
+                title: document.getElementById('title').value,
+                claudeSummary: document.getElementById('claudeSummary').value,
+                keyInsights: document.getElementById('keyInsights').value,
+                sourceLinks: document.getElementById('sourceLinks').value,
+                tags: tags,
+                rating: parseInt(rating),
+                quickRef: document.getElementById('quickRef').value,
+                clientScenarios: document.getElementById('clientScenarios').value,
+                limitations: document.getElementById('limitations').value,
+                crossCourse: document.getElementById('crossCourse').value
+            };
+        }
+
+        function validateForm(data) {
+            if (!data.course || !data.week || !data.title || !data.claudeSummary || !data.rating) {
+                showStatus('Please fill in all required fields.', 'error');
+                return false;
+            }
+            return true;
+        }
+
+        function saveLesson(data) {
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            const newLesson = {
+                id: 'L' + String(lessons.length + 1).padStart(3, '0'),
+                ...data,
+                dateAdded: new Date().toISOString()
+            };
+            lessons.push(newLesson);
+            localStorage.setItem('mba_lessons', JSON.stringify(lessons));
+        }
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            if (statusEl) {
+                statusEl.textContent = message;
+                statusEl.className = `status-message status-${type}`;
+                statusEl.style.display = 'block';
+                
+                if (type === 'success') {
+                    setTimeout(() => {
+                        statusEl.style.display = 'none';
+                    }, 3000);
+                }
+            }
+        }
+
+        function resetForm() {
+            const form = document.getElementById('lessonForm');
+            if (form) {
+                form.reset();
+                document.querySelectorAll('#add .rating-option').forEach(opt => opt.classList.remove('selected'));
+                document.getElementById('summaryCount').textContent = '0';
+                document.getElementById('quickRefCount').textContent = '0';
+            }
+        }
+
+        function updateDashboard() {
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            
+            document.getElementById('totalLessons').textContent = lessons.length;
+            
+            const thisWeek = lessons.filter(l => {
+                const lessonDate = new Date(l.dateAdded);
+                const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+                return lessonDate >= weekAgo;
+            }).length;
+            document.getElementById('thisWeek').textContent = thisWeek;
+            
+            const avgRating = lessons.length > 0 
+                ? (lessons.reduce((sum, l) => sum + l.rating, 0) / lessons.length).toFixed(1)
+                : '0';
+            document.getElementById('avgRating').textContent = avgRating;
+            
+            const activeCourses = new Set(lessons.map(l => l.course)).size;
+            document.getElementById('activeCourses').textContent = activeCourses;
+            
+            const recentList = document.getElementById('recentActivityList');
+            if (recentList) {
+                const recent = lessons.slice(-5).reverse();
+                if (recent.length === 0) {
+                    recentList.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 20px;">No recent activity</p>';
+                } else {
+                    recentList.innerHTML = recent.map(lesson => `
+                        <div class="activity-item">
+                            <div class="activity-title">${escapeHtml(lesson.title)}</div>
+                            <div class="activity-meta">${lesson.course} • Rating: ${lesson.rating} • Week ${lesson.week}</div>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        function exportData(format) {
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            
+            if (lessons.length === 0) {
+                alert('No lessons to export. Add some lessons first!');
+                return;
+            }
+            
+            switch(format) {
+                case 'csv':
+                    exportCSV(lessons);
+                    break;
+                case 'json':
+                    exportJSON(lessons);
+                    break;
+                case 'study':
+                    exportStudyGuide(lessons);
+                    break;
+                case 'quick':
+                    exportQuickReference(lessons);
+                    break;
+            }
+        }
+
+        function exportCSV(lessons) {
+            const headers = ['ID', 'Course', 'Week', 'Title', 'Rating', 'Tags', 'Summary'];
+            const csvContent = [
+                headers.join(','),
+                ...lessons.map(lesson => [
+                    lesson.id,
+                    lesson.course,
+                    lesson.week,
+                    `"${lesson.title.replace(/"/g, '""')}"`,
+                    lesson.rating,
+                    `"${lesson.tags.join(';')}"`,
+                    `"${lesson.claudeSummary.replace(/"/g, '""')}"`
+                ].join(','))
+            ].join('\n');
+            
+            downloadFile(csvContent, 'mba-repository.csv', 'text/csv');
+        }
+
+        function exportJSON(lessons) {
+            const jsonContent = JSON.stringify(lessons, null, 2);
+            downloadFile(jsonContent, 'mba-repository.json', 'application/json');
+        }
+
+        function exportStudyGuide(lessons) {
+            const content = `MBA Knowledge Repository - Study Guide
+
+Generated: ${new Date().toLocaleDateString()}
+Total Lessons: ${lessons.length}
+
+${lessons.map(lesson => `
+${'='.repeat(80)}
+${lesson.title}
+${'='.repeat(80)}
+
+Course: ${lesson.courseName || lesson.course} | Week ${lesson.week} | Rating: ${'★'.repeat(lesson.rating)}${'☆'.repeat(5 - lesson.rating)}
+
+Summary:
+${lesson.claudeSummary}
+
+Key Insights:
+${lesson.keyInsights}
+
+${lesson.quickRef ? `Quick Reference:\n${lesson.quickRef}\n` : ''}
+${lesson.clientScenarios ? `Client Scenarios:\n${lesson.clientScenarios}\n` : ''}
+${lesson.limitations ? `Limitations:\n${lesson.limitations}\n` : ''}
+${lesson.crossCourse ? `Cross-Course Connections:\n${lesson.crossCourse}\n` : ''}
+
+`).join('')}`;
+            downloadFile(content, 'mba-study-guide.txt', 'text/plain');
+        }
+
+        function exportQuickReference(lessons) {
+            const essential = lessons.filter(l => l.rating >= 4);
+            const content = `MBA Quick Reference - Essential Frameworks
+
+Generated: ${new Date().toLocaleDateString()}
+High-Value Lessons (Rating 4-5): ${essential.length}
+
+${essential.map(lesson => `
+${lesson.title} (Rating: ${lesson.rating})
+${lesson.quickRef || lesson.claudeSummary}
+${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
+
+`).join('')}`;
+            downloadFile(content, 'mba-quick-reference.txt', 'text/plain');
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        localStorage.setItem('mba_lessons', JSON.stringify(data));
+                        updateDashboard();
+                        renderSearchResults();
+                        alert('Data imported successfully! ' + data.length + ' lessons loaded.');
+                        input.value = '';
+                    } else {
+                        alert('Invalid data format. Please select a valid JSON backup file.');
+                    }
+                } catch (error) {
+                    alert('Error importing data: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function importFromPaste() {
+            const pasteArea = document.getElementById('pasteJson');
+            const jsonText = pasteArea.value.trim();
+            
+            if (!jsonText) {
+                alert('Please paste JSON data first.');
+                return;
+            }
+            
+            try {
+                const data = JSON.parse(jsonText);
+                if (Array.isArray(data)) {
+                    localStorage.setItem('mba_lessons', JSON.stringify(data));
+                    updateDashboard();
+                    renderSearchResults();
+                    alert('Data imported successfully! ' + data.length + ' lessons loaded.');
+                    pasteArea.value = '';
+                } else {
+                    alert('Invalid data format. Please paste valid JSON backup data.');
+                }
+            } catch (error) {
+                alert('Error parsing JSON: ' + error.message);
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                localStorage.removeItem('mba_lessons');
+                updateDashboard();
+                renderSearchResults();
+                alert('All data cleared.');
+            }
+        }
+
+        function backupData() {
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            if (lessons.length === 0) {
+                alert('No data to backup. Add some lessons first!');
+                return;
+            }
+            exportJSON(lessons);
+        }
+
+        // Retrieval Practice Functions
+        let practiceTimerInterval = null;
+        let practiceSeconds = 1800; // 30 minutes
+
+        function startPracticeTimer() {
+            if (practiceTimerInterval) {
+                clearInterval(practiceTimerInterval);
+            }
+            
+            practiceTimerInterval = setInterval(() => {
+                practiceSeconds--;
+                
+                const minutes = Math.floor(practiceSeconds / 60);
+                const seconds = practiceSeconds % 60;
+                
+                document.getElementById('practiceTimer').textContent = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                if (practiceSeconds <= 0) {
+                    clearInterval(practiceTimerInterval);
+                    alert('Practice session complete! Time for reflection.');
+                    practiceSeconds = 1800;
+                }
+            }, 1000);
+        }
+
+        function resetPracticeTimer() {
+            if (practiceTimerInterval) {
+                clearInterval(practiceTimerInterval);
+            }
+            practiceSeconds = 1800;
+            document.getElementById('practiceTimer').textContent = '30:00';
+        }
+
+        function generateRandomLessons() {
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            
+            if (lessons.length === 0) {
+                document.getElementById('randomLessons').innerHTML = '<p style="color: #7f8c8d;">No lessons available. Add lessons first.</p>';
+                return;
+            }
+            
+            const count = Math.min(5, lessons.length);
+            const shuffled = [...lessons].sort(() => Math.random() - 0.5);
+            const selected = shuffled.slice(0, count);
+            
+            const html = `
+                <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db;">
+                    <h4 style="color: #2c3e50; margin-bottom: 15px;">Answer these questions OUT LOUD:</h4>
+                    ${selected.map((lesson, index) => `
+                        <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-weight: 600; color: #3498db; margin-bottom: 10px;">Lesson ${index + 1}: ${escapeHtml(lesson.title)}</div>
+                            <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} • Week ${lesson.week}</div>
+                            <ul style="list-style: none; padding: 0; margin: 10px 0;">
+                                <li style="margin: 8px 0;">❓ What is this concept?</li>
+                                <li style="margin: 8px 0;">❓ Why does it matter?</li>
+                                <li style="margin: 8px 0;">❓ When would I use this?</li>
+                            </ul>
+                            <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">Struggle First, Then Check Answer</button>
+                            <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
+                                <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}<br><br>
+                                <strong>Key Insights:</strong><br>${escapeHtml(lesson.keyInsights).split('\n').map(i => `• ${i}`).join('<br>')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('randomLessons').innerHTML = html;
+        }
+
+        function revealAnswer(lessonId) {
+            const answerDiv = document.getElementById(`answer-${lessonId}`);
+            if (answerDiv.style.display === 'none') {
+                answerDiv.style.display = 'block';
+            } else {
+                answerDiv.style.display = 'none';
+            }
+        }
+
+        function generateInterleavingPrompt() {
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            
+            if (lessons.length < 2) {
+                document.getElementById('interleavingPrompt').innerHTML = '<p style="color: #7f8c8d;">Need at least 2 lessons from different courses.</p>';
+                return;
+            }
+            
+            const courses = [...new Set(lessons.map(l => l.course))];
+            
+            if (courses.length < 2) {
+                document.getElementById('interleavingPrompt').innerHTML = '<p style="color: #7f8c8d;">Need lessons from at least 2 different courses for interleaving.</p>';
+                return;
+            }
+            
+            const course1Lessons = lessons.filter(l => l.course === courses[0]);
+            const course2Lessons = lessons.filter(l => l.course === courses[1]);
+            
+            const lesson1 = course1Lessons[Math.floor(Math.random() * course1Lessons.length)];
+            const lesson2 = course2Lessons[Math.floor(Math.random() * course2Lessons.length)];
+            
+            const prompts = [
+                `How does "${lesson1.title}" from ${lesson1.course} relate to "${lesson2.title}" from ${lesson2.course}?`,
+                `If you were applying "${lesson1.title}" in the context of ${lesson2.course}, what would change?`,
+                `What underlying principles do "${lesson1.title}" and "${lesson2.title}" share?`,
+                `How would a leader use the "${lesson2.title}" concept when implementing "${lesson1.title}"?`,
+                `What are the similarities and differences between "${lesson1.title}" and "${lesson2.title}"?`
+            ];
+            
+            const selectedPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+            
+            const html = `
+                <div style="background: white; padding: 25px; border-radius: 8px; border: 2px solid #e67e22;">
+                    <h4 style="color: #d35400; margin-bottom: 20px;">Cross-Course Connection Challenge</h4>
+                    <div style="background: #fef5e7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="font-size: 1.2em; color: #2c3e50; line-height: 1.6;">${selectedPrompt}</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <strong style="color: #3498db;">Concept 1:</strong> ${escapeHtml(lesson1.title)}<br>
+                        <span style="color: #7f8c8d; font-size: 0.9em;">${lesson1.course} • Week ${lesson1.week}</span>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <strong style="color: #e67e22;">Concept 2:</strong> ${escapeHtml(lesson2.title)}<br>
+                        <span style="color: #7f8c8d; font-size: 0.9em;">${lesson2.course} • Week ${lesson2.week}</span>
+                    </div>
+                    <button class="btn btn-small btn-secondary" onclick="showInterleavingHints('${lesson1.id}', '${lesson2.id}')" style="margin-top: 15px;">Need a hint?</button>
+                    <div id="interleaving-hints" style="display: none; margin-top: 15px; padding: 15px; background: #e8f8f5; border-left: 4px solid #27ae60; border-radius: 4px;">
+                        <strong>Concept 1 Summary:</strong> ${escapeHtml(lesson1.claudeSummary)}<br><br>
+                        <strong>Concept 2 Summary:</strong> ${escapeHtml(lesson2.claudeSummary)}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('interleavingPrompt').innerHTML = html;
+        }
+
+        function showInterleavingHints() {
+            const hintsDiv = document.getElementById('interleaving-hints');
+            if (hintsDiv.style.display === 'none') {
+                hintsDiv.style.display = 'block';
+            } else {
+                hintsDiv.style.display = 'none';
+            }
+        }
+
+        function generateDeepQuestions() {
+            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+            
+            if (lessons.length === 0) {
+                document.getElementById('deepQuestions').innerHTML = '<p style="color: #7f8c8d;">No lessons available.</p>';
+                return;
+            }
+            
+            const lesson = lessons[Math.floor(Math.random() * lessons.length)];
+            
+            const questionTypes = [
+                `How would you apply "${lesson.title}" to solve a client problem where they're experiencing declining market share?`,
+                `What are the key limitations of "${lesson.title}" and when should you NOT use it?`,
+                `Compare and contrast "${lesson.title}" with another framework you know. What situations favor each approach?`,
+                `A client asks you to explain "${lesson.title}" in simple terms. What's your 2-minute explanation?`,
+                `What real-world example best demonstrates "${lesson.title}" in action? Explain why.`,
+                `If you had to teach "${lesson.title}" to someone with no business background, what analogy would you use?`,
+                `What questions would you ask a client before recommending "${lesson.title}" as a solution?`
+            ];
+            
+            const selectedQuestions = questionTypes.sort(() => Math.random() - 0.5).slice(0, 3);
+            
+            const html = `
+                <div style="background: white; padding: 25px; border-radius: 8px; border: 2px solid #9b59b6;">
+                    <h4 style="color: #8e44ad; margin-bottom: 20px;">Deep Retrieval Challenge</h4>
+                    <div style="background: #f4ecf7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="font-weight: 600; color: #2c3e50; font-size: 1.1em; margin-bottom: 10px;">Focus Concept: ${escapeHtml(lesson.title)}</div>
+                        <div style="color: #7f8c8d; font-size: 0.9em;">${lesson.course} • Week ${lesson.week}</div>
+                    </div>
+                    ${selectedQuestions.map((q, i) => `
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <div style="font-weight: 600; color: #9b59b6; margin-bottom: 10px;">Question ${i + 1}:</div>
+                            <div style="color: #2c3e50;">${q}</div>
+                        </div>
+                    `).join('')}
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin-top: 20px;">
+                        <strong style="color: #856404;">Remember:</strong> Struggle for 2-3 minutes before checking your notes. The difficulty is where learning happens.
+                    </div>
+                    <button class="btn btn-small btn-secondary" onclick="showDeepAnswer('${lesson.id}')" style="margin-top: 15px;">Check Your Understanding</button>
+                    <div id="deep-answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: #e8f8f5; border-left: 4px solid #27ae60; border-radius: 4px;">
+                        <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}<br><br>
+                        <strong>Key Insights:</strong><br>${escapeHtml(lesson.keyInsights).split('\n').filter(i => i.trim()).map(i => `• ${i}`).join('<br>')}<br><br>
+                        ${lesson.clientScenarios ? `<strong>Client Scenarios:</strong><br>${escapeHtml(lesson.clientScenarios)}<br><br>` : ''}
+                        ${lesson.limitations ? `<strong>Limitations:</strong><br>${escapeHtml(lesson.limitations)}` : ''}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('deepQuestions').innerHTML = html;
+        }
+
+        function showDeepAnswer(lessonId) {
+            const answerDiv = document.getElementById(`deep-answer-${lessonId}`);
+            if (answerDiv.style.display === 'none') {
+                answerDiv.style.display = 'block';
+            } else {
+                answerDiv.style.display = 'none';
+            }
+        }
+
+        function saveReflection() {
+            const reflection = document.getElementById('reflectionNotes').value;
+            if (!reflection.trim()) {
+                alert('Please write your reflection first.');
+                return;
+            }
+            
+            const reflections = JSON.parse(localStorage.getItem('practice_reflections') || '[]');
+            reflections.push({
+                date: new Date().toISOString(),
+                content: reflection
+            });
+            localStorage.setItem('practice_reflections', JSON.stringify(reflections));
+            
+            alert('Reflection saved!');
+            document.getElementById('reflectionNotes').value = '';
+        }
+    </script>
+</body>
+</html>
