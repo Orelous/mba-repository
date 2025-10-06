@@ -1659,6 +1659,7 @@ ${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
                             </ul>
                             <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">Struggle First, Then Check Answer</button>
                             <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
+                                ${lesson.quickRef ? `<strong>Quick Reference:</strong> ${escapeHtml(lesson.quickRef)}<br><br>` : ''}
                                 <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}<br><br>
                                 <strong>Key Insights:</strong><br>${escapeHtml(lesson.keyInsights).split('\n').map(i => `• ${i}`).join('<br>')}
                             </div>
