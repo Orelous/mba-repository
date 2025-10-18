@@ -2731,7 +2731,7 @@ Last 4 Weeks Average: ${Math.round((trackerData.weekHistory.slice(-4).reduce((su
 function uploadChunkmap(input) {
     const file = input.files[0];
     if (!file) return;
-    
+     
     const reader = new FileReader();
     reader.onload = function(e) {
         // Store image data temporarily
