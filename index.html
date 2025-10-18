@@ -710,6 +710,80 @@
     color: white;
 }
 
+        /* Tier Badge Styles */
+.tier-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.tier-1 {
+    background: #3498db;
+    color: white;
+}
+
+.tier-2 {
+    background: #f39c12;
+    color: white;
+}
+
+.tier-3 {
+    background: #9b59b6;
+    color: white;
+}
+
+.tier-filter-tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tier-filter {
+    padding: 8px 16px;
+    background: #e9ecef;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.tier-filter.active {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.tier-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.tier-stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid #e1e8ed;
+}
+
+.tier-stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.tier-stat-label {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    font-weight: 600;
+}
 .day-label {
     font-size: 0.85em;
     font-weight: 600;
@@ -1083,66 +1157,67 @@
             </div>
         </div>
 
-        <div class="tab-content" id="practice">
-            <div style="max-width: 900px; margin: 0 auto;">
-                <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-                    <h3 style="color: #856404; margin-bottom: 10px;">Retrieval Practice Mode</h3>
-                    <p style="color: #856404; margin: 0;">This is for testing your memory, not reviewing content. Close your notes and try to recall from memory. Struggle before checking answers.</p>
-                </div>
+      <div class="tab-content" id="practice">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <h3 style="color: #856404; margin-bottom: 10px;">Retrieval Practice Mode</h3>
+            <p style="color: #856404; margin: 0;">This is for testing your memory, not reviewing content. Close your notes and try to recall from memory. Struggle before checking answers.</p>
+        </div>
 
-                <div class="form-section">
-                    <h3>Session Timer</h3>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <div id="practiceTimer" style="font-size: 3em; font-weight: bold; color: #3498db; margin-bottom: 15px;">30:00</div>
-                        <div style="display: flex; gap: 15px; justify-content: center;">
-                            <button class="btn btn-primary" onclick="startPracticeTimer()">Start 30-Minute Session</button>
-                            <button class="btn btn-secondary" onclick="resetPracticeTimer()">Reset</button>
-                        </div>
+        <!-- TIER DASHBOARD -->
+        <div class="form-section" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+            <h3>📊 Spacing Tier Dashboard</h3>
+            <div id="tierDashboard">
+                <div class="tier-stats-grid">
+                    <div class="tier-stat-card" style="border-color: #3498db;">
+                        <div class="tier-stat-number" style="color: #3498db;" id="tier1Count">0</div>
+                        <div class="tier-stat-label">Tier 1: New<br><small>(≤7 days)</small></div>
+                    </div>
+                    <div class="tier-stat-card" style="border-color: #f39c12;">
+                        <div class="tier-stat-number" style="color: #f39c12;" id="tier2Count">0</div>
+                        <div class="tier-stat-label">Tier 2: Reinforcement<br><small>(8-21 days)</small></div>
+                    </div>
+                    <div class="tier-stat-card" style="border-color: #9b59b6;">
+                        <div class="tier-stat-number" style="color: #9b59b6;" id="tier3Count">0</div>
+                        <div class="tier-stat-label">Tier 3: Integration<br><small>(22+ days)</small></div>
                     </div>
                 </div>
-
-                <div class="form-section">
-                    <h3>Warm-Up Retrieval (Minutes 0-5)</h3>
-                    <p style="margin-bottom: 15px;">Select 3-5 random concepts and answer out loud:</p>
-                    <button class="btn btn-primary" onclick="generateRandomLessons()" style="margin-bottom: 20px;">Generate Random Lessons</button>
-                    <div id="randomLessons"></div>
-                </div>
-
-                <div class="form-section">
-                    <h3>Cross-Course Interleaving (Minutes 5-15)</h3>
-                    <p style="margin-bottom: 15px;">Force connections between courses:</p>
-                    <button class="btn btn-primary" onclick="generateInterleavingPrompt()" style="margin-bottom: 20px;">Generate Connection Prompt</button>
-                    <div id="interleavingPrompt"></div>
-                </div>
-
-                <div class="form-section">
-                    <h3>Deep Retrieval Questions (Minutes 15-25)</h3>
-                    <button class="btn btn-primary" onclick="generateDeepQuestions()" style="margin-bottom: 20px;">Generate Challenge Questions</button>
-                    <div id="deepQuestions"></div>
-                </div>
-
-                <div class="form-section">
-                    <h3>Reflection Notes (Minutes 25-30)</h3>
-                    <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db;">
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">1. What surprised me today?</div>
-                            <textarea id="reflection1" style="width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e1e8ed; border-radius: 6px; font-family: inherit;"></textarea>
-                        </div>
-                        
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">2. What connection did I make that I didn't see before?</div>
-                            <textarea id="reflection2" style="width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e1e8ed; border-radius: 6px; font-family: inherit;"></textarea>
-                        </div>
-                        
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">3. What do I need to review more deeply?</div>
-                            <textarea id="reflection3" style="width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e1e8ed; border-radius: 6px; font-family: inherit;"></textarea>
-                        </div>
-                        
-                        <button class="btn btn-primary" onclick="saveReflection()">Save Reflection</button>
-                    </div>
+                <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+                    <strong style="color: #155724;">📌 Suggested Daily Focus:</strong>
+                    <span style="color: #155724;" id="dailySuggestion">Loading...</span>
                 </div>
             </div>
+        </div>
+
+        <!-- TIER PRACTICE GENERATORS -->
+        <div class="form-section">
+            <h3>🎯 Tier-Specific Practice</h3>
+            <div class="tier-filter-tags">
+                <div class="tier-filter active" data-tier="all">All Lessons</div>
+                <div class="tier-filter" data-tier="1">Tier 1 Only</div>
+                <div class="tier-filter" data-tier="2">Tier 2 Only</div>
+                <div class="tier-filter" data-tier="3">Tier 3 Only</div>
+            </div>
+            <button class="btn btn-primary" onclick="generateTierPractice()" style="margin-bottom: 20px;">Generate Practice Questions</button>
+            <div id="tierPractice"></div>
+        </div>
+
+        <div class="form-section">
+            <h3>Session Timer</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <div id="practiceTimer" style="font-size: 3em; font-weight: bold; color: #3498db; margin-bottom: 15px;">30:00</div>
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn btn-primary" onclick="startPracticeTimer()">Start 30-Minute Session</button>
+                    <button class="btn btn-secondary" onclick="resetPracticeTimer()">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Warm-Up Retrieval (Minutes 0-5)</h3>
+            <p style="margin-bottom: 15px;">Select 3-5 random concepts and answer out loud:</p>
+            <button class="btn btn-primary" onclick="generateRandomLessons()" style="margin-bottom: 20px;">Generate Random Lessons</button>
+            <div id="randomLessons"></div>
         </div>
 
         <div class="tab-content" id="search">
@@ -1484,11 +1559,12 @@
     <script>
         let currentLessonId = null;
 
-        function initializeData() {
-            updateDashboard();
-            renderSearchResults();
-            initializeTracker();
-        }
+       function initializeData() {
+    updateDashboard();
+    renderSearchResults();
+    initializeTracker();
+    updateTierDashboard();
+}
 
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.nav-tab').forEach(tab => {
@@ -1604,7 +1680,10 @@
                     <div class="lesson-header">
                         <div>
                             <div class="lesson-title">${escapeHtml(lesson.title)}</div>
-                            <div class="lesson-meta">${lesson.course} • Week ${lesson.week}</div>
+                            <div class="lesson-meta">
+    ${lesson.course} • Week ${lesson.week}
+    <span class="tier-badge tier-${calculateLessonTier(lesson)}">Tier ${calculateLessonTier(lesson)}</span>
+</div>
                         </div>
                         <div class="lesson-rating">
                             ${'★'.repeat(lesson.rating)}${'☆'.repeat(5 - lesson.rating)}
@@ -1848,16 +1927,19 @@
             return true;
         }
 
-        function saveLesson(data) {
-            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
-            const newLesson = {
-                id: 'L' + String(lessons.length + 1).padStart(3, '0'),
-                ...data,
-                dateAdded: new Date().toISOString()
-            };
-            lessons.push(newLesson);
-            localStorage.setItem('mba_lessons', JSON.stringify(lessons));
-        }
+   function saveLesson(data) {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const newLesson = {
+        id: 'L' + String(lessons.length + 1).padStart(3, '0'),
+        ...data,
+        dateAdded: new Date().toISOString(),
+        lastPracticed: null,
+        timesReviewed: 0
+    };
+    lessons.push(newLesson);
+    localStorage.setItem('mba_lessons', JSON.stringify(lessons));
+    updateTierDashboard();
+}
 
         function showStatus(message, type) {
             const statusEl = document.getElementById('statusMessage');
@@ -2692,6 +2774,111 @@ Last 4 Weeks Average: ${Math.round((trackerData.weekHistory.slice(-4).reduce((su
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+        // TIER TRACKING FUNCTIONS
+function calculateLessonTier(lesson) {
+    const now = new Date();
+    const lastPracticed = lesson.lastPracticed ? new Date(lesson.lastPracticed) : new Date(lesson.dateAdded);
+    const daysSince = Math.floor((now - lastPracticed) / (1000 * 60 * 60 * 24));
+    
+    if (daysSince <= 7) return 1;
+    if (daysSince <= 21) return 2;
+    return 3;
+}
+
+function updateTierDashboard() {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    
+    const tierCounts = { 1: 0, 2: 0, 3: 0 };
+    lessons.forEach(lesson => {
+        const tier = calculateLessonTier(lesson);
+        tierCounts[tier]++;
+    });
+    
+    document.getElementById('tier1Count').textContent = tierCounts[1];
+    document.getElementById('tier2Count').textContent = tierCounts[2];
+    document.getElementById('tier3Count').textContent = tierCounts[3];
+    
+    // Daily suggestion
+    const suggestion = `Practice ${Math.min(2, tierCounts[1])} Tier 1, ${Math.min(3, tierCounts[2])} Tier 2, ${Math.min(1, tierCounts[3])} Tier 3 lessons`;
+    document.getElementById('dailySuggestion').textContent = suggestion;
+}
+
+function generateTierPractice() {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const activeTier = document.querySelector('.tier-filter.active').dataset.tier;
+    
+    let filteredLessons = lessons;
+    if (activeTier !== 'all') {
+        const tierNum = parseInt(activeTier);
+        filteredLessons = lessons.filter(lesson => calculateLessonTier(lesson) === tierNum);
+    }
+    
+    if (filteredLessons.length === 0) {
+        document.getElementById('tierPractice').innerHTML = '<p style="color: #7f8c8d;">No lessons in this tier.</p>';
+        return;
+    }
+    
+    const count = Math.min(5, filteredLessons.length);
+    const shuffled = [...filteredLessons].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, count);
+    
+    const html = `
+        <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db;">
+            <h4 style="color: #2c3e50; margin-bottom: 15px;">Practice Questions:</h4>
+            ${selected.map((lesson, index) => {
+                const tier = calculateLessonTier(lesson);
+                const tierColors = { 1: '#3498db', 2: '#f39c12', 3: '#9b59b6' };
+                return `
+                    <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <div style="font-weight: 600; color: ${tierColors[tier]};">Lesson ${index + 1}: ${escapeHtml(lesson.title)}</div>
+                            <span class="tier-badge tier-${tier}">Tier ${tier}</span>
+                        </div>
+                        <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} • Week ${lesson.week}</div>
+                        <ul style="list-style: none; padding: 0; margin: 10px 0;">
+                            <li style="margin: 8px 0;">❓ What is this concept?</li>
+                            <li style="margin: 8px 0;">❓ Why does it matter?</li>
+                            <li style="margin: 8px 0;">❓ When would I use this?</li>
+                        </ul>
+                        <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">Check Answer</button>
+                        <button class="btn btn-small btn-primary" onclick="markAsPracticed('${lesson.id}')" style="margin-top: 10px;">Mark as Practiced</button>
+                        <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
+                            ${lesson.quickRef ? `<strong>Quick Reference:</strong> ${escapeHtml(lesson.quickRef)}<br><br>` : ''}
+                            <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+    
+    document.getElementById('tierPractice').innerHTML = html;
+}
+
+function markAsPracticed(lessonId) {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const lesson = lessons.find(l => l.id === lessonId);
+    
+    if (lesson) {
+        lesson.lastPracticed = new Date().toISOString();
+        lesson.timesReviewed = (lesson.timesReviewed || 0) + 1;
+        localStorage.setItem('mba_lessons', JSON.stringify(lessons));
+        
+        alert('✓ Marked as practiced! This lesson will move through the spacing tiers.');
+        updateTierDashboard();
+        generateTierPractice();
+    }
+}
+
+// Add tier filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.tier-filter').forEach(filter => {
+        filter.addEventListener('click', function() {
+            document.querySelectorAll('.tier-filter').forEach(f => f.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+});
         // Chunkmap Functions
 function uploadChunkmap(input) {
     const file = input.files[0];
