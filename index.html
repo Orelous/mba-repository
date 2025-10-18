@@ -924,6 +924,7 @@
             <button class="nav-tab" data-tab="search">Search & Review</button>
             <button class="nav-tab" data-tab="add">Add Lesson</button>
             <button class="nav-tab" data-tab="manage">Manage & Export</button>
+            <button class="nav-tab" data-tab="chunkmaps">Concept Maps</button>
         </div>
 <!-- MARGINAL GAINS TRACKER TAB -->
 <div class="tab-content" id="tracker">
@@ -1388,8 +1389,57 @@
                         <div class="export-title">Reflections Export</div>
                         <div class="export-desc">All practice reflections</div>
                     </div>
+                    <div class="export-card" onclick="exportChunkmaps()">
+    <div class="export-icon">🗺️</div>
+    <div class="export-title">Chunkmaps Export</div>
+    <div class="export-desc">Download all concept maps</div>
+</div>
                 </div>
             </div>
+            <!-- CONCEPT MAPS TAB -->
+<div class="tab-content" id="chunkmaps">
+    <div class="alert-box alert-info">
+        <span style="font-size: 1.5em;">🗺️</span>
+        <div>
+            <strong>Visual Relationship Mapping:</strong> Chunkmaps created from your repository entries. Shows connections between concepts across courses.
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>📸 Upload Weekly Chunkmap</h3>
+        <div class="form-group">
+            <label for="chunkmapUpload">Upload Photo/Screenshot of This Week's Chunkmap</label>
+            <input type="file" id="chunkmapUpload" accept="image/*" onchange="uploadChunkmap(this)">
+            <p style="font-size: 0.9em; color: #7f8c8d; margin-top: 5px;">Take a photo of your hand-drawn concept map or upload a digital version</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="chunkmapTitle">Map Title</label>
+            <input type="text" id="chunkmapTitle" placeholder="e.g., Module 3: Buyer Behavior Relationships">
+        </div>
+        
+        <div class="form-group">
+            <label for="chunkmapNotes">Key Relationships Discovered</label>
+            <textarea id="chunkmapNotes" placeholder="Brief notes about the main connections you mapped..."></textarea>
+        </div>
+        
+        <button class="btn btn-primary" onclick="saveChunkmap()">Save Chunkmap</button>
+    </div>
+
+    <div class="form-section">
+        <h3>🔗 Connection Generator</h3>
+        <p>Generate relationship questions from your existing repository entries:</p>
+        <button class="btn btn-primary" onclick="generateConnectionMatrix()" style="margin-bottom: 20px;">Generate Cross-Course Connections</button>
+        <div id="connectionMatrix"></div>
+    </div>
+
+    <div id="chunkmapGallery">
+        <h3>📚 Chunkmap Gallery</h3>
+        <div id="chunkmapList">
+            <p style="text-align: center; color: #7f8c8d; padding: 20px;">No chunkmaps uploaded yet. Create your first one!</p>
+        </div>
+    </div>
+</div>
 
             <div class="export-section">
                 <h3>Repository Management</h3>
@@ -2302,6 +2352,39 @@ ${'='.repeat(80)}
             
             downloadFile(content, 'mba-reflections.txt', 'text/plain');
         }
+        function exportChunkmaps() {
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    
+    if (chunkmaps.length === 0) {
+        alert('No chunkmaps to export. Create some first!');
+        return;
+    }
+    
+    const content = `MBA Knowledge Repository - Chunkmaps Export
+
+Generated: ${new Date().toLocaleDateString()}
+Total Chunkmaps: ${chunkmaps.length}
+
+${'='.repeat(80)}
+
+${chunkmaps.map((map, index) => `
+CHUNKMAP #${index + 1}
+Title: ${map.title}
+Date Created: ${new Date(map.dateCreated).toLocaleString()}
+${'-'.repeat(80)}
+
+Key Relationships:
+${map.notes || '(No notes provided)'}
+
+${'='.repeat(80)}
+`).join('\n')}
+
+NOTE: Images are stored in your browser's local storage. 
+To backup images, use your browser's export data feature or take screenshots.
+`;
+    
+    downloadFile(content, 'mba-chunkmaps.txt', 'text/plain');
+}
         // Marginal Gains Tracker Functions
 function initializeTracker() {
     const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
@@ -2606,6 +2689,197 @@ Last 4 Weeks Average: ${Math.round((trackerData.weekHistory.slice(-4).reduce((su
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+        // Chunkmap Functions
+function uploadChunkmap(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        // Store image data temporarily
+        window.tempChunkmapData = e.target.result;
+        
+        // Show preview
+        const preview = document.createElement('img');
+        preview.src = e.target.result;
+        preview.style.maxWidth = '300px';
+        preview.style.marginTop = '10px';
+        preview.style.border = '2px solid #3498db';
+        preview.style.borderRadius = '8px';
+        
+        // Remove existing preview
+        const existingPreview = input.parentNode.querySelector('img');
+        if (existingPreview) existingPreview.remove();
+        
+        input.parentNode.appendChild(preview);
+    };
+    reader.readAsDataURL(file);
+}
+
+function saveChunkmap() {
+    const title = document.getElementById('chunkmapTitle').value.trim();
+    const notes = document.getElementById('chunkmapNotes').value.trim();
+    
+    if (!title || !window.tempChunkmapData) {
+        alert('Please provide a title and upload an image.');
+        return;
+    }
+    
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    const newMap = {
+        id: 'CM' + String(chunkmaps.length + 1).padStart(3, '0'),
+        title: title,
+        notes: notes,
+        imageData: window.tempChunkmapData,
+        dateCreated: new Date().toISOString()
+    };
+    
+    chunkmaps.push(newMap);
+    localStorage.setItem('chunkmaps', JSON.stringify(chunkmaps));
+    
+    // Clear form
+    document.getElementById('chunkmapTitle').value = '';
+    document.getElementById('chunkmapNotes').value = '';
+    document.getElementById('chunkmapUpload').value = '';
+    window.tempChunkmapData = null;
+    
+    // Remove preview
+    const preview = document.querySelector('#chunkmaps img');
+    if (preview) preview.remove();
+    
+    renderChunkmapGallery();
+    alert('Chunkmap saved successfully!');
+}
+
+function renderChunkmapGallery() {
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    const gallery = document.getElementById('chunkmapList');
+    
+    if (chunkmaps.length === 0) {
+        gallery.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 20px;">No chunkmaps uploaded yet. Create your first one!</p>';
+        return;
+    }
+    
+    gallery.innerHTML = chunkmaps.map(map => `
+        <div style="background: white; border: 2px solid #e1e8ed; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                <div>
+                    <h4 style="color: #2c3e50; margin-bottom: 5px;">${escapeHtml(map.title)}</h4>
+                    <div style="color: #7f8c8d; font-size: 0.9em;">${new Date(map.dateCreated).toLocaleDateString()}</div>
+                </div>
+                <button class="btn btn-small btn-delete" onclick="deleteChunkmap('${map.id}')">Delete</button>
+            </div>
+            <img src="${map.imageData}" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; cursor: pointer;" onclick="viewChunkmapFullSize('${map.id}')">
+            ${map.notes ? `<div style="color: #2c3e50; line-height: 1.6;"><strong>Key Relationships:</strong><br>${escapeHtml(map.notes)}</div>` : ''}
+        </div>
+    `).join('');
+}
+
+function generateConnectionMatrix() {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    
+    if (lessons.length < 2) {
+        document.getElementById('connectionMatrix').innerHTML = '<p style="color: #7f8c8d;">Need at least 2 lessons to generate connections.</p>';
+        return;
+        }
+    
+    // Group lessons by course
+    const courseGroups = {};
+    lessons.forEach(lesson => {
+        if (!courseGroups[lesson.course]) {
+            courseGroups[lesson.course] = [];
+        }
+        courseGroups[lesson.course].push(lesson);
+    });
+    
+    const courses = Object.keys(courseGroups);
+    
+    if (courses.length < 2) {
+        document.getElementById('connectionMatrix').innerHTML = '<p style="color: #7f8c8d;">Need lessons from at least 2 different courses for cross-course connections.</p>';
+        return;
+    }
+    
+    // Generate connection prompts
+    let html = '<div style="background: white; padding: 25px; border-radius: 8px; border: 2px solid #3498db;">';
+    html += '<h4 style="color: #2c3e50; margin-bottom: 20px;">Cross-Course Connection Opportunities</h4>';
+    
+    // Generate 5 random cross-course connections
+    for (let i = 0; i < 5; i++) {
+        const course1 = courses[Math.floor(Math.random() * courses.length)];
+        let course2 = courses[Math.floor(Math.random() * courses.length)];
+        
+        // Ensure different courses
+        while (course2 === course1 && courses.length > 1) {
+            course2 = courses[Math.floor(Math.random() * courses.length)];
+        }
+        
+        const lesson1 = courseGroups[course1][Math.floor(Math.random() * courseGroups[course1].length)];
+        const lesson2 = courseGroups[course2][Math.floor(Math.random() * courseGroups[course2].length)];
+        
+        html += `
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #3498db;">
+                <div style="font-weight: 600; color: #3498db; margin-bottom: 10px;">Connection ${i + 1}</div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Concept A:</strong> ${escapeHtml(lesson1.title)}<br>
+                    <span style="color: #7f8c8d; font-size: 0.9em;">${lesson1.course} • Week ${lesson1.week}</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Concept B:</strong> ${escapeHtml(lesson2.title)}<br>
+                    <span style="color: #7f8c8d; font-size: 0.9em;">${lesson2.course} • Week ${lesson2.week}</span>
+                </div>
+                <div style="background: #fff3cd; padding: 10px; border-radius: 6px; margin-top: 10px;">
+                    <strong style="color: #856404;">Reflection Questions:</strong>
+                    <ul style="margin: 5px 0 0 20px; color: #856404;">
+                        <li>How do these concepts relate to each other?</li>
+                        <li>What underlying principle do they share?</li>
+                        <li>When would you use both together?</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += '</div>';
+    document.getElementById('connectionMatrix').innerHTML = html;
+}
+
+function deleteChunkmap(mapId) {
+    if (!confirm('Delete this chunkmap?')) return;
+    
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    const filtered = chunkmaps.filter(map => map.id !== mapId);
+    localStorage.setItem('chunkmaps', JSON.stringify(filtered));
+    renderChunkmapGallery();
+}
+
+function viewChunkmapFullSize(mapId) {
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    const map = chunkmaps.find(m => m.id === mapId);
+    
+    if (!map) return;
+    
+    const modal = document.getElementById('lessonModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    
+    modalTitle.textContent = map.title;
+    modalBody.innerHTML = `
+        <img src="${map.imageData}" style="width: 100%; height: auto; border-radius: 8px;">
+        ${map.notes ? `<div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;"><strong>Key Relationships:</strong><br>${escapeHtml(map.notes)}</div>` : ''}
+    `;
+    
+    modal.style.display = 'block';
+}
+
+// Initialize chunkmap gallery when tab is opened
+document.addEventListener('DOMContentLoaded', function() {
+    const chunkmapTab = document.querySelector('[data-tab="chunkmaps"]');
+    if (chunkmapTab) {
+        chunkmapTab.addEventListener('click', function() {
+            renderChunkmapGallery();
+        });
+    }
+});
     </script>
 </body>
 </html>
