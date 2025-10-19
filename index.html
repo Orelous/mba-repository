@@ -1009,6 +1009,48 @@
         </div>
     </div>
 
+    <!-- Week Configuration -->
+    <div class="tracker-card" style="margin-bottom: 20px;">
+        <h3>⚙️ Week Configuration</h3>
+        <div class="planning-section">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label for="weekNumber" style="display: block; margin-bottom: 8px;"><strong>Current Week:</strong></label>
+                    <select id="weekNumber" class="btn btn-secondary" style="width: 100%;" onchange="updateWeekTarget()">
+                        <option value="1">Week 1</option>
+                        <option value="2">Week 2</option>
+                        <option value="3">Week 3</option>
+                        <option value="4">Week 4</option>
+                        <option value="5">Week 5</option>
+                        <option value="6">Week 6</option>
+                        <option value="7">Week 7</option>
+                        <option value="8">Week 8</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="weekTarget" style="display: block; margin-bottom: 8px;"><strong>Target:</strong></label>
+                    <select id="weekTarget" class="btn btn-secondary" style="width: 100%;">
+                        <option value="3">3/5 days</option>
+                        <option value="4">4/5 days</option>
+                        <option value="5">5/5 days</option>
+                    </select>
+                </div>
+            </div>
+            <div class="alert-box alert-success">
+                <span>📋</span>
+                <div>
+                    <strong>Progressive Targets:</strong>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.6;">
+                        <li><strong>Weeks 1-2:</strong> 3/5 days (building foundation)</li>
+                        <li><strong>Weeks 3-6:</strong> 4/5 days (developing mastery)</li>
+                        <li><strong>Weeks 7-8:</strong> 5/5 days (peak performance)</li>
+                    </ul>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-small" onclick="saveWeekConfiguration()" style="margin-top: 10px;">Save Week Configuration</button>
+        </div>
+    </div>
+
     <div class="tracker-grid">
         <!-- Current Week Tracker -->
         <div class="tracker-card" style="grid-column: span 2;">
@@ -2486,36 +2528,94 @@ To backup images, use your browser's export data feature or take screenshots.
     downloadFile(content, 'mba-chunkmaps.txt', 'text/plain');
 }
         // Marginal Gains Tracker Functions
-function initializeTracker() {
+function updateWeekTarget() {
+    const weekNumber = parseInt(document.getElementById('weekNumber').value);
+    const targetSelect = document.getElementById('weekTarget');
+    
+    // Auto-set target based on week number
+    if (weekNumber >= 1 && weekNumber <= 2) {
+        targetSelect.value = 3;
+    } else if (weekNumber >= 3 && weekNumber <= 6) {
+        targetSelect.value = 4;
+    } else if (weekNumber >= 7 && weekNumber <= 8) {
+        targetSelect.value = 5;
+    }
+}
+
+function saveWeekConfiguration() {
     const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
+    const weekNumber = parseInt(document.getElementById('weekNumber').value);
+    const target = parseInt(document.getElementById('weekTarget').value);
     
     if (!trackerData.currentWeek) {
         trackerData.currentWeek = {
             weekOf: getCurrentWeekString(),
-            target: 3,
             days: { mon: false, tue: false, wed: false, thu: false, fri: false },
             planningDone: false,
             mondayAdjustment: ''
         };
-        trackerData.weekHistory = [];
-        localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
     }
+    
+    trackerData.currentWeek.weekNumber = weekNumber;
+    trackerData.currentWeek.target = target;
+    
+    localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
+    
+    renderCurrentWeek();
+    updateTrackerStats();
+    
+    alert(`✓ Week configuration saved! You're on Week ${weekNumber} with a ${target}/5 target.`);
+}
+        
+function startNewWeek() {
+    if (!confirm('Are you sure you want to start a new week? This will move the current week to history.')) {
+        return;
+    }
+    
+    const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
+    
+    // Move current week to history
+    if (trackerData.currentWeek) {
+        if (!trackerData.weekHistory) trackerData.weekHistory = [];
+        trackerData.weekHistory.push(trackerData.currentWeek);
+    }
+    
+    // Get current week number and increment
+    const currentWeekNumber = trackerData.currentWeek?.weekNumber || 1;
+    const nextWeekNumber = Math.min(currentWeekNumber + 1, 8); // Cap at week 8
+    
+    // Determine next target based on 8-week progression
+    let nextTarget = 3;
+    if (nextWeekNumber >= 1 && nextWeekNumber <= 2) nextTarget = 3;
+    if (nextWeekNumber >= 3 && nextWeekNumber <= 6) nextTarget = 4;
+    if (nextWeekNumber >= 7 && nextWeekNumber <= 8) nextTarget = 5;
+    
+    // Create new week
+    trackerData.currentWeek = {
+        weekNumber: nextWeekNumber,
+        weekOf: getCurrentWeekString(),
+        target: nextTarget,
+        days: { mon: false, tue: false, wed: false, thu: false, fri: false },
+        planningDone: false,
+        mondayAdjustment: ''
+    };
+    
+    localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
+    
+    // Reset UI
+    document.getElementById('mondayAdjustment').value = '';
+    document.getElementById('sundayPlanning').checked = false;
+    document.getElementById('planning-checkbox').classList.remove('checked');
+    document.getElementById('weekNumber').value = nextWeekNumber;
+    document.getElementById('weekTarget').value = nextTarget;
     
     renderCurrentWeek();
     updateTrackerStats();
     renderWeekHistory();
-}
-
-function getCurrentWeekString() {
-    const today = new Date();
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - today.getDay() + 1);
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
     
-    return `${monday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${sunday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+    alert(`New week started! You're now on Week ${nextWeekNumber} with a ${nextTarget}/5 target.`);
 }
-
+        
 function renderCurrentWeek() {
     const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
     const week = trackerData.currentWeek || { days: {}, target: 3, weekOf: 'Current Week' };
