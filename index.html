@@ -140,13 +140,13 @@
             color: #7f8c8d;
         }
 
-        .search-controls {
-            display: grid;
-            grid-template-columns: 1fr auto auto;
-            gap: 15px;
-            margin-bottom: 25px;
-            align-items: end;
-        }
+     .search-controls {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 15px;
+    margin-bottom: 25px;
+    align-items: end;
+}
 
         .search-input {
             width: 100%;
@@ -1223,35 +1223,42 @@
     </div>
 </div>
 
-        <div class="tab-content" id="search">
-            <div class="search-controls">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search lessons by title, content, or tags...">
-                <select id="courseFilter" class="btn btn-secondary">
-                    <option value="">All Courses</option>
-                    <option value="ACCEXEC">Accounting for Executives</option>
-                    <option value="APPECO">Applied Economics for Executives</option>
-                    <option value="SUPPLY">Creating Value Through Supply Chain</option>
-                    <option value="ENTREP">Entrepreneurship</option>
-                    <option value="FINMGT">Financial Management</option>
-                    <option value="LEGAL">Legal and Ethical Issues in Business</option>
-                    <option value="MGCONS">Management Consulting</option>
-                    <option value="MGTSTAT">Management Statistics and Data Analysis</option>
-                    <option value="TECHINN">Managing Technology and Innovation</option>
-                    <option value="GLOBAL">Managing the Global Business Environment</option>
-                    <option value="MKTSTR">Marketing Strategy</option>
-                    <option value="ORGLEAD">Organizational Behavior and Leadership</option>
-                    <option value="STRATCOM">Strategic Communications</option>
-                    <option value="STRATCAP">Strategic Management Capstone</option>
-                </select>
-                <select id="ratingFilter" class="btn btn-secondary">
-                    <option value="">All Ratings</option>
-                    <option value="5">Essential (5)</option>
-                    <option value="4">Very Useful (4)</option>
-                    <option value="3">Situational (3)</option>
-                    <option value="2">Limited Use (2)</option>
-                    <option value="1">Academic Only (1)</option>
-                </select>
-            </div>
+       <div class="search-controls">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search lessons by title, content, or tags...">
+    <select id="courseFilter" class="btn btn-secondary">
+        <option value="">All Courses</option>
+        <option value="ACCEXEC">Accounting for Executives</option>
+        <option value="APPECO">Applied Economics for Executives</option>
+        <option value="SUPPLY">Creating Value Through Supply Chain</option>
+        <option value="ENTREP">Entrepreneurship</option>
+        <option value="FINMGT">Financial Management</option>
+        <option value="LEGAL">Legal and Ethical Issues in Business</option>
+        <option value="MGCONS">Management Consulting</option>
+        <option value="MGTSTAT">Management Statistics and Data Analysis</option>
+        <option value="TECHINN">Managing Technology and Innovation</option>
+        <option value="GLOBAL">Managing the Global Business Environment</option>
+        <option value="MKTSTR">Marketing Strategy</option>
+        <option value="ORGLEAD">Organizational Behavior and Leadership</option>
+        <option value="STRATCOM">Strategic Communications</option>
+        <option value="STRATCAP">Strategic Management Capstone</option>
+    </select>
+    <select id="weekFilter" class="btn btn-secondary">
+        <option value="">All Weeks</option>
+        <option value="1">Week 1</option>
+        <option value="2">Week 2</option>
+        <option value="3">Week 3</option>
+        <option value="4">Week 4</option>
+        <option value="5">Week 5</option>
+    </select>
+    <select id="ratingFilter" class="btn btn-secondary">
+        <option value="">All Ratings</option>
+        <option value="5">Essential (5)</option>
+        <option value="4">Very Useful (4)</option>
+        <option value="3">Situational (3)</option>
+        <option value="2">Limited Use (2)</option>
+        <option value="1">Academic Only (1)</option>
+    </select>
+</div>
 
             <div class="filter-tags">
                 <div class="filter-tag" data-tag="Accounting & Finance">Accounting & Finance</div>
@@ -1628,12 +1635,14 @@
             });
 
             const searchInput = document.getElementById('searchInput');
-            const courseFilter = document.getElementById('courseFilter');
-            const ratingFilter = document.getElementById('ratingFilter');
-            
-            if (searchInput) searchInput.addEventListener('input', filterLessons);
-            if (courseFilter) courseFilter.addEventListener('change', filterLessons);
-            if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
+const courseFilter = document.getElementById('courseFilter');
+const weekFilter = document.getElementById('weekFilter');
+const ratingFilter = document.getElementById('ratingFilter');
+
+if (searchInput) searchInput.addEventListener('input', filterLessons);
+if (courseFilter) courseFilter.addEventListener('change', filterLessons);
+if (weekFilter) weekFilter.addEventListener('change', filterLessons);
+if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
 
             document.querySelectorAll('.filter-tag').forEach(tag => {
                 tag.addEventListener('click', function() {
@@ -1831,33 +1840,36 @@
             }
         }
 
-        function filterLessons() {
-            const searchInput = document.getElementById('searchInput');
-            const courseFilter = document.getElementById('courseFilter');
-            const ratingFilter = document.getElementById('ratingFilter');
-            
-            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-            const courseFilterValue = courseFilter ? courseFilter.value : '';
-            const ratingFilterValue = ratingFilter ? ratingFilter.value : '';
-            const activeTags = Array.from(document.querySelectorAll('.filter-tag.active')).map(tag => tag.dataset.tag);
-            
-            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
-            
-            const filtered = lessons.filter(lesson => {
-                const matchesSearch = !searchTerm || 
-                    lesson.title.toLowerCase().includes(searchTerm) ||
-                    lesson.claudeSummary.toLowerCase().includes(searchTerm) ||
-                    lesson.keyInsights.toLowerCase().includes(searchTerm);
-                
-                const matchesCourse = !courseFilterValue || lesson.course === courseFilterValue;
-                const matchesRating = !ratingFilterValue || lesson.rating.toString() === ratingFilterValue;
-                const matchesTags = activeTags.length === 0 || activeTags.some(tag => lesson.tags.includes(tag));
-                
-                return matchesSearch && matchesCourse && matchesRating && matchesTags;
-            });
-            
-            renderSearchResults(filtered);
-        }
+       function filterLessons() {
+    const searchInput = document.getElementById('searchInput');
+    const courseFilter = document.getElementById('courseFilter');
+    const weekFilter = document.getElementById('weekFilter');
+    const ratingFilter = document.getElementById('ratingFilter');
+    
+    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+    const courseFilterValue = courseFilter ? courseFilter.value : '';
+    const weekFilterValue = weekFilter ? weekFilter.value : '';
+    const ratingFilterValue = ratingFilter ? ratingFilter.value : '';
+    const activeTags = Array.from(document.querySelectorAll('.filter-tag.active')).map(tag => tag.dataset.tag);
+    
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    
+    const filtered = lessons.filter(lesson => {
+        const matchesSearch = !searchTerm || 
+            lesson.title.toLowerCase().includes(searchTerm) ||
+            lesson.claudeSummary.toLowerCase().includes(searchTerm) ||
+            lesson.keyInsights.toLowerCase().includes(searchTerm);
+        
+        const matchesCourse = !courseFilterValue || lesson.course === courseFilterValue;
+        const matchesWeek = !weekFilterValue || lesson.week.toString() === weekFilterValue;
+        const matchesRating = !ratingFilterValue || lesson.rating.toString() === ratingFilterValue;
+        const matchesTags = activeTags.length === 0 || activeTags.some(tag => lesson.tags.includes(tag));
+        
+        return matchesSearch && matchesCourse && matchesWeek && matchesRating && matchesTags;
+    });
+    
+    renderSearchResults(filtered);
+}
 
         function submitLesson() {
             const formData = collectFormData();
