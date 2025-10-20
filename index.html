@@ -2889,6 +2889,45 @@ Last 4 Weeks Average: ${Math.round((trackerData.weekHistory.slice(-4).reduce((su
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    function getCurrentWeekString() {
+    const today = new Date();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - today.getDay() + 1);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    
+    const formatDate = (date) => {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${months[date.getMonth()]} ${date.getDate()}`;
+    };
+    
+    return `${formatDate(monday)}-${formatDate(sunday)}`;
+}
+
+function initializeTracker() {
+    const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
+    
+    if (!trackerData.currentWeek) {
+        trackerData.currentWeek = {
+            weekNumber: 1,
+            weekOf: getCurrentWeekString(),
+            target: 3,
+            days: { mon: false, tue: false, wed: false, thu: false, fri: false },
+            planningDone: false,
+            mondayAdjustment: ''
+        };
+        trackerData.weekHistory = [];
+        localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
+    }
+    
+    // Set the week configuration dropdowns
+    document.getElementById('weekNumber').value = trackerData.currentWeek.weekNumber || 1;
+    document.getElementById('weekTarget').value = trackerData.currentWeek.target || 3;
+    
+    renderCurrentWeek();
+    updateTrackerStats();
+    renderWeekHistory();
+
 }
         // TIER TRACKING FUNCTIONS
 function calculateLessonTier(lesson) {
