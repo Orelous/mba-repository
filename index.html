@@ -2889,6 +2889,8 @@ Last 4 Weeks Average: ${Math.round((trackerData.weekHistory.slice(-4).reduce((su
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    }
+        
     function getCurrentWeekString() {
     const today = new Date();
     const monday = new Date(today);
@@ -2927,7 +2929,6 @@ function initializeTracker() {
     renderCurrentWeek();
     updateTrackerStats();
     renderWeekHistory();
-
 }
         // TIER TRACKING FUNCTIONS
 function calculateLessonTier(lesson) {
