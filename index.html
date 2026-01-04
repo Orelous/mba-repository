@@ -1450,30 +1450,69 @@
                 </div>
 
                 <div class="form-section">
-                    <h3>Application Context</h3>
-                    
-                    <div class="form-group">
-                        <label for="quickRef">Quick Reference</label>
-                        <textarea id="quickRef" placeholder="One-line summary for quick recall..." style="min-height: 60px;"></textarea>
-                        <div class="char-counter"><span id="quickRefCount">0</span> characters</div>
+<h3>Application Context</h3>
+<div class="form-group">
+<label for="quickRef">Quick Reference</label>
+<textarea id="quickRef" placeholder="One-line summary for quick recall..." style="min-height: 60px;"></textarea>
+<div class="char-counter"><span id="quickRefCount">0</span> characters</div>
+</div>
+<div class="form-group">
+<label for="clientScenarios">Client Scenarios</label>
+<textarea id="clientScenarios" placeholder="SITUATION: [context] → FRAMEWORK APPLIED: [how] → EXPECTED OUTCOME: [result] → WATCH FOR: [warnings]"></textarea>
+</div>
+<div class="form-group">
+<label for="limitations">Limitation Notes</label>
+<textarea id="limitations" placeholder="When NOT to use; documented failure patterns..."></textarea>
+</div>
+<div class="form-group">
+<label for="crossCourse">Cross-Course Connections</label>
+<textarea id="crossCourse" placeholder="How this relates to other MBA concepts..."></textarea>
+</div>
+</div>
 
-                    </div>
+<div class="form-section">
+<h3>PKA Decision Support Fields</h3>
+<div class="form-group">
+<label for="decisionCriteria">Decision Criteria</label>
+<textarea id="decisionCriteria" placeholder="USE WHEN: [conditions that make this framework appropriate]&#10;AVOID WHEN: [conditions that make this framework inappropriate]"></textarea>
+</div>
+<div class="form-group">
+<label for="failurePatterns">Failure Patterns</label>
+<textarea id="failurePatterns" placeholder="Documented ways this framework typically fails:&#10;1. [Pattern 1]&#10;2. [Pattern 2]&#10;3. [Pattern 3]"></textarea>
+</div>
+<div class="form-group">
+<label for="implementationRisk">Implementation Risk</label>
+<textarea id="implementationRisk" placeholder="What to watch for during application; warning signs that indicate problems..."></textarea>
+</div>
+<div class="form-group">
+<label for="crossFunctionalSynthesis">Cross-Functional Synthesis</label>
+<textarea id="crossFunctionalSynthesis" placeholder="Connections to other domains/courses; how this concept interacts with frameworks from other areas..."></textarea>
+</div>
+</div>
 
-                    <div class="form-group">
-                        <label for="clientScenarios">Client Scenarios</label>
-                        <textarea id="clientScenarios" placeholder="When/where you'd use this with clients..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="limitations">Limitation Notes</label>
-                        <textarea id="limitations" placeholder="When NOT to use; documented failure patterns..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="crossCourse">Cross-Course Connections</label>
-                        <textarea id="crossCourse" placeholder="How this relates to other MBA concepts..."></textarea>
-                    </div>
-                </div>
+<div class="form-section">
+<h3>PKA Tracking Fields</h3>
+<div class="form-group">
+<label for="confidenceRating">Confidence Rating (1-10)</label>
+<select id="confidenceRating">
+<option value="">Select confidence level...</option>
+<option value="1">1 - No recall</option>
+<option value="2">2 - Vague recognition</option>
+<option value="3">3 - Partial recall with effort</option>
+<option value="4">4 - Can recall basics</option>
+<option value="5">5 - Decent understanding</option>
+<option value="6">6 - Good working knowledge</option>
+<option value="7">7 - Can explain to others</option>
+<option value="8">8 - Can apply in new contexts</option>
+<option value="9">9 - Can teach and troubleshoot</option>
+<option value="10">10 - Expert mastery</option>
+</select>
+</div>
+<div class="form-group">
+<label for="applicationEvidence">Application Evidence</label>
+<textarea id="applicationEvidence" placeholder="Real examples of using this with clients (add over time as you apply this knowledge)..."></textarea>
+</div>
+</div>
 
                 <div class="submit-section">
                     <button type="submit" class="btn btn-primary">Add Lesson to Repository</button>
@@ -1821,12 +1860,48 @@ if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
                     <div class="detail-label">Cross-Course Connections</div>
                     <div class="detail-content">${escapeHtml(lesson.crossCourse)}</div>
                 </div>` : ''}
+                ${lesson.decisionCriteria ? `
+<div class="detail-section">
+<div class="detail-label">Decision Criteria</div>
+<div class="detail-content" style="white-space: pre-line;">${escapeHtml(lesson.decisionCriteria)}</div>
+</div>` : ''}
+
+${lesson.failurePatterns ? `
+<div class="detail-section">
+<div class="detail-label">Failure Patterns</div>
+<div class="detail-content" style="white-space: pre-line;">${escapeHtml(lesson.failurePatterns)}</div>
+</div>` : ''}
+
+${lesson.implementationRisk ? `
+<div class="detail-section">
+<div class="detail-label">Implementation Risk</div>
+<div class="detail-content">${escapeHtml(lesson.implementationRisk)}</div>
+</div>` : ''}
+
+${lesson.crossFunctionalSynthesis ? `
+<div class="detail-section">
+<div class="detail-label">Cross-Functional Synthesis</div>
+<div class="detail-content">${escapeHtml(lesson.crossFunctionalSynthesis)}</div>
+</div>` : ''}
+
+${lesson.confidenceRating ? `
+<div class="detail-section">
+<div class="detail-label">Confidence Rating</div>
+<div class="detail-content">${lesson.confidenceRating}/10</div>
+</div>` : ''}
+
+${lesson.applicationEvidence ? `
+<div class="detail-section">
+<div class="detail-label">Application Evidence</div>
+<div class="detail-content">${escapeHtml(lesson.applicationEvidence)}</div>
+</div>` : ''}
                 
                 ${lesson.sourceLinks ? `
                 <div class="detail-section">
                     <div class="detail-label">Source Links</div>
                     <div class="detail-content">${escapeHtml(lesson.sourceLinks)}</div>
                 </div>` : ''}
+                
                 
                 <div class="detail-section">
                     <div class="detail-label">Tags</div>
@@ -1974,6 +2049,13 @@ if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
                 clientScenarios: document.getElementById('clientScenarios').value,
                 limitations: document.getElementById('limitations').value,
                 crossCourse: document.getElementById('crossCourse').value
+                crossCourse: document.getElementById('crossCourse').value,
+decisionCriteria: document.getElementById('decisionCriteria').value,
+failurePatterns: document.getElementById('failurePatterns').value,
+implementationRisk: document.getElementById('implementationRisk').value,
+crossFunctionalSynthesis: document.getElementById('crossFunctionalSynthesis').value,
+confidenceRating: parseInt(document.getElementById('confidenceRating').value) || 0,
+applicationEvidence: document.getElementById('applicationEvidence').value
             };
         }
 
@@ -1993,6 +2075,13 @@ if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
         dateAdded: new Date().toISOString(),
         lastPracticed: null,
         timesReviewed: 0
+        timesReviewed: 0,
+decisionCriteria: data.decisionCriteria || '',
+failurePatterns: data.failurePatterns || '',
+implementationRisk: data.implementationRisk || '',
+crossFunctionalSynthesis: data.crossFunctionalSynthesis || '',
+confidenceRating: data.confidenceRating || 0,
+applicationEvidence: data.applicationEvidence || ''
     };
     lessons.push(newLesson);
     localStorage.setItem('mba_lessons', JSON.stringify(lessons));
@@ -2085,7 +2174,7 @@ if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
         }
 
         function exportCSV(lessons) {
-            const headers = ['ID', 'Course', 'Week', 'Title', 'Rating', 'Tags', 'Summary'];
+            const headers = ['ID', 'Course', 'Week', 'Title', 'Rating', 'Tags', 'Summary', 'Decision_Criteria', 'Failure_Patterns', 'Implementation_Risk', 'Cross_Functional_Synthesis', 'Confidence_Rating', 'Application_Evidence'];
             const csvContent = [
                 headers.join(','),
                 ...lessons.map(lesson => [
@@ -2096,6 +2185,13 @@ if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
                     lesson.rating,
                     `"${lesson.tags.join(';')}"`,
                     `"${lesson.claudeSummary.replace(/"/g, '""')}"`
+                    ,
+`"${(lesson.decisionCriteria || '').replace(/"/g, '""')}"`,
+`"${(lesson.failurePatterns || '').replace(/"/g, '""')}"`,
+`"${(lesson.implementationRisk || '').replace(/"/g, '""')}"`,
+`"${(lesson.crossFunctionalSynthesis || '').replace(/"/g, '""')}"`,
+lesson.confidenceRating || '',
+`"${(lesson.applicationEvidence || '').replace(/"/g, '""')}"`
                 ].join(','))
             ].join('\n');
             
@@ -2130,6 +2226,12 @@ ${lesson.quickRef ? `Quick Reference:\n${lesson.quickRef}\n` : ''}
 ${lesson.clientScenarios ? `Client Scenarios:\n${lesson.clientScenarios}\n` : ''}
 ${lesson.limitations ? `Limitations:\n${lesson.limitations}\n` : ''}
 ${lesson.crossCourse ? `Cross-Course Connections:\n${lesson.crossCourse}\n` : ''}
+${lesson.decisionCriteria ? `Decision Criteria:\n${lesson.decisionCriteria}\n` : ''}
+${lesson.failurePatterns ? `Failure Patterns:\n${lesson.failurePatterns}\n` : ''}
+${lesson.implementationRisk ? `Implementation Risk:\n${lesson.implementationRisk}\n` : ''}
+${lesson.crossFunctionalSynthesis ? `Cross-Functional Synthesis:\n${lesson.crossFunctionalSynthesis}\n` : ''}
+${lesson.confidenceRating ? `Confidence Rating: ${lesson.confidenceRating}/10\n` : ''}
+${lesson.applicationEvidence ? `Application Evidence:\n${lesson.applicationEvidence}\n` : ''}
 
 `).join('')}`;
             downloadFile(content, 'mba-study-guide.txt', 'text/plain');
