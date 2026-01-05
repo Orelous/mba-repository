@@ -950,23 +950,23 @@
                 <div class="day-grid">
                     <div class="day-box" onclick="toggleDay('mon')">
                         <div class="day-label">Mon</div>
-                        <div class="day-check" id="day-mon">â˜</div>
+                        <div class="day-check" id="day-mon">☐</div>
                     </div>
                     <div class="day-box" onclick="toggleDay('tue')">
                         <div class="day-label">Tue</div>
-                        <div class="day-check" id="day-tue">â˜</div>
+                        <div class="day-check" id="day-tue">☐</div>
                     </div>
                     <div class="day-box" onclick="toggleDay('wed')">
                         <div class="day-label">Wed</div>
-                        <div class="day-check" id="day-wed">â˜</div>
+                        <div class="day-check" id="day-wed">☐</div>
                     </div>
                     <div class="day-box" onclick="toggleDay('thu')">
                         <div class="day-label">Thu</div>
-                        <div class="day-check" id="day-thu">â˜</div>
+                        <div class="day-check" id="day-thu">☐</div>
                     </div>
                     <div class="day-box" onclick="toggleDay('fri')">
                         <div class="day-label">Fri</div>
-                        <div class="day-check" id="day-fri">â˜</div>
+                        <div class="day-check" id="day-fri">☐</div>
                     </div>
                 </div>
 
@@ -1551,10 +1551,10 @@
                     <div class="lesson-header">
                         <div>
                             <div class="lesson-title">${escapeHtml(lesson.title)}</div>
-                            <div class="lesson-meta">${lesson.course} â€¢ Week ${lesson.week}</div>
+                            <div class="lesson-meta">${lesson.course} • Week ${lesson.week}</div>
                         </div>
                         <div class="lesson-rating">
-                            ${'â˜…'.repeat(lesson.rating)}${'â˜†'.repeat(5 - lesson.rating)}
+                            ${'★'.repeat(lesson.rating)}${'☆'.repeat(5 - lesson.rating)}
                         </div>
                     </div>
                     <div class="lesson-summary">${escapeHtml(lesson.claudeSummary)}</div>
@@ -1654,7 +1654,7 @@
                     <div class="detail-label">Consulting Rating</div>
                     <div class="detail-content">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <span style="font-size: 1.5em;">${'â˜…'.repeat(lesson.rating)}${'â˜†'.repeat(5 - lesson.rating)}</span>
+                            <span style="font-size: 1.5em;">${'★'.repeat(lesson.rating)}${'☆'.repeat(5 - lesson.rating)}</span>
                             <span>(${lesson.rating}/5 - ${getRatingLabel(lesson.rating)})</span>
                         </div>
                     </div>
@@ -1860,7 +1860,7 @@
                     recentList.innerHTML = recent.map(lesson => `
                         <div class="activity-item">
                             <div class="activity-title">${escapeHtml(lesson.title)}</div>
-                            <div class="activity-meta">${lesson.course} â€¢ Rating: ${lesson.rating} â€¢ Week ${lesson.week}</div>
+                            <div class="activity-meta">${lesson.course} • Rating: ${lesson.rating} • Week ${lesson.week}</div>
                         </div>
                     `).join('');
                 }
@@ -1925,7 +1925,7 @@ ${'='.repeat(80)}
 ${lesson.title}
 ${'='.repeat(80)}
 
-Course: ${lesson.courseName || lesson.course} | Week ${lesson.week} | Rating: ${'â˜…'.repeat(lesson.rating)}${'â˜†'.repeat(5 - lesson.rating)}
+Course: ${lesson.courseName || lesson.course} | Week ${lesson.week} | Rating: ${'★'.repeat(lesson.rating)}${'☆'.repeat(5 - lesson.rating)}
 
 Summary:
 ${lesson.claudeSummary}
@@ -2089,7 +2089,7 @@ ${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
                     ${selected.map((lesson, index) => `
                         <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
                             <div style="font-weight: 600; color: #3498db; margin-bottom: 10px;">Lesson ${index + 1}: ${escapeHtml(lesson.title)}</div>
-                            <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} â€¢ Week ${lesson.week}</div>
+                            <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} • Week ${lesson.week}</div>
                             <ul style="list-style: none; padding: 0; margin: 10px 0;">
                                 <li style="margin: 8px 0;">â“ What is this concept?</li>
                                 <li style="margin: 8px 0;">â“ Why does it matter?</li>
@@ -2157,11 +2157,11 @@ ${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
                     </div>
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
                         <strong style="color: #3498db;">Concept 1:</strong> ${escapeHtml(lesson1.title)}<br>
-                        <span style="color: #7f8c8d; font-size: 0.9em;">${lesson1.course} â€¢ Week ${lesson1.week}</span>
+                        <span style="color: #7f8c8d; font-size: 0.9em;">${lesson1.course} • Week ${lesson1.week}</span>
                     </div>
                     <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
                         <strong style="color: #e67e22;">Concept 2:</strong> ${escapeHtml(lesson2.title)}<br>
-                        <span style="color: #7f8c8d; font-size: 0.9em;">${lesson2.course} â€¢ Week ${lesson2.week}</span>
+                        <span style="color: #7f8c8d; font-size: 0.9em;">${lesson2.course} • Week ${lesson2.week}</span>
                     </div>
                     <button class="btn btn-small btn-secondary" onclick="showInterleavingHints('${lesson1.id}', '${lesson2.id}')" style="margin-top: 15px;">Need a hint?</button>
                     <div id="interleaving-hints" style="display: none; margin-top: 15px; padding: 15px; background: #e8f8f5; border-left: 4px solid #27ae60; border-radius: 4px;">
@@ -2210,7 +2210,7 @@ ${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
                     <h4 style="color: #8e44ad; margin-bottom: 20px;">Deep Retrieval Challenge</h4>
                     <div style="background: #f4ecf7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                         <div style="font-weight: 600; color: #2c3e50; font-size: 1.1em; margin-bottom: 10px;">Focus Concept: ${escapeHtml(lesson.title)}</div>
-                        <div style="color: #7f8c8d; font-size: 0.9em;">${lesson.course} â€¢ Week ${lesson.week}</div>
+                        <div style="color: #7f8c8d; font-size: 0.9em;">${lesson.course} • Week ${lesson.week}</div>
                     </div>
                     ${selectedQuestions.map((q, i) => `
                         <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
@@ -2224,7 +2224,7 @@ ${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
                     <button class="btn btn-small btn-secondary" onclick="showDeepAnswer('${lesson.id}')" style="margin-top: 15px;">Check Your Understanding</button>
                     <div id="deep-answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: #e8f8f5; border-left: 4px solid #27ae60; border-radius: 4px;">
                         <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}<br><br>
-                        <strong>Key Insights:</strong><br>${escapeHtml(lesson.keyInsights).split('\n').filter(i => i.trim()).map(i => `â€¢ ${i}`).join('<br>')}<br><br>
+                        <strong>Key Insights:</strong><br>${escapeHtml(lesson.keyInsights).split('\n').filter(i => i.trim()).map(i => `• ${i}`).join('<br>')}<br><br>
                         ${lesson.clientScenarios ? `<strong>Client Scenarios:</strong><br>${escapeHtml(lesson.clientScenarios)}<br><br>` : ''}
                         ${lesson.limitations ? `<strong>Limitations:</strong><br>${escapeHtml(lesson.limitations)}` : ''}
                     </div>
@@ -2353,7 +2353,7 @@ function renderCurrentWeek() {
             completed++;
         } else {
             dayBox.classList.remove('completed');
-            dayCheck.textContent = 'â˜';
+            dayCheck.textContent = '☐';
         }
     });
     
