@@ -140,13 +140,13 @@
             color: #7f8c8d;
         }
 
-        .search-controls {
-            display: grid;
-            grid-template-columns: 1fr auto auto;
-            gap: 15px;
-            margin-bottom: 25px;
-            align-items: end;
-        }
+     .search-controls {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 15px;
+    margin-bottom: 25px;
+    align-items: end;
+}
 
         .search-input {
             width: 100%;
@@ -710,6 +710,80 @@
     color: white;
 }
 
+        /* Tier Badge Styles */
+.tier-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.tier-1 {
+    background: #3498db;
+    color: white;
+}
+
+.tier-2 {
+    background: #f39c12;
+    color: white;
+}
+
+.tier-3 {
+    background: #9b59b6;
+    color: white;
+}
+
+.tier-filter-tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tier-filter {
+    padding: 8px 16px;
+    background: #e9ecef;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.tier-filter.active {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.tier-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.tier-stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid #e1e8ed;
+}
+
+.tier-stat-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.tier-stat-label {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    font-weight: 600;
+}
 .day-label {
     font-size: 0.85em;
     font-weight: 600;
@@ -919,25 +993,68 @@
 
         <div class="nav-tabs">
             <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
-            <button class="nav-tab" data-tab="tracker">ðŸ“ˆ Marginal Gains</button>
+            <button class="nav-tab" data-tab="tracker">📈 Marginal Gains</button>
             <button class="nav-tab" data-tab="practice">Retrieval Practice</button>
             <button class="nav-tab" data-tab="search">Search & Review</button>
             <button class="nav-tab" data-tab="add">Add Lesson</button>
             <button class="nav-tab" data-tab="manage">Manage & Export</button>
+            <button class="nav-tab" data-tab="chunkmaps">Concept Maps</button>
         </div>
 <!-- MARGINAL GAINS TRACKER TAB -->
 <div class="tab-content" id="tracker">
     <div class="alert-box alert-info">
-        <span style="font-size: 1.5em;">ðŸ’¡</span>
+        <span style="font-size: 1.5em;">💡</span>
         <div>
             <strong>Marginal Gains Philosophy:</strong> Consistency beats intensity. Track your process (did you show up?), not outcomes (was it perfect?). 3-minute sessions count fully.
+        </div>
+    </div>
+
+    <!-- Week Configuration -->
+    <div class="tracker-card" style="margin-bottom: 20px;">
+        <h3>⚙️ Week Configuration</h3>
+        <div class="planning-section">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label for="weekNumber" style="display: block; margin-bottom: 8px;"><strong>Current Week:</strong></label>
+                    <select id="weekNumber" class="btn btn-secondary" style="width: 100%;" onchange="updateWeekTarget()">
+                        <option value="1">Week 1</option>
+                        <option value="2">Week 2</option>
+                        <option value="3">Week 3</option>
+                        <option value="4">Week 4</option>
+                        <option value="5">Week 5</option>
+                        <option value="6">Week 6</option>
+                        <option value="7">Week 7</option>
+                        <option value="8">Week 8</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="weekTarget" style="display: block; margin-bottom: 8px;"><strong>Target:</strong></label>
+                    <select id="weekTarget" class="btn btn-secondary" style="width: 100%;">
+                        <option value="3">3/5 days</option>
+                        <option value="4">4/5 days</option>
+                        <option value="5">5/5 days</option>
+                    </select>
+                </div>
+            </div>
+            <div class="alert-box alert-success">
+                <span>📋</span>
+                <div>
+                    <strong>Progressive Targets:</strong>
+                    <ul style="margin: 5px 0 0 20px; line-height: 1.6;">
+                        <li><strong>Weeks 1-2:</strong> 3/5 days (building foundation)</li>
+                        <li><strong>Weeks 3-6:</strong> 4/5 days (developing mastery)</li>
+                        <li><strong>Weeks 7-8:</strong> 5/5 days (peak performance)</li>
+                    </ul>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-small" onclick="saveWeekConfiguration()" style="margin-top: 10px;">Save Week Configuration</button>
         </div>
     </div>
 
     <div class="tracker-grid">
         <!-- Current Week Tracker -->
         <div class="tracker-card" style="grid-column: span 2;">
-            <h3>ðŸ“… Current Week Tracker</h3>
+            <h3>📅 Current Week Tracker</h3>
             <div class="week-tracker">
                 <div class="week-header">
                     <div>
@@ -950,23 +1067,23 @@
                 <div class="day-grid">
                     <div class="day-box" onclick="toggleDay('mon')">
                         <div class="day-label">Mon</div>
-                        <div class="day-check" id="day-mon">☐</div>
+                        <div class="day-check" id="day-mon">☐</div>
                     </div>
                     <div class="day-box" onclick="toggleDay('tue')">
                         <div class="day-label">Tue</div>
-                        <div class="day-check" id="day-tue">☐</div>
+                        <div class="day-check" id="day-tue">☐</div>
                     </div>
                     <div class="day-box" onclick="toggleDay('wed')">
                         <div class="day-label">Wed</div>
-                        <div class="day-check" id="day-wed">☐</div>
+                        <div class="day-check" id="day-wed">☐</div>
                     </div>
                     <div class="day-box" onclick="toggleDay('thu')">
                         <div class="day-label">Thu</div>
-                        <div class="day-check" id="day-thu">☐</div>
+                        <div class="day-check" id="day-thu">☐</div>
                     </div>
                     <div class="day-box" onclick="toggleDay('fri')">
                         <div class="day-label">Fri</div>
-                        <div class="day-check" id="day-fri">☐</div>
+                        <div class="day-check" id="day-fri">☐</div>
                     </div>
                 </div>
 
@@ -975,7 +1092,7 @@
                 </div>
 
                 <div class="alert-box alert-warning" style="margin-top: 15px;">
-                    <span>âœ¨</span>
+                    <span>✨</span>
                     <div><strong>Remember:</strong> 3-minute minimum counts as complete success. Click each day to mark it done!</div>
                 </div>
             </div>
@@ -983,7 +1100,7 @@
 
         <!-- Weekly Stats -->
         <div class="tracker-card">
-            <h3>ðŸ“Š 4-Week Overview</h3>
+            <h3>📊 4-Week Overview</h3>
             <div class="planning-section">
                 <div class="stats-row">
                     <span class="stat-label">Rolling Average:</span>
@@ -992,7 +1109,7 @@
                 <div class="stats-row">
                     <span class="stat-label">Trend:</span>
                     <span class="stat-value" id="trendIndicator">
-                        <span class="trend-indicator">â†’</span> Building baseline
+                        <span class="trend-indicator">→</span> Building baseline
                     </span>
                 </div>
                 <div class="stats-row">
@@ -1009,7 +1126,7 @@
 
     <!-- Sunday Planning Section -->
     <div class="tracker-card" style="margin-bottom: 20px;">
-        <h3>ðŸŽ¯ Sunday Planning (9:00-9:15 PM)</h3>
+        <h3>🎯 Sunday Planning (9:00-9:15 PM)</h3>
         <div class="planning-section">
             <div class="planning-checkbox" id="planning-checkbox" onclick="togglePlanning()">
                 <input type="checkbox" id="sundayPlanning">
@@ -1030,7 +1147,7 @@
 
     <!-- Week History -->
     <div class="tracker-card">
-        <h3>ðŸ“œ Week History</h3>
+        <h3>📜 Week History</h3>
         <div class="history-list" id="weekHistory">
             <p style="text-align: center; color: #7f8c8d; padding: 20px;">No weeks tracked yet. Start marking your daily sessions!</p>
         </div>
@@ -1043,7 +1160,7 @@
 
     <!-- Quick Tips -->
     <div class="alert-box alert-success">
-        <span style="font-size: 1.5em;">ðŸŽ¯</span>
+        <span style="font-size: 1.5em;">🎯</span>
         <div>
             <strong>Next Actions:</strong>
             <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
@@ -1082,97 +1199,109 @@
             </div>
         </div>
 
-        <div class="tab-content" id="practice">
-            <div style="max-width: 900px; margin: 0 auto;">
-                <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-                    <h3 style="color: #856404; margin-bottom: 10px;">Retrieval Practice Mode</h3>
-                    <p style="color: #856404; margin: 0;">This is for testing your memory, not reviewing content. Close your notes and try to recall from memory. Struggle before checking answers.</p>
-                </div>
+      <div class="tab-content" id="practice">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <h3 style="color: #856404; margin-bottom: 10px;">Retrieval Practice Mode</h3>
+            <p style="color: #856404; margin: 0;">This is for testing your memory, not reviewing content. Close your notes and try to recall from memory. Struggle before checking answers.</p>
+        </div>
 
-                <div class="form-section">
-                    <h3>Session Timer</h3>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <div id="practiceTimer" style="font-size: 3em; font-weight: bold; color: #3498db; margin-bottom: 15px;">30:00</div>
-                        <div style="display: flex; gap: 15px; justify-content: center;">
-                            <button class="btn btn-primary" onclick="startPracticeTimer()">Start 30-Minute Session</button>
-                            <button class="btn btn-secondary" onclick="resetPracticeTimer()">Reset</button>
-                        </div>
+        <!-- TIER DASHBOARD -->
+        <div class="form-section" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+            <h3>📊 Spacing Tier Dashboard</h3>
+            <div id="tierDashboard">
+                <div class="tier-stats-grid">
+                    <div class="tier-stat-card" style="border-color: #3498db;">
+                        <div class="tier-stat-number" style="color: #3498db;" id="tier1Count">0</div>
+                        <div class="tier-stat-label">Tier 1: New<br><small>(≤7 days)</small></div>
+                    </div>
+                    <div class="tier-stat-card" style="border-color: #f39c12;">
+                        <div class="tier-stat-number" style="color: #f39c12;" id="tier2Count">0</div>
+                        <div class="tier-stat-label">Tier 2: Reinforcement<br><small>(8-21 days)</small></div>
+                    </div>
+                    <div class="tier-stat-card" style="border-color: #9b59b6;">
+                        <div class="tier-stat-number" style="color: #9b59b6;" id="tier3Count">0</div>
+                        <div class="tier-stat-label">Tier 3: Integration<br><small>(22+ days)</small></div>
                     </div>
                 </div>
-
-                <div class="form-section">
-                    <h3>Warm-Up Retrieval (Minutes 0-5)</h3>
-                    <p style="margin-bottom: 15px;">Select 3-5 random concepts and answer out loud:</p>
-                    <button class="btn btn-primary" onclick="generateRandomLessons()" style="margin-bottom: 20px;">Generate Random Lessons</button>
-                    <div id="randomLessons"></div>
-                </div>
-
-                <div class="form-section">
-                    <h3>Cross-Course Interleaving (Minutes 5-15)</h3>
-                    <p style="margin-bottom: 15px;">Force connections between courses:</p>
-                    <button class="btn btn-primary" onclick="generateInterleavingPrompt()" style="margin-bottom: 20px;">Generate Connection Prompt</button>
-                    <div id="interleavingPrompt"></div>
-                </div>
-
-                <div class="form-section">
-                    <h3>Deep Retrieval Questions (Minutes 15-25)</h3>
-                    <button class="btn btn-primary" onclick="generateDeepQuestions()" style="margin-bottom: 20px;">Generate Challenge Questions</button>
-                    <div id="deepQuestions"></div>
-                </div>
-
-                <div class="form-section">
-                    <h3>Reflection Notes (Minutes 25-30)</h3>
-                    <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db;">
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">1. What surprised me today?</div>
-                            <textarea id="reflection1" style="width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e1e8ed; border-radius: 6px; font-family: inherit;"></textarea>
-                        </div>
-                        
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">2. What connection did I make that I didn't see before?</div>
-                            <textarea id="reflection2" style="width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e1e8ed; border-radius: 6px; font-family: inherit;"></textarea>
-                        </div>
-                        
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">3. What do I need to review more deeply?</div>
-                            <textarea id="reflection3" style="width: 100%; min-height: 80px; padding: 12px; border: 2px solid #e1e8ed; border-radius: 6px; font-family: inherit;"></textarea>
-                        </div>
-                        
-                        <button class="btn btn-primary" onclick="saveReflection()">Save Reflection</button>
-                    </div>
+                <div style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+                    <strong style="color: #155724;">📌 Suggested Daily Focus:</strong>
+                    <span style="color: #155724;" id="dailySuggestion">Loading...</span>
                 </div>
             </div>
         </div>
 
-        <div class="tab-content" id="search">
-            <div class="search-controls">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search lessons by title, content, or tags...">
-                <select id="courseFilter" class="btn btn-secondary">
-                    <option value="">All Courses</option>
-                    <option value="ACCEXEC">Accounting for Executives</option>
-                    <option value="APPECO">Applied Economics for Executives</option>
-                    <option value="SUPPLY">Creating Value Through Supply Chain</option>
-                    <option value="ENTREP">Entrepreneurship</option>
-                    <option value="FINMGT">Financial Management</option>
-                    <option value="LEGAL">Legal and Ethical Issues in Business</option>
-                    <option value="MGCONS">Management Consulting</option>
-                    <option value="MGTSTAT">Management Statistics and Data Analysis</option>
-                    <option value="TECHINN">Managing Technology and Innovation</option>
-                    <option value="GLOBAL">Managing the Global Business Environment</option>
-                    <option value="MKTSTR">Marketing Strategy</option>
-                    <option value="ORGLEAD">Organizational Behavior and Leadership</option>
-                    <option value="STRATCOM">Strategic Communications</option>
-                    <option value="STRATCAP">Strategic Management Capstone</option>
-                </select>
-                <select id="ratingFilter" class="btn btn-secondary">
-                    <option value="">All Ratings</option>
-                    <option value="5">Essential (5)</option>
-                    <option value="4">Very Useful (4)</option>
-                    <option value="3">Situational (3)</option>
-                    <option value="2">Limited Use (2)</option>
-                    <option value="1">Academic Only (1)</option>
-                </select>
+        <!-- TIER PRACTICE GENERATORS -->
+        <div class="form-section">
+            <h3>🎯 Tier-Specific Practice</h3>
+            <div class="tier-filter-tags">
+                <div class="tier-filter active" data-tier="all">All Lessons</div>
+                <div class="tier-filter" data-tier="1">Tier 1 Only</div>
+                <div class="tier-filter" data-tier="2">Tier 2 Only</div>
+                <div class="tier-filter" data-tier="3">Tier 3 Only</div>
             </div>
+            <button class="btn btn-primary" onclick="generateTierPractice()" style="margin-bottom: 20px;">Generate Practice Questions</button>
+            <div id="tierPractice"></div>
+        </div>
+
+        <div class="form-section">
+            <h3>Session Timer</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <div id="practiceTimer" style="font-size: 3em; font-weight: bold; color: #3498db; margin-bottom: 15px;">30:00</div>
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn btn-primary" onclick="startPracticeTimer()">Start 30-Minute Session</button>
+                    <button class="btn btn-secondary" onclick="resetPracticeTimer()">Reset</button>
+                </div>
+            </div>
+        </div>
+
+<div class="form-section">
+            <h3>Warm-Up Retrieval (Minutes 0-5)</h3>
+            <p style="margin-bottom: 15px;">Select 3-5 random concepts and answer out loud:</p>
+            <button class="btn btn-primary" onclick="generateRandomLessons()" style="margin-bottom: 20px;">Generate Random Lessons</button>
+            <div id="randomLessons"></div>
+        </div>
+
+    </div>
+</div>
+        
+<div class="tab-content" id="search">
+       <div class="search-controls">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search lessons by title, content, or tags...">
+    <select id="courseFilter" class="btn btn-secondary">
+        <option value="">All Courses</option>
+        <option value="ACCEXEC">Accounting for Executives</option>
+        <option value="APPECO">Applied Economics for Executives</option>
+        <option value="SUPPLY">Creating Value Through Supply Chain</option>
+        <option value="ENTREP">Entrepreneurship</option>
+        <option value="FINMGT">Financial Management</option>
+        <option value="LEGAL">Legal and Ethical Issues in Business</option>
+        <option value="MGCONS">Management Consulting</option>
+        <option value="MGTSTAT">Management Statistics and Data Analysis</option>
+        <option value="TECHINN">Managing Technology and Innovation</option>
+        <option value="GLOBAL">Managing the Global Business Environment</option>
+        <option value="MKTSTR">Marketing Strategy</option>
+        <option value="ORGLEAD">Organizational Behavior and Leadership</option>
+        <option value="STRATCOM">Strategic Communications</option>
+        <option value="STRATCAP">Strategic Management Capstone</option>
+    </select>
+    <select id="weekFilter" class="btn btn-secondary">
+        <option value="">All Weeks</option>
+        <option value="1">Week 1</option>
+        <option value="2">Week 2</option>
+        <option value="3">Week 3</option>
+        <option value="4">Week 4</option>
+        <option value="5">Week 5</option>
+    </select>
+    <select id="ratingFilter" class="btn btn-secondary">
+        <option value="">All Ratings</option>
+        <option value="5">Essential (5)</option>
+        <option value="4">Very Useful (4)</option>
+        <option value="3">Situational (3)</option>
+        <option value="2">Limited Use (2)</option>
+        <option value="1">Academic Only (1)</option>
+    </select>
+</div>
 
             <div class="filter-tags">
                 <div class="filter-tag" data-tag="Accounting & Finance">Accounting & Finance</div>
@@ -1360,37 +1489,43 @@
                 
                 <div class="export-options">
                     <div class="export-card" onclick="exportData('csv')">
-                        <div class="export-icon">ðŸ“Š</div>
+                        <div class="export-icon">📊</div>
                         <div class="export-title">CSV Export</div>
                         <div class="export-desc">Spreadsheet format for analysis</div>
                     </div>
                     
                     <div class="export-card" onclick="exportData('json')">
-                        <div class="export-icon">ðŸ’¾</div>
+                        <div class="export-icon">💾</div>
                         <div class="export-title">JSON Backup</div>
                         <div class="export-desc">Complete data backup</div>
                     </div>
                     
                     <div class="export-card" onclick="exportData('study')">
-                        <div class="export-icon">ðŸ“š</div>
+                        <div class="export-icon">📚</div>
                         <div class="export-title">Study Guide</div>
                         <div class="export-desc">Text formatted for review</div>
                     </div>
                     
                     <div class="export-card" onclick="exportData('quick')">
-                        <div class="export-icon">âš¡</div>
+                        <div class="export-icon">⚡</div>
                         <div class="export-title">Quick Reference</div>
                         <div class="export-desc">Essential frameworks only</div>
                     </div>
                     
                     <div class="export-card" onclick="exportReflections()">
-                        <div class="export-icon">ðŸ’­</div>
+                        <div class="export-icon">💭</div>
                         <div class="export-title">Reflections Export</div>
                         <div class="export-desc">All practice reflections</div>
                     </div>
+                    <div class="export-card" onclick="exportChunkmaps()">
+    <div class="export-icon">🗺️</div>
+    <div class="export-title">Chunkmaps Export</div>
+    <div class="export-desc">Download all concept maps</div>
+</div>
                 </div>
             </div>
-
+            <!-- CONCEPT MAPS TAB -->
+            
             <div class="export-section">
                 <h3>Repository Management</h3>
                 
@@ -1414,28 +1549,75 @@
         </div>
     </div>
 
-    <div id="lessonModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title" id="modalTitle">Lesson Details</span>
-                <button class="close" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody"></div>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
-                <button class="btn btn-delete" onclick="deleteLesson()">Delete</button>
-            </div>
+<!-- CONCEPT MAPS TAB -->
+<div class="tab-content" id="chunkmaps">
+    <div class="alert-box alert-info">
+        <span style="font-size: 1.5em;">🗺️</span>
+        <div>
+            <strong>Visual Relationship Mapping:</strong> Chunkmaps created from your repository entries. Shows connections between concepts across courses.
         </div>
     </div>
 
+    <div class="form-section">
+        <h3>📸 Upload Weekly Chunkmap</h3>
+        <div class="form-group">
+            <label for="chunkmapUpload">Upload Photo/Screenshot of This Week's Chunkmap</label>
+            <input type="file" id="chunkmapUpload" accept="image/*" onchange="uploadChunkmap(this)">
+            <p style="font-size: 0.9em; color: #7f8c8d; margin-top: 5px;">Take a photo of your hand-drawn concept map or upload a digital version</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="chunkmapTitle">Map Title</label>
+            <input type="text" id="chunkmapTitle" placeholder="e.g., Module 3: Buyer Behavior Relationships">
+        </div>
+        
+        <div class="form-group">
+            <label for="chunkmapNotes">Key Relationships Discovered</label>
+            <textarea id="chunkmapNotes" placeholder="Brief notes about the main connections you mapped..."></textarea>
+        </div>
+        
+        <button class="btn btn-primary" onclick="saveChunkmap()">Save Chunkmap</button>
+    </div>
+
+    <div class="form-section">
+        <h3>🔗 Connection Generator</h3>
+        <p>Generate relationship questions from your existing repository entries:</p>
+        <button class="btn btn-primary" onclick="generateConnectionMatrix()" style="margin-bottom: 20px;">Generate Cross-Course Connections</button>
+        <div id="connectionMatrix"></div>
+    </div>
+
+    <div id="chunkmapGallery">
+        <h3>📚 Chunkmap Gallery</h3>
+        <div id="chunkmapList">
+            <p style="text-align: center; color: #7f8c8d; padding: 20px;">No chunkmaps uploaded yet. Create your first one!</p>
+        </div>
+    </div>
+</div>
+
+<div id="lessonModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title" id="modalTitle">Lesson Details</span>
+            <button class="close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+            <button class="btn btn-delete" onclick="deleteLesson()">Delete</button>
+        </div>
+    </div>
+</div>
+
+    
     <script>
         let currentLessonId = null;
 
-        function initializeData() {
-            updateDashboard();
-            renderSearchResults();
-            initializeTracker();
-        }
+       function initializeData() {
+    updateDashboard();
+    renderSearchResults();
+    initializeTracker();
+    updateTierDashboard();
+}
 
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.nav-tab').forEach(tab => {
@@ -1496,12 +1678,14 @@
             });
 
             const searchInput = document.getElementById('searchInput');
-            const courseFilter = document.getElementById('courseFilter');
-            const ratingFilter = document.getElementById('ratingFilter');
-            
-            if (searchInput) searchInput.addEventListener('input', filterLessons);
-            if (courseFilter) courseFilter.addEventListener('change', filterLessons);
-            if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
+const courseFilter = document.getElementById('courseFilter');
+const weekFilter = document.getElementById('weekFilter');
+const ratingFilter = document.getElementById('ratingFilter');
+
+if (searchInput) searchInput.addEventListener('input', filterLessons);
+if (courseFilter) courseFilter.addEventListener('change', filterLessons);
+if (weekFilter) weekFilter.addEventListener('change', filterLessons);
+if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
 
             document.querySelectorAll('.filter-tag').forEach(tag => {
                 tag.addEventListener('click', function() {
@@ -1551,7 +1735,10 @@
                     <div class="lesson-header">
                         <div>
                             <div class="lesson-title">${escapeHtml(lesson.title)}</div>
-                            <div class="lesson-meta">${lesson.course} • Week ${lesson.week}</div>
+                            <div class="lesson-meta">
+    ${lesson.course} • Week ${lesson.week}
+    <span class="tier-badge tier-${calculateLessonTier(lesson)}">Tier ${calculateLessonTier(lesson)}</span>
+</div>
                         </div>
                         <div class="lesson-rating">
                             ${'★'.repeat(lesson.rating)}${'☆'.repeat(5 - lesson.rating)}
@@ -1696,33 +1883,36 @@
             }
         }
 
-        function filterLessons() {
-            const searchInput = document.getElementById('searchInput');
-            const courseFilter = document.getElementById('courseFilter');
-            const ratingFilter = document.getElementById('ratingFilter');
-            
-            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-            const courseFilterValue = courseFilter ? courseFilter.value : '';
-            const ratingFilterValue = ratingFilter ? ratingFilter.value : '';
-            const activeTags = Array.from(document.querySelectorAll('.filter-tag.active')).map(tag => tag.dataset.tag);
-            
-            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
-            
-            const filtered = lessons.filter(lesson => {
-                const matchesSearch = !searchTerm || 
-                    lesson.title.toLowerCase().includes(searchTerm) ||
-                    lesson.claudeSummary.toLowerCase().includes(searchTerm) ||
-                    lesson.keyInsights.toLowerCase().includes(searchTerm);
-                
-                const matchesCourse = !courseFilterValue || lesson.course === courseFilterValue;
-                const matchesRating = !ratingFilterValue || lesson.rating.toString() === ratingFilterValue;
-                const matchesTags = activeTags.length === 0 || activeTags.some(tag => lesson.tags.includes(tag));
-                
-                return matchesSearch && matchesCourse && matchesRating && matchesTags;
-            });
-            
-            renderSearchResults(filtered);
-        }
+       function filterLessons() {
+    const searchInput = document.getElementById('searchInput');
+    const courseFilter = document.getElementById('courseFilter');
+    const weekFilter = document.getElementById('weekFilter');
+    const ratingFilter = document.getElementById('ratingFilter');
+    
+    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+    const courseFilterValue = courseFilter ? courseFilter.value : '';
+    const weekFilterValue = weekFilter ? weekFilter.value : '';
+    const ratingFilterValue = ratingFilter ? ratingFilter.value : '';
+    const activeTags = Array.from(document.querySelectorAll('.filter-tag.active')).map(tag => tag.dataset.tag);
+    
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    
+    const filtered = lessons.filter(lesson => {
+        const matchesSearch = !searchTerm || 
+            lesson.title.toLowerCase().includes(searchTerm) ||
+            lesson.claudeSummary.toLowerCase().includes(searchTerm) ||
+            lesson.keyInsights.toLowerCase().includes(searchTerm);
+        
+        const matchesCourse = !courseFilterValue || lesson.course === courseFilterValue;
+        const matchesWeek = !weekFilterValue || lesson.week.toString() === weekFilterValue;
+        const matchesRating = !ratingFilterValue || lesson.rating.toString() === ratingFilterValue;
+        const matchesTags = activeTags.length === 0 || activeTags.some(tag => lesson.tags.includes(tag));
+        
+        return matchesSearch && matchesCourse && matchesWeek && matchesRating && matchesTags;
+    });
+    
+    renderSearchResults(filtered);
+}
 
         function submitLesson() {
             const formData = collectFormData();
@@ -1795,16 +1985,19 @@
             return true;
         }
 
-        function saveLesson(data) {
-            const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
-            const newLesson = {
-                id: 'L' + String(lessons.length + 1).padStart(3, '0'),
-                ...data,
-                dateAdded: new Date().toISOString()
-            };
-            lessons.push(newLesson);
-            localStorage.setItem('mba_lessons', JSON.stringify(lessons));
-        }
+   function saveLesson(data) {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const newLesson = {
+        id: 'L' + String(lessons.length + 1).padStart(3, '0'),
+        ...data,
+        dateAdded: new Date().toISOString(),
+        lastPracticed: null,
+        timesReviewed: 0
+    };
+    lessons.push(newLesson);
+    localStorage.setItem('mba_lessons', JSON.stringify(lessons));
+    updateTierDashboard();
+}
 
         function showStatus(message, type) {
             const statusEl = document.getElementById('statusMessage');
@@ -2091,9 +2284,9 @@ ${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
                             <div style="font-weight: 600; color: #3498db; margin-bottom: 10px;">Lesson ${index + 1}: ${escapeHtml(lesson.title)}</div>
                             <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} • Week ${lesson.week}</div>
                             <ul style="list-style: none; padding: 0; margin: 10px 0;">
-                                <li style="margin: 8px 0;">â“ What is this concept?</li>
-                                <li style="margin: 8px 0;">â“ Why does it matter?</li>
-                                <li style="margin: 8px 0;">â“ When would I use this?</li>
+                                <li style="margin: 8px 0;">❓ What is this concept?</li>
+                                <li style="margin: 8px 0;">❓ Why does it matter?</li>
+                                <li style="margin: 8px 0;">❓ When would I use this?</li>
                             </ul>
                             <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">Struggle First, Then Check Answer</button>
                             <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
@@ -2302,37 +2495,128 @@ ${'='.repeat(80)}
             
             downloadFile(content, 'mba-reflections.txt', 'text/plain');
         }
+        function exportChunkmaps() {
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    
+    if (chunkmaps.length === 0) {
+        alert('No chunkmaps to export. Create some first!');
+        return;
+    }
+    
+    const content = `MBA Knowledge Repository - Chunkmaps Export
+
+Generated: ${new Date().toLocaleDateString()}
+Total Chunkmaps: ${chunkmaps.length}
+
+${'='.repeat(80)}
+
+${chunkmaps.map((map, index) => `
+CHUNKMAP #${index + 1}
+Title: ${map.title}
+Date Created: ${new Date(map.dateCreated).toLocaleString()}
+${'-'.repeat(80)}
+
+Key Relationships:
+${map.notes || '(No notes provided)'}
+
+${'='.repeat(80)}
+`).join('\n')}
+
+NOTE: Images are stored in your browser's local storage. 
+To backup images, use your browser's export data feature or take screenshots.
+`;
+    
+    downloadFile(content, 'mba-chunkmaps.txt', 'text/plain');
+}
         // Marginal Gains Tracker Functions
-function initializeTracker() {
+function updateWeekTarget() {
+    const weekNumber = parseInt(document.getElementById('weekNumber').value);
+    const targetSelect = document.getElementById('weekTarget');
+    
+    // Auto-set target based on week number
+    if (weekNumber >= 1 && weekNumber <= 2) {
+        targetSelect.value = 3;
+    } else if (weekNumber >= 3 && weekNumber <= 6) {
+        targetSelect.value = 4;
+    } else if (weekNumber >= 7 && weekNumber <= 8) {
+        targetSelect.value = 5;
+    }
+}
+
+function saveWeekConfiguration() {
     const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
+    const weekNumber = parseInt(document.getElementById('weekNumber').value);
+    const target = parseInt(document.getElementById('weekTarget').value);
     
     if (!trackerData.currentWeek) {
         trackerData.currentWeek = {
             weekOf: getCurrentWeekString(),
-            target: 3,
             days: { mon: false, tue: false, wed: false, thu: false, fri: false },
             planningDone: false,
             mondayAdjustment: ''
         };
-        trackerData.weekHistory = [];
-        localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
     }
+    
+    trackerData.currentWeek.weekNumber = weekNumber;
+    trackerData.currentWeek.target = target;
+    
+    localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
+    
+    renderCurrentWeek();
+    updateTrackerStats();
+    
+    alert(`✓ Week configuration saved! You're on Week ${weekNumber} with a ${target}/5 target.`);
+}
+        
+function startNewWeek() {
+    if (!confirm('Are you sure you want to start a new week? This will move the current week to history.')) {
+        return;
+    }
+    
+    const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
+    
+    // Move current week to history
+    if (trackerData.currentWeek) {
+        if (!trackerData.weekHistory) trackerData.weekHistory = [];
+        trackerData.weekHistory.push(trackerData.currentWeek);
+    }
+    
+    // Get current week number and increment
+    const currentWeekNumber = trackerData.currentWeek?.weekNumber || 1;
+    const nextWeekNumber = Math.min(currentWeekNumber + 1, 8); // Cap at week 8
+    
+    // Determine next target based on 8-week progression
+    let nextTarget = 3;
+    if (nextWeekNumber >= 1 && nextWeekNumber <= 2) nextTarget = 3;
+    if (nextWeekNumber >= 3 && nextWeekNumber <= 6) nextTarget = 4;
+    if (nextWeekNumber >= 7 && nextWeekNumber <= 8) nextTarget = 5;
+    
+    // Create new week
+    trackerData.currentWeek = {
+        weekNumber: nextWeekNumber,
+        weekOf: getCurrentWeekString(),
+        target: nextTarget,
+        days: { mon: false, tue: false, wed: false, thu: false, fri: false },
+        planningDone: false,
+        mondayAdjustment: ''
+    };
+    
+    localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
+    
+    // Reset UI
+    document.getElementById('mondayAdjustment').value = '';
+    document.getElementById('sundayPlanning').checked = false;
+    document.getElementById('planning-checkbox').classList.remove('checked');
+    document.getElementById('weekNumber').value = nextWeekNumber;
+    document.getElementById('weekTarget').value = nextTarget;
     
     renderCurrentWeek();
     updateTrackerStats();
     renderWeekHistory();
-}
-
-function getCurrentWeekString() {
-    const today = new Date();
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - today.getDay() + 1);
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
     
-    return `${monday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${sunday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+    alert(`New week started! You're now on Week ${nextWeekNumber} with a ${nextTarget}/5 target.`);
 }
-
+        
 function renderCurrentWeek() {
     const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
     const week = trackerData.currentWeek || { days: {}, target: 3, weekOf: 'Current Week' };
@@ -2349,11 +2633,11 @@ function renderCurrentWeek() {
         
         if (week.days[day]) {
             dayBox.classList.add('completed');
-            dayCheck.textContent = 'âœ“';
+            dayCheck.textContent = '✓';
             completed++;
         } else {
             dayBox.classList.remove('completed');
-            dayCheck.textContent = '☐';
+            dayCheck.textContent = '☐';
         }
     });
     
@@ -2419,7 +2703,7 @@ function savePlanning() {
     
     localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
     
-    alert('Planning notes saved! âœ“');
+    alert('Planning notes saved! ✓');
 }
 
 function updateTrackerStats() {
@@ -2442,11 +2726,11 @@ function updateTrackerStats() {
             
             let trendHTML = '';
             if (lastWeek > prevWeek) {
-                trendHTML = '<span class="trend-indicator trend-up">â†‘</span> Improving';
+                trendHTML = '<span class="trend-indicator trend-up">↑</span> Improving';
             } else if (lastWeek === prevWeek) {
-                trendHTML = '<span class="trend-indicator trend-stable">â†’</span> Stable';
+                trendHTML = '<span class="trend-indicator trend-stable">→</span> Stable';
             } else {
-                trendHTML = '<span class="trend-indicator trend-down">â†“</span> Declining';
+                trendHTML = '<span class="trend-indicator trend-down">↓</span> Declining';
             }
             document.getElementById('trendIndicator').innerHTML = trendHTML;
         }
@@ -2498,10 +2782,10 @@ function renderWeekHistory() {
                 </div>
                 <div class="mini-day-grid">
                     ${days.map(day => `
-                        <div class="mini-day ${week.days[day] ? 'completed' : ''}">${week.days[day] ? 'âœ“' : 'â—‹'}</div>
+                        <div class="mini-day ${week.days[day] ? 'completed' : ''}">${week.days[day] ? '✓' : '○'}</div>
                     `).join('')}
                 </div>
-                ${week.planningDone ? '<div style="margin-top: 8px; font-size: 0.85em; color: #27ae60;">âœ“ Planning completed</div>' : ''}
+                ${week.planningDone ? '<div style="margin-top: 8px; font-size: 0.85em; color: #27ae60;">✓ Planning completed</div>' : ''}
             </div>
         `;
     }).join('');
@@ -2563,7 +2847,7 @@ ${trackerData.weekHistory.map((week, index) => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
     const dayStatus = days.map((day, i) => {
         const dayKey = day.toLowerCase().substring(0, 3);
-        return `${day}: ${week.days[dayKey] ? 'âœ“' : 'â—‹'}`;
+        return `${day}: ${week.days[dayKey] ? '✓' : '○'}`;
     }).join(' | ');
     
     return `Week ${index + 1}: ${week.weekOf}
@@ -2582,7 +2866,7 @@ Target: ${trackerData.currentWeek.target}/5
 Score: ${Object.values(trackerData.currentWeek.days).filter(d => d).length}/${trackerData.currentWeek.target}
 Days: ${['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((day, i) => {
     const dayKey = day.toLowerCase().substring(0, 3);
-    return `${day}: ${trackerData.currentWeek.days[dayKey] ? 'âœ“' : 'â—‹'}`;
+    return `${day}: ${trackerData.currentWeek.days[dayKey] ? '✓' : '○'}`;
 }).join(' | ')}
 Planning: ${trackerData.currentWeek.planningDone ? 'Completed' : 'Not completed'}
 ${trackerData.currentWeek.mondayAdjustment ? `Monday Adjustment: ${trackerData.currentWeek.mondayAdjustment}` : ''}
@@ -2605,7 +2889,342 @@ Last 4 Weeks Average: ${Math.round((trackerData.weekHistory.slice(-4).reduce((su
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    function getCurrentWeekString() {
+    const today = new Date();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - today.getDay() + 1);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    
+    const formatDate = (date) => {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${months[date.getMonth()]} ${date.getDate()}`;
+    };
+    
+    return `${formatDate(monday)}-${formatDate(sunday)}`;
 }
+
+function initializeTracker() {
+    const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
+    
+    if (!trackerData.currentWeek) {
+        trackerData.currentWeek = {
+            weekNumber: 1,
+            weekOf: getCurrentWeekString(),
+            target: 3,
+            days: { mon: false, tue: false, wed: false, thu: false, fri: false },
+            planningDone: false,
+            mondayAdjustment: ''
+        };
+        trackerData.weekHistory = [];
+        localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
+    }
+    
+    // Set the week configuration dropdowns
+    document.getElementById('weekNumber').value = trackerData.currentWeek.weekNumber || 1;
+    document.getElementById('weekTarget').value = trackerData.currentWeek.target || 3;
+    
+    renderCurrentWeek();
+    updateTrackerStats();
+    renderWeekHistory();
+
+}
+        // TIER TRACKING FUNCTIONS
+function calculateLessonTier(lesson) {
+    const now = new Date();
+    const lastPracticed = lesson.lastPracticed ? new Date(lesson.lastPracticed) : new Date(lesson.dateAdded);
+    const daysSince = Math.floor((now - lastPracticed) / (1000 * 60 * 60 * 24));
+    
+    if (daysSince <= 7) return 1;
+    if (daysSince <= 21) return 2;
+    return 3;
+}
+
+function updateTierDashboard() {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    
+    const tierCounts = { 1: 0, 2: 0, 3: 0 };
+    lessons.forEach(lesson => {
+        const tier = calculateLessonTier(lesson);
+        tierCounts[tier]++;
+    });
+    
+    document.getElementById('tier1Count').textContent = tierCounts[1];
+    document.getElementById('tier2Count').textContent = tierCounts[2];
+    document.getElementById('tier3Count').textContent = tierCounts[3];
+    
+    // Daily suggestion
+    const suggestion = `Practice ${Math.min(2, tierCounts[1])} Tier 1, ${Math.min(3, tierCounts[2])} Tier 2, ${Math.min(1, tierCounts[3])} Tier 3 lessons`;
+    document.getElementById('dailySuggestion').textContent = suggestion;
+}
+
+function generateTierPractice() {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const activeTier = document.querySelector('.tier-filter.active').dataset.tier;
+    
+    let filteredLessons = lessons;
+    if (activeTier !== 'all') {
+        const tierNum = parseInt(activeTier);
+        filteredLessons = lessons.filter(lesson => calculateLessonTier(lesson) === tierNum);
+    }
+    
+    if (filteredLessons.length === 0) {
+        document.getElementById('tierPractice').innerHTML = '<p style="color: #7f8c8d;">No lessons in this tier.</p>';
+        return;
+    }
+    
+    const count = Math.min(5, filteredLessons.length);
+    const shuffled = [...filteredLessons].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, count);
+    
+    const html = `
+        <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db;">
+            <h4 style="color: #2c3e50; margin-bottom: 15px;">Practice Questions:</h4>
+            ${selected.map((lesson, index) => {
+                const tier = calculateLessonTier(lesson);
+                const tierColors = { 1: '#3498db', 2: '#f39c12', 3: '#9b59b6' };
+                return `
+                    <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <div style="font-weight: 600; color: ${tierColors[tier]};">Lesson ${index + 1}: ${escapeHtml(lesson.title)}</div>
+                            <span class="tier-badge tier-${tier}">Tier ${tier}</span>
+                        </div>
+                        <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} • Week ${lesson.week}</div>
+                        <ul style="list-style: none; padding: 0; margin: 10px 0;">
+                            <li style="margin: 8px 0;">❓ What is this concept?</li>
+                            <li style="margin: 8px 0;">❓ Why does it matter?</li>
+                            <li style="margin: 8px 0;">❓ When would I use this?</li>
+                        </ul>
+                        <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">Check Answer</button>
+                        <button class="btn btn-small btn-primary" onclick="markAsPracticed('${lesson.id}')" style="margin-top: 10px;">Mark as Practiced</button>
+                        <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
+                            ${lesson.quickRef ? `<strong>Quick Reference:</strong> ${escapeHtml(lesson.quickRef)}<br><br>` : ''}
+                            <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+    
+    document.getElementById('tierPractice').innerHTML = html;
+}
+
+function markAsPracticed(lessonId) {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const lesson = lessons.find(l => l.id === lessonId);
+    
+    if (lesson) {
+        lesson.lastPracticed = new Date().toISOString();
+        lesson.timesReviewed = (lesson.timesReviewed || 0) + 1;
+        localStorage.setItem('mba_lessons', JSON.stringify(lessons));
+        
+        alert('✓ Marked as practiced! This lesson will move through the spacing tiers.');
+        updateTierDashboard();
+        generateTierPractice();
+    }
+}
+
+// Add tier filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.tier-filter').forEach(filter => {
+        filter.addEventListener('click', function() {
+            document.querySelectorAll('.tier-filter').forEach(f => f.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+});
+        // Chunkmap Functions
+function uploadChunkmap(input) {
+    const file = input.files[0];
+    if (!file) return;
+     
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        // Store image data temporarily
+        window.tempChunkmapData = e.target.result;
+        
+        // Show preview
+        const preview = document.createElement('img');
+        preview.src = e.target.result;
+        preview.style.maxWidth = '300px';
+        preview.style.marginTop = '10px';
+        preview.style.border = '2px solid #3498db';
+        preview.style.borderRadius = '8px';
+        
+        // Remove existing preview
+        const existingPreview = input.parentNode.querySelector('img');
+        if (existingPreview) existingPreview.remove();
+        
+        input.parentNode.appendChild(preview);
+    };
+    reader.readAsDataURL(file);
+}
+
+function saveChunkmap() {
+    const title = document.getElementById('chunkmapTitle').value.trim();
+    const notes = document.getElementById('chunkmapNotes').value.trim();
+    
+    if (!title || !window.tempChunkmapData) {
+        alert('Please provide a title and upload an image.');
+        return;
+    }
+    
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    const newMap = {
+        id: 'CM' + String(chunkmaps.length + 1).padStart(3, '0'),
+        title: title,
+        notes: notes,
+        imageData: window.tempChunkmapData,
+        dateCreated: new Date().toISOString()
+    };
+    
+    chunkmaps.push(newMap);
+    localStorage.setItem('chunkmaps', JSON.stringify(chunkmaps));
+    
+    // Clear form
+    document.getElementById('chunkmapTitle').value = '';
+    document.getElementById('chunkmapNotes').value = '';
+    document.getElementById('chunkmapUpload').value = '';
+    window.tempChunkmapData = null;
+    
+    // Remove preview
+    const preview = document.querySelector('#chunkmaps img');
+    if (preview) preview.remove();
+    
+    renderChunkmapGallery();
+    alert('Chunkmap saved successfully!');
+}
+
+function renderChunkmapGallery() {
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    const gallery = document.getElementById('chunkmapList');
+    
+    if (chunkmaps.length === 0) {
+        gallery.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 20px;">No chunkmaps uploaded yet. Create your first one!</p>';
+        return;
+    }
+    
+    gallery.innerHTML = chunkmaps.map(map => `
+        <div style="background: white; border: 2px solid #e1e8ed; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                <div>
+                    <h4 style="color: #2c3e50; margin-bottom: 5px;">${escapeHtml(map.title)}</h4>
+                    <div style="color: #7f8c8d; font-size: 0.9em;">${new Date(map.dateCreated).toLocaleDateString()}</div>
+                </div>
+                <button class="btn btn-small btn-delete" onclick="deleteChunkmap('${map.id}')">Delete</button>
+            </div>
+            <img src="${map.imageData}" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; cursor: pointer;" onclick="viewChunkmapFullSize('${map.id}')">
+            ${map.notes ? `<div style="color: #2c3e50; line-height: 1.6;"><strong>Key Relationships:</strong><br>${escapeHtml(map.notes)}</div>` : ''}
+        </div>
+    `).join('');
+}
+
+function generateConnectionMatrix() {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    
+    if (lessons.length < 2) {
+        document.getElementById('connectionMatrix').innerHTML = '<p style="color: #7f8c8d;">Need at least 2 lessons to generate connections.</p>';
+        return;
+        }
+    
+    // Group lessons by course
+    const courseGroups = {};
+    lessons.forEach(lesson => {
+        if (!courseGroups[lesson.course]) {
+            courseGroups[lesson.course] = [];
+        }
+        courseGroups[lesson.course].push(lesson);
+    });
+    
+    const courses = Object.keys(courseGroups);
+    
+    if (courses.length < 2) {
+        document.getElementById('connectionMatrix').innerHTML = '<p style="color: #7f8c8d;">Need lessons from at least 2 different courses for cross-course connections.</p>';
+        return;
+    }
+    
+    // Generate connection prompts
+    let html = '<div style="background: white; padding: 25px; border-radius: 8px; border: 2px solid #3498db;">';
+    html += '<h4 style="color: #2c3e50; margin-bottom: 20px;">Cross-Course Connection Opportunities</h4>';
+    
+    // Generate 5 random cross-course connections
+    for (let i = 0; i < 5; i++) {
+        const course1 = courses[Math.floor(Math.random() * courses.length)];
+        let course2 = courses[Math.floor(Math.random() * courses.length)];
+        
+        // Ensure different courses
+        while (course2 === course1 && courses.length > 1) {
+            course2 = courses[Math.floor(Math.random() * courses.length)];
+        }
+        
+        const lesson1 = courseGroups[course1][Math.floor(Math.random() * courseGroups[course1].length)];
+        const lesson2 = courseGroups[course2][Math.floor(Math.random() * courseGroups[course2].length)];
+        
+        html += `
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #3498db;">
+                <div style="font-weight: 600; color: #3498db; margin-bottom: 10px;">Connection ${i + 1}</div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Concept A:</strong> ${escapeHtml(lesson1.title)}<br>
+                    <span style="color: #7f8c8d; font-size: 0.9em;">${lesson1.course} • Week ${lesson1.week}</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <strong>Concept B:</strong> ${escapeHtml(lesson2.title)}<br>
+                    <span style="color: #7f8c8d; font-size: 0.9em;">${lesson2.course} • Week ${lesson2.week}</span>
+                </div>
+                <div style="background: #fff3cd; padding: 10px; border-radius: 6px; margin-top: 10px;">
+                    <strong style="color: #856404;">Reflection Questions:</strong>
+                    <ul style="margin: 5px 0 0 20px; color: #856404;">
+                        <li>How do these concepts relate to each other?</li>
+                        <li>What underlying principle do they share?</li>
+                        <li>When would you use both together?</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += '</div>';
+    document.getElementById('connectionMatrix').innerHTML = html;
+}
+
+function deleteChunkmap(mapId) {
+    if (!confirm('Delete this chunkmap?')) return;
+    
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    const filtered = chunkmaps.filter(map => map.id !== mapId);
+    localStorage.setItem('chunkmaps', JSON.stringify(filtered));
+    renderChunkmapGallery();
+}
+
+function viewChunkmapFullSize(mapId) {
+    const chunkmaps = JSON.parse(localStorage.getItem('chunkmaps') || '[]');
+    const map = chunkmaps.find(m => m.id === mapId);
+    
+    if (!map) return;
+    
+    const modal = document.getElementById('lessonModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    
+    modalTitle.textContent = map.title;
+    modalBody.innerHTML = `
+        <img src="${map.imageData}" style="width: 100%; height: auto; border-radius: 8px;">
+        ${map.notes ? `<div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;"><strong>Key Relationships:</strong><br>${escapeHtml(map.notes)}</div>` : ''}
+    `;
+    
+    modal.style.display = 'block';
+}
+
+// Initialize chunkmap gallery when tab is opened
+document.addEventListener('DOMContentLoaded', function() {
+    const chunkmapTab = document.querySelector('[data-tab="chunkmaps"]');
+    if (chunkmapTab) {
+        chunkmapTab.addEventListener('click', function() {
+            renderChunkmapGallery();
+        });
+    }
+});
     </script>
 </body>
 </html>
