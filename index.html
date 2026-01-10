@@ -1468,11 +1468,32 @@
                         <label for="limitations">Limitation Notes</label>
                         <textarea id="limitations" placeholder="When NOT to use; documented failure patterns..."></textarea>
                     </div>
-
                     <div class="form-group">
                         <label for="crossCourse">Cross-Course Connections</label>
                         <textarea id="crossCourse" placeholder="How this relates to other MBA concepts..."></textarea>
                     </div>
+                    <div class="form-section">
+    <h3>PKA Decision Support Fields</h3>
+    
+    <div class="form-group">
+        <label for="decisionCriteria">Decision Criteria</label>
+        <textarea id="decisionCriteria" placeholder="USE WHEN: [conditions] | AVOID WHEN: [conditions]"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="failurePatterns">Failure Patterns</label>
+        <textarea id="failurePatterns" placeholder="Documented ways this framework typically fails (2-3 patterns)..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="implementationRisk">Implementation Risk</label>
+        <textarea id="implementationRisk" placeholder="What to watch for during application; warning signs..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="clientScenariosFull">Client Scenarios (Structured)</label>
+        <textarea id="clientScenariosFull" placeholder="SITUATION: [context] → FRAMEWORK APPLIED: [how] → EXPECTED OUTCOME: [success] → WATCH FOR: [warnings]"></textarea>
+    </div>
                 </div>
 
                 <div class="submit-section">
@@ -1738,6 +1759,7 @@ if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
                             <div class="lesson-meta">
     ${lesson.course} • Week ${lesson.week}
     <span class="tier-badge tier-${calculateLessonTier(lesson)}">Tier ${calculateLessonTier(lesson)}</span>
+    ${calculatePKACompleteness(lesson) === 100 ? '<span class="tier-badge" style="background: #27ae60;">PKA ✓</span>' : '<span class="tier-badge" style="background: #e74c3c;">PKA ' + calculatePKACompleteness(lesson) + '%</span>'}
 </div>
                         </div>
                         <div class="lesson-rating">
@@ -1821,7 +1843,48 @@ if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
                     <div class="detail-label">Cross-Course Connections</div>
                     <div class="detail-content">${escapeHtml(lesson.crossCourse)}</div>
                 </div>` : ''}
-                
+                ${lesson.crossCourse ? `
+<div class="detail-section">
+    <div class="detail-label">Cross-Course Connections</div>
+    <div class="detail-content">${escapeHtml(lesson.crossCourse)}</div>
+</div>` : ''}
+
+${lesson.decisionCriteria ? `
+<div class="detail-section">
+    <div class="detail-label">Decision Criteria</div>
+    <div class="detail-content">${escapeHtml(lesson.decisionCriteria)}</div>
+</div>` : ''}
+
+${lesson.failurePatterns ? `
+<div class="detail-section">
+    <div class="detail-label">Failure Patterns</div>
+    <div class="detail-content">${escapeHtml(lesson.failurePatterns)}</div>
+</div>` : ''}
+
+${lesson.implementationRisk ? `
+<div class="detail-section">
+    <div class="detail-label">Implementation Risk</div>
+    <div class="detail-content">${escapeHtml(lesson.implementationRisk)}</div>
+</div>` : ''}
+
+${lesson.clientScenariosFull ? `
+<div class="detail-section">
+    <div class="detail-label">Client Scenarios (Structured)</div>
+    <div class="detail-content">${escapeHtml(lesson.clientScenariosFull)}</div>
+</div>` : ''}
+
+${lesson.confidenceRating ? `
+<div class="detail-section">
+    <div class="detail-label">Confidence Rating</div>
+    <div class="detail-content">${lesson.confidenceRating}/10 | Practiced: ${lesson.timesReviewed || 0} times</div>
+</div>` : ''}
+
+${lesson.applicationEvidence ? `
+<div class="detail-section">
+    <div class="detail-label">Application Evidence</div>
+    <div class="detail-content">${escapeHtml(lesson.applicationEvidence)}</div>
+</div>` : ''}
+
                 ${lesson.sourceLinks ? `
                 <div class="detail-section">
                     <div class="detail-label">Source Links</div>
@@ -1961,20 +2024,26 @@ if (ratingFilter) ratingFilter.addEventListener('change', filterLessons);
             };
 
             return {
-                course: courseCode,
-                courseName: courseNames[courseCode] || courseCode,
-                week: parseInt(document.getElementById('week').value),
-                title: document.getElementById('title').value,
-                claudeSummary: document.getElementById('claudeSummary').value,
-                keyInsights: document.getElementById('keyInsights').value,
-                sourceLinks: document.getElementById('sourceLinks').value,
-                tags: tags,
-                rating: parseInt(rating),
-                quickRef: document.getElementById('quickRef').value,
-                clientScenarios: document.getElementById('clientScenarios').value,
-                limitations: document.getElementById('limitations').value,
-                crossCourse: document.getElementById('crossCourse').value
-            };
+    course: courseCode,
+    courseName: courseNames[courseCode] || courseCode,
+    week: parseInt(document.getElementById('week').value),
+    title: document.getElementById('title').value,
+    claudeSummary: document.getElementById('claudeSummary').value,
+    keyInsights: document.getElementById('keyInsights').value,
+    sourceLinks: document.getElementById('sourceLinks').value,
+    tags: tags,
+    rating: parseInt(rating),
+    quickRef: document.getElementById('quickRef').value,
+    clientScenarios: document.getElementById('clientScenarios').value,
+    limitations: document.getElementById('limitations').value,
+    crossCourse: document.getElementById('crossCourse').value,
+    decisionCriteria: document.getElementById('decisionCriteria').value,
+    failurePatterns: document.getElementById('failurePatterns').value,
+    implementationRisk: document.getElementById('implementationRisk').value,
+    clientScenariosFull: document.getElementById('clientScenariosFull').value,
+    confidenceRating: 5,
+    applicationEvidence: ''
+};
         }
 
         function validateForm(data) {
@@ -2931,6 +3000,24 @@ function initializeTracker() {
     renderWeekHistory();
 }
         // TIER TRACKING FUNCTIONS
+        function calculatePKACompleteness(lesson) {
+    const pkaFields = [
+        'decisionCriteria',
+        'failurePatterns',
+        'implementationRisk',
+        'clientScenariosFull',
+        'crossCourse'
+    ];
+    
+    let completed = 0;
+    pkaFields.forEach(field => {
+        if (lesson[field] && lesson[field].trim().length > 0) {
+            completed++;
+        }
+    });
+    
+    return Math.round((completed / pkaFields.length) * 100);
+}
 function calculateLessonTier(lesson) {
     const now = new Date();
     const lastPracticed = lesson.lastPracticed ? new Date(lesson.lastPracticed) : new Date(lesson.dateAdded);
