@@ -2240,12 +2240,14 @@ ${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
             reader.onload = function(e) {
                 try {
                     const data = JSON.parse(e.target.result);
-                    if (Array.isArray(data)) {
-                        localStorage.setItem('mba_lessons', JSON.stringify(data));
-                        updateDashboard();
-                        renderSearchResults();
-                        alert('Data imported successfully! ' + data.length + ' lessons loaded.');
-                        input.value = '';
+if (Array.isArray(data)) {
+    const existingLessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const merged = [...existingLessons, ...data];
+    localStorage.setItem('mba_lessons', JSON.stringify(merged));
+    updateDashboard();
+    renderSearchResults();
+    alert('Data imported successfully! ' + data.length + ' new lessons added. Total: ' + merged.length + ' lessons.');
+    input.value = '';
                     } else {
                         alert('Invalid data format. Please select a valid JSON backup file.');
                     }
@@ -2267,12 +2269,14 @@ ${lesson.clientScenarios ? `Use when: ${lesson.clientScenarios}` : ''}
             
             try {
                 const data = JSON.parse(jsonText);
-                if (Array.isArray(data)) {
-                    localStorage.setItem('mba_lessons', JSON.stringify(data));
-                    updateDashboard();
-                    renderSearchResults();
-                    alert('Data imported successfully! ' + data.length + ' lessons loaded.');
-                    pasteArea.value = '';
+               if (Array.isArray(data)) {
+    const existingLessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const merged = [...existingLessons, ...data];
+    localStorage.setItem('mba_lessons', JSON.stringify(merged));
+    updateDashboard();
+    renderSearchResults();
+    alert('Data imported successfully! ' + data.length + ' new lessons added. Total: ' + merged.length + ' lessons.');
+    pasteArea.value = '';
                 } else {
                     alert('Invalid data format. Please paste valid JSON backup data.');
                 }
