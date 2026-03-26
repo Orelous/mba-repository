@@ -1201,9 +1201,9 @@
 
       <div class="tab-content" id="practice">
     <div style="max-width: 900px; margin: 0 auto;">
-        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-            <h3 style="color: #856404; margin-bottom: 10px;">Retrieval Practice Mode</h3>
-            <p style="color: #856404; margin: 0;">This is for testing your memory, not reviewing content. Close your notes and try to recall from memory. Struggle before checking answers.</p>
+        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 22px 28px; border-radius: 12px; margin-bottom: 28px;">
+            <h3 style="margin: 0 0 8px 0; font-size: 1.3em; font-weight: 600;">🧠 Spacing · Interleaving · Retrieval</h3>
+            <p style="margin: 0; opacity: 0.85; font-size: 0.95em;">This tab runs all three learning systems. <strong>Warm-Up</strong> primes recall. <strong>Tier Practice</strong> respects your spacing schedule. <strong>Interleaved Session</strong> forces cross-course context switching — the mechanism that builds durable knowledge.</p>
         </div>
 
         <!-- TIER DASHBOARD -->
@@ -1242,6 +1242,74 @@
             </div>
             <button class="btn btn-primary" onclick="generateTierPractice()" style="margin-bottom: 20px;">Generate Practice Questions</button>
             <div id="tierPractice"></div>
+        </div>
+
+        <!-- INTERLEAVED SESSION -->
+        <div class="form-section" style="border-left-color: #8e44ad; background: linear-gradient(135deg, #f9f5ff 0%, #f0e6ff 100%);">
+            <h3 style="color: #6c3483;">🔀 Interleaved Session</h3>
+            <p style="color: #7d3c98; font-size: 0.9em; margin-bottom: 16px;">
+                Pulls concepts from <strong>different courses</strong> in sequence — no two consecutive items from the same course. After revealing, Bridge Prompts surface your cross-course connections. Use "Ask AI to Bridge" for a live synthesis challenge.
+            </p>
+
+            <!-- How it works strip -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px;">
+                <div style="background: #ede9fe; border-radius: 8px; padding: 12px; border-left: 3px solid #8b5cf6;">
+                    <div style="font-size: 1.3em; margin-bottom: 4px;">🔀</div>
+                    <strong style="color: #4c1d95; font-size: 0.85em;">Course Mixing</strong>
+                    <p style="color: #6d28d9; font-size: 0.78em; margin: 4px 0 0 0;">No two consecutive items share a course. Forces context-switching.</p>
+                </div>
+                <div style="background: #dbeafe; border-radius: 8px; padding: 12px; border-left: 3px solid #3b82f6;">
+                    <div style="font-size: 1.3em; margin-bottom: 4px;">🔗</div>
+                    <strong style="color: #1e40af; font-size: 0.85em;">Bridge Prompts</strong>
+                    <p style="color: #1d4ed8; font-size: 0.78em; margin: 4px 0 0 0;">Your cross-course links surface as active connection challenges after each reveal.</p>
+                </div>
+                <div style="background: #d1fae5; border-radius: 8px; padding: 12px; border-left: 3px solid #10b981;">
+                    <div style="font-size: 1.3em; margin-bottom: 4px;">🤖</div>
+                    <strong style="color: #065f46; font-size: 0.85em;">AI Synthesis</strong>
+                    <p style="color: #047857; font-size: 0.78em; margin: 4px 0 0 0;">One click generates 2–3 live cross-course questions tailored to that exact entry.</p>
+                </div>
+            </div>
+
+            <!-- API Key section -->
+            <div id="ilApiKeySection" style="background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                <strong style="color: #92400e; font-size: 0.9em;">🔑 Anthropic API Key — required for "Ask AI to Bridge"</strong>
+                <p style="color: #78350f; font-size: 0.82em; margin: 6px 0 10px 0;">
+                    Stored only in your browser's localStorage. Get yours at <a href="https://console.anthropic.com" target="_blank" style="color: #7c3aed;">console.anthropic.com</a>.
+                </p>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="password" id="ilApiKeyInput" placeholder="sk-ant-api03-..." 
+                        style="flex: 1; min-width: 240px; padding: 9px 12px; border: 2px solid #fcd34d; border-radius: 8px; font-size: 0.9em; font-family: monospace;">
+                    <button class="btn btn-small btn-primary" onclick="ilSaveApiKey()" style="background: #f59e0b; border-color: #d97706; white-space: nowrap;">💾 Save Key</button>
+                    <button class="btn btn-small btn-secondary" onclick="ilClearApiKey()" style="white-space: nowrap;">🗑 Clear</button>
+                </div>
+                <div id="ilApiKeyStatus" style="margin-top: 8px; font-size: 0.82em; color: #64748b;"></div>
+            </div>
+
+            <!-- Session controls -->
+            <div style="display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 16px;">
+                <div>
+                    <label style="font-size: 0.82em; color: #64748b; display: block; margin-bottom: 4px;">Items per course</label>
+                    <select id="ilItemsPerCourse" style="padding: 8px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.92em;">
+                        <option value="1">1 per course</option>
+                        <option value="2" selected>2 per course</option>
+                        <option value="3">3 per course</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size: 0.82em; color: #64748b; display: block; margin-bottom: 4px;">Tier filter</label>
+                    <select id="ilTierFilter" style="padding: 8px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.92em;">
+                        <option value="all">All Tiers</option>
+                        <option value="1">Tier 1 Only</option>
+                        <option value="2">Tier 2 Only</option>
+                        <option value="3">Tier 3 Only</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="generateInterleavedSession()" 
+                style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); margin-bottom: 16px; font-size: 1em; padding: 12px 28px;">
+                🔀 Generate Interleaved Session
+            </button>
+            <div id="ilSession"></div>
         </div>
 
         <div class="form-section">
@@ -1638,6 +1706,7 @@
     renderSearchResults();
     initializeTracker();
     updateTierDashboard();
+    ilUpdateKeyStatus();
 }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -2358,14 +2427,15 @@ if (Array.isArray(data)) {
                             <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} • Week ${lesson.week}</div>
                             <ul style="list-style: none; padding: 0; margin: 10px 0;">
                                 <li style="margin: 8px 0;">❓ What is this concept?</li>
-                                <li style="margin: 8px 0;">❓ Why does it matter?</li>
-                                <li style="margin: 8px 0;">❓ When would I use this?</li>
+                                <li style="margin: 8px 0;">❓ What problem does this solve?</li>
+                                <li style="margin: 8px 0;">❓ When would I use this — and when should I avoid it?</li>
                             </ul>
                             <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">Struggle First, Then Check Answer</button>
                             <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
                                 ${lesson.quickRef ? `<strong>Quick Reference:</strong> ${escapeHtml(lesson.quickRef)}<br><br>` : ''}
+                                ${lesson.decisionCriteria ? `<div style="background: #e8f4fd; padding: 12px; border-radius: 6px; border-left: 3px solid #3498db; margin-bottom: 10px;"><strong style="color: #1a5276;">USE WHEN / AVOID WHEN:</strong><br>${escapeHtml(lesson.decisionCriteria)}</div>` : ''}
                                 <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}<br><br>
-                                ${lesson.clientScenarios ? `<strong>Client Scenarios:</strong><br>${escapeHtml(lesson.clientScenarios)}` : ''}
+                                ${lesson.failurePatterns ? `<div style="background: #fef2f2; padding: 10px; border-radius: 6px; border-left: 3px solid #e74c3c; margin-top: 8px;"><strong style="color: #922b21;">⚠ Failure Patterns:</strong><br>${escapeHtml(lesson.failurePatterns)}</div>` : ''}
                             </div>
                         </div>
                     `).join('')}
@@ -3084,14 +3154,16 @@ function generateTierPractice() {
                         <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} • Week ${lesson.week}</div>
                         <ul style="list-style: none; padding: 0; margin: 10px 0;">
                             <li style="margin: 8px 0;">❓ What is this concept?</li>
-                            <li style="margin: 8px 0;">❓ Why does it matter?</li>
-                            <li style="margin: 8px 0;">❓ When would I use this?</li>
+                            <li style="margin: 8px 0;">❓ What problem does this solve?</li>
+                            <li style="margin: 8px 0;">❓ When would I use this — and when should I avoid it?</li>
                         </ul>
                         <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">Check Answer</button>
                         <button class="btn btn-small btn-primary" onclick="markAsPracticed('${lesson.id}')" style="margin-top: 10px;">Mark as Practiced</button>
                         <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
                             ${lesson.quickRef ? `<strong>Quick Reference:</strong> ${escapeHtml(lesson.quickRef)}<br><br>` : ''}
+                            ${lesson.decisionCriteria ? `<div style="background: #e8f4fd; padding: 12px; border-radius: 6px; border-left: 3px solid #3498db; margin-bottom: 10px;"><strong style="color: #1a5276;">USE WHEN / AVOID WHEN:</strong><br>${escapeHtml(lesson.decisionCriteria)}</div>` : ''}
                             <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}
+                            ${lesson.failurePatterns ? `<div style="background: #fef2f2; padding: 10px; border-radius: 6px; border-left: 3px solid #e74c3c; margin-top: 10px;"><strong style="color: #922b21;">⚠ Failure Patterns:</strong><br>${escapeHtml(lesson.failurePatterns)}</div>` : ''}
                         </div>
                     </div>
                 `;
@@ -3317,6 +3389,309 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ==================== INTERLEAVED SESSION ====================
+
+const COURSE_LABELS = {
+    ACCEXEC:  { label: 'Accounting',     color: '#1e40af', bg: '#dbeafe', border: '#3b82f6' },
+    APPECO:   { label: 'Economics',      color: '#065f46', bg: '#d1fae5', border: '#10b981' },
+    SUPPLY:   { label: 'Supply Chain',   color: '#92400e', bg: '#fef3c7', border: '#f59e0b' },
+    ENTREP:   { label: 'Entrepreneurship', color: '#9d174d', bg: '#fce7f3', border: '#ec4899' },
+    FINMGT:   { label: 'Finance',        color: '#3730a3', bg: '#e0e7ff', border: '#6366f1' },
+    LEGAL:    { label: 'Legal & Ethics', color: '#7f1d1d', bg: '#fee2e2', border: '#ef4444' },
+    MGCONS:   { label: 'Mgmt Consulting',color: '#4c1d95', bg: '#ede9fe', border: '#8b5cf6' },
+    MGTSTAT:  { label: 'Statistics',     color: '#134e4a', bg: '#ccfbf1', border: '#14b8a6' },
+    TECHINN:  { label: 'Tech & Innovation', color: '#1e3a5f', bg: '#bfdbfe', border: '#2563eb' },
+    GLOBAL:   { label: 'Global Business',color: '#365314', bg: '#d9f99d', border: '#65a30d' },
+    MKTSTR:   { label: 'Marketing',      color: '#831843', bg: '#fce7f3', border: '#db2777' },
+    ORGLEAD:  { label: 'Org Leadership', color: '#1c1917', bg: '#f5f5f4', border: '#78716c' },
+    STRATCOM: { label: 'Strat Comm',     color: '#7c2d12', bg: '#fed7aa', border: '#ea580c' },
+    STRATCAP: { label: 'Capstone',       color: '#172554', bg: '#bfdbfe', border: '#1d4ed8' },
+};
+
+function getCourseStyle(course) {
+    return COURSE_LABELS[course] || { label: course, color: '#2c3e50', bg: '#f8f9fa', border: '#6c757d' };
+}
+
+function generateInterleavedSession() {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const container = document.getElementById('ilSession');
+
+    if (lessons.length < 3) {
+        container.innerHTML = `<div style="text-align:center;padding:40px;background:#f8f9fa;border-radius:12px;border:2px dashed #dee2e6;">
+            <div style="font-size:3em;margin-bottom:12px;">📚</div>
+            <p style="color:#6c757d;">You need at least 3 lessons from different courses to run an interleaved session.</p>
+        </div>`;
+        return;
+    }
+
+    const perCourse = parseInt(document.getElementById('ilItemsPerCourse').value);
+    const tierFilter = document.getElementById('ilTierFilter').value;
+
+    // Apply tier filter
+    let pool = lessons;
+    if (tierFilter !== 'all') {
+        const t = parseInt(tierFilter);
+        pool = lessons.filter(l => calculateLessonTier(l) === t);
+        if (pool.length < 2) {
+            container.innerHTML = `<div style="text-align:center;padding:30px;background:#f8f9fa;border-radius:12px;border:2px dashed #dee2e6;">
+                <p style="color:#6c757d;">Not enough lessons in Tier ${t}. Try "All Tiers" to pull from your full library.</p>
+            </div>`;
+            return;
+        }
+    }
+
+    // Group by course
+    const byCourse = {};
+    pool.forEach(l => {
+        if (!byCourse[l.course]) byCourse[l.course] = [];
+        byCourse[l.course].push(l);
+    });
+
+    const courseKeys = Object.keys(byCourse).filter(k => byCourse[k].length > 0);
+    if (courseKeys.length < 2) {
+        container.innerHTML = `<div style="text-align:center;padding:30px;background:#f8f9fa;border-radius:12px;border:2px dashed #dee2e6;">
+            <p style="color:#6c757d;">Need lessons from at least 2 different courses for interleaving.</p>
+        </div>`;
+        return;
+    }
+
+    // Shuffle within each course, take up to perCourse
+    courseKeys.forEach(c => {
+        byCourse[c] = [...byCourse[c]].sort(() => Math.random() - 0.5).slice(0, perCourse);
+    });
+
+    // Round-robin interleave across courses — guaranteed no two consecutive from same course
+    const interleaved = [];
+    const maxRounds = Math.max(...courseKeys.map(k => byCourse[k].length));
+    for (let r = 0; r < maxRounds; r++) {
+        // Shuffle course order each round to vary sequence
+        const roundCourses = [...courseKeys].sort(() => Math.random() - 0.5);
+        roundCourses.forEach(c => {
+            if (byCourse[c][r]) interleaved.push(byCourse[c][r]);
+        });
+    }
+
+    buildILSession(interleaved, container);
+}
+
+function buildILSession(items, container) {
+    const totalCourses = new Set(items.map(i => i.course)).size;
+
+    let html = `
+    <div style="background:#e0e7ff;padding:12px 18px;border-radius:8px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <strong style="color:#3730a3;">🔀 Interleaved Session</strong>
+        <span style="color:#4338ca;font-size:0.9em;">${items.length} concepts · ${totalCourses} courses · round-robin sequence</span>
+    </div>
+
+    <div style="background:#fff3cd;padding:14px 18px;border-radius:8px;margin-bottom:20px;border-left:4px solid #ffc107;">
+        <strong style="color:#856404;">How to use this session:</strong>
+        <ol style="color:#856404;margin:8px 0 0 18px;font-size:0.9em;line-height:1.8;">
+            <li>Recall the concept <strong>out loud</strong> before revealing. Struggle at least 10 seconds.</li>
+            <li>After revealing, read the Bridge Prompts and answer at least one <strong>out loud</strong> — state the connection, don't just recognize it.</li>
+            <li>Use "Ask AI to Bridge" for a deeper synthesis challenge on entries you want to push further.</li>
+        </ol>
+    </div>`;
+
+    items.forEach((lesson, idx) => {
+        const cs = getCourseStyle(lesson.course);
+        const tier = calculateLessonTier(lesson);
+        const tierColor = tier === 1 ? '#1e40af' : tier === 2 ? '#92400e' : '#6b21a8';
+        const tierBg    = tier === 1 ? '#dbeafe' : tier === 2 ? '#fef3c7' : '#ede9fe';
+
+        // Parse crossCourse into bridge prompts
+        const crossRaw = lesson.crossCourse || '';
+        const crossLinks = crossRaw ? crossRaw.split(/[,\n]/).map(s => s.trim()).filter(s => s.length > 0) : [];
+
+        const bridgePromptsHTML = crossLinks.length > 0 ? `
+        <div style="margin-top:16px;padding:14px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:6px;">
+            <strong style="color:#1e40af;">🔗 Bridge Prompts — connect this to:</strong>
+            <ul style="margin:10px 0 0 18px;color:#1d4ed8;font-size:0.88em;line-height:2;">
+                ${crossLinks.map(link => `<li>How does <strong>${escapeHtml(link)}</strong> relate to what you just recalled? What changes if you apply both together?</li>`).join('')}
+            </ul>
+        </div>` : '';
+
+        html += `
+        <div style="background:white;border:2px solid #e2e8f0;border-left:5px solid ${cs.border};border-radius:12px;padding:18px;margin-bottom:16px;" id="il-card-${idx}">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <span style="background:${cs.bg};color:${cs.color};padding:3px 10px;border-radius:6px;font-size:0.78em;font-weight:700;">${cs.label}</span>
+                    <span style="background:${tierBg};color:${tierColor};padding:3px 10px;border-radius:6px;font-size:0.78em;font-weight:700;">Tier ${tier}</span>
+                    <span style="background:#f1f5f9;color:#64748b;padding:3px 10px;border-radius:6px;font-size:0.75em;">Wk ${lesson.week}</span>
+                </div>
+                <span style="color:#94a3b8;font-size:0.82em;">${idx + 1} of ${items.length}</span>
+            </div>
+            <div style="font-weight:600;color:#1e293b;font-size:1.1em;margin-bottom:10px;">${escapeHtml(lesson.title)}</div>
+            <div style="color:#64748b;font-size:0.88em;margin-bottom:12px;">
+                <strong>Before revealing:</strong> State the concept · What problem it solves · USE WHEN / AVOID WHEN
+            </div>
+            <button class="btn btn-small btn-secondary" onclick="ilRevealCard(${idx})">👁 Reveal Answer</button>
+            <div id="il-reveal-${idx}" style="display:none;margin-top:14px;">
+                <div style="padding:14px;background:#f0fdf4;border-left:4px solid #27ae60;border-radius:6px;">
+                    ${lesson.quickRef ? `<strong>Quick Ref:</strong> ${escapeHtml(lesson.quickRef)}<br><br>` : ''}
+                    ${lesson.decisionCriteria ? `<div style="background:#e8f4fd;padding:12px;border-radius:5px;border-left:3px solid #3498db;margin-bottom:10px;"><strong style="color:#1a5276;">USE WHEN / AVOID WHEN:</strong><br>${escapeHtml(lesson.decisionCriteria)}</div>` : ''}
+                    <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}
+                </div>
+                ${lesson.failurePatterns ? `
+                <div style="margin-top:10px;padding:13px;background:#fef2f2;border-left:4px solid #e74c3c;border-radius:6px;">
+                    <strong style="color:#922b21;">⚠ Key Failure Patterns:</strong>
+                    <div style="color:#7f1d1d;margin-top:5px;">${escapeHtml(lesson.failurePatterns)}</div>
+                </div>` : ''}
+                ${bridgePromptsHTML}
+                <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                    <button class="btn btn-small btn-primary" onclick="markAsPracticed('${lesson.id}')">⏱ Mark Practiced</button>
+                    <button class="btn btn-small btn-secondary" onclick="ilAskAI('${lesson.id}', ${idx})" style="background:#f3e8ff;border-color:#8b5cf6;color:#6d28d9;">🤖 Ask AI to Bridge</button>
+                </div>
+                <div id="il-ai-${idx}" style="margin-top:12px;"></div>
+            </div>
+        </div>`;
+    });
+
+    html += `
+    <div style="text-align:center;padding:28px;background:linear-gradient(135deg,#ede9fe,#dbeafe);border-radius:12px;margin-top:8px;">
+        <div style="font-size:2.5em;margin-bottom:10px;">🎉</div>
+        <h4 style="color:#4c1d95;margin-bottom:8px;">Session Complete!</h4>
+        <p style="color:#6b21a8;font-size:0.9em;margin-bottom:16px;">Take 2 minutes: What connection surprised you? Which bridge was hardest to make?</p>
+        <button class="btn btn-primary" onclick="generateInterleavedSession()" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">🔀 New Interleaved Session</button>
+    </div>`;
+
+    container.innerHTML = html;
+}
+
+function ilRevealCard(idx) {
+    const card = document.getElementById(`il-card-${idx}`);
+    const btn = card ? card.querySelector('.btn-secondary') : null;
+    const reveal = document.getElementById(`il-reveal-${idx}`);
+    if (btn) btn.style.display = 'none';
+    if (reveal) reveal.style.display = 'block';
+}
+
+// ==================== API KEY MANAGEMENT ====================
+
+function ilSaveApiKey() {
+    const key = document.getElementById('ilApiKeyInput').value.trim();
+    if (!key.startsWith('sk-ant-')) {
+        document.getElementById('ilApiKeyStatus').innerHTML = '<span style="color:#dc2626;">⚠ Key should start with <code>sk-ant-</code> — please check and try again.</span>';
+        return;
+    }
+    localStorage.setItem('mba_anthropic_key', key);
+    document.getElementById('ilApiKeyInput').value = '';
+    ilUpdateKeyStatus();
+}
+
+function ilClearApiKey() {
+    localStorage.removeItem('mba_anthropic_key');
+    document.getElementById('ilApiKeyInput').value = '';
+    ilUpdateKeyStatus();
+}
+
+function ilUpdateKeyStatus() {
+    const key = localStorage.getItem('mba_anthropic_key');
+    const statusEl = document.getElementById('ilApiKeyStatus');
+    if (!statusEl) return;
+    if (key) {
+        const masked = key.substring(0, 14) + '••••••••••••' + key.slice(-4);
+        statusEl.innerHTML = `<span style="color:#059669;">✅ Key saved: <code>${masked}</code> — "Ask AI to Bridge" is ready.</span>`;
+    } else {
+        statusEl.innerHTML = '<span style="color:#dc2626;">⚠ No key saved — "Ask AI to Bridge" will not work until you add one.</span>';
+    }
+}
+
+// ==================== AI BRIDGE ====================
+
+async function ilAskAI(lessonId, idx) {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const lesson = lessons.find(l => l.id === lessonId);
+    if (!lesson) return;
+
+    const apiKey = localStorage.getItem('mba_anthropic_key');
+    const aiDiv = document.getElementById(`il-ai-${idx}`);
+
+    if (!apiKey) {
+        aiDiv.innerHTML = `<div style="padding:14px;background:#fff3cd;border-left:4px solid #ffc107;border-radius:8px;color:#856404;">
+            <strong>🔑 API key required.</strong> Scroll up and enter your Anthropic API key in the yellow box above to enable this feature.
+        </div>`;
+        return;
+    }
+
+    aiDiv.innerHTML = `<div style="padding:14px;background:#f3e8ff;border-radius:8px;text-align:center;color:#6d28d9;">
+        <span style="font-size:1.2em;">🤖</span> Generating cross-course synthesis questions...
+    </div>`;
+
+    const crossRaw = lesson.crossCourse || '';
+    const prompt = `You are an MBA consulting educator helping a student build integrated business knowledge.
+
+The student just reviewed this repository entry:
+
+ENTRY: "${lesson.title}" (${lesson.course}, Week ${lesson.week})
+SUMMARY: ${lesson.claudeSummary}
+KEY INSIGHTS: ${lesson.keyInsights || 'N/A'}
+CROSS-COURSE CONNECTIONS: ${crossRaw || 'None listed'}
+DECISION CRITERIA: ${lesson.decisionCriteria || 'N/A'}
+
+Generate exactly 3 high-quality interleaving synthesis questions. Each question must:
+1. Force the student to connect THIS entry to a DIFFERENT course or the crossCourse links listed above
+2. Be framed as a realistic consulting or business decision scenario
+3. Require integration of TWO distinct concepts — not just recall of one
+4. Be answerable in 2-3 sentences if the student truly understands both concepts
+
+Respond ONLY with valid JSON (no markdown, no preamble):
+{
+  "questions": [
+    {"q": "...", "hint": "Connect: [concept A] + [concept B]"},
+    {"q": "...", "hint": "Connect: [concept A] + [concept B]"},
+    {"q": "...", "hint": "Connect: [concept A] + [concept B]"}
+  ]
+}`;
+
+    try {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': apiKey,
+                'anthropic-version': '2023-06-01',
+                'anthropic-dangerous-direct-browser-access': 'true'
+            },
+            body: JSON.stringify({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 1000,
+                messages: [{ role: 'user', content: prompt }]
+            })
+        });
+
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(`API error ${response.status}: ${errData.error?.message || response.statusText}`);
+        }
+
+        const data = await response.json();
+        const text = data.content?.map(c => c.text || '').join('') || '';
+        const clean = text.replace(/```json|```/g, '').trim();
+        const parsed = JSON.parse(clean);
+
+        let qHTML = `<div style="background:#f3e8ff;border-left:4px solid #8b5cf6;border-radius:8px;padding:16px;margin-top:4px;">
+            <strong style="color:#4c1d95;display:block;margin-bottom:12px;">🤖 AI Bridge Questions — answer at least one out loud:</strong>`;
+        parsed.questions.forEach((item, i) => {
+            qHTML += `
+            <div style="background:white;border-radius:8px;padding:14px;margin-bottom:10px;border:1px solid #ddd6fe;">
+                <p style="color:#1e1b4b;font-weight:600;margin:0 0 8px 0;">${i + 1}. ${escapeHtml(item.q)}</p>
+                <p style="color:#7c3aed;font-size:0.84em;margin:0;font-style:italic;">💡 ${escapeHtml(item.hint)}</p>
+            </div>`;
+        });
+        qHTML += '</div>';
+        aiDiv.innerHTML = qHTML;
+
+    } catch (err) {
+        let helpText = err.message;
+        if (err.message.includes('401')) helpText = 'Invalid API key. Please check your key and save it again.';
+        else if (err.message.includes('fetch')) helpText = 'Network error. Check your internet connection.';
+        aiDiv.innerHTML = `<div style="padding:14px;background:#fee2e2;border-left:4px solid #ef4444;border-radius:8px;color:#991b1b;">
+            <strong>⚠ Could not generate questions.</strong><br>
+            <small style="font-family:monospace;">${escapeHtml(helpText)}</small>
+        </div>`;
+    }
+}
     </script>
 </body>
 </html>
