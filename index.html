@@ -4113,9 +4113,17 @@ function generateTierPractice() {
     ` : '';
 
     const html = `
-        <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid ${cfg.borderColor};">
+        <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid ${cfg.borderColor};" data-session-total="${selected.length}">
             <h4 style="color: #2c3e50; margin-bottom: 4px;">${cfg.icon} ${cfg.name} Session — ${selected.length} lesson${selected.length !== 1 ? 's' : ''}</h4>
-            <p style="color: #64748b; font-size: 0.82em; margin-bottom: 16px;">${cfg.statusText}</p>
+            <p style="color: #64748b; font-size: 0.82em; margin-bottom: 10px;">${cfg.statusText}</p>
+            <div id="sessionProgress" style="background: #f1f5f9; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 0.88em; font-weight: 600; color: #475569; display: flex; justify-content: space-between; align-items: center;">
+                <span><span id="sessionProgressCount">0</span> of ${selected.length} rated</span>
+                <span id="sessionProgressBar" style="flex: 1; max-width: 200px; height: 6px; background: #e2e8f0; border-radius: 3px; margin-left: 14px; overflow: hidden;"><span id="sessionProgressFill" style="display: block; height: 100%; width: 0%; background: ${cfg.borderColor}; transition: width 0.3s ease;"></span></span>
+            </div>
+            <div id="sessionCompleteBanner" style="display: none; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-left: 4px solid #10b981; padding: 14px 18px; border-radius: 8px; margin-bottom: 16px;">
+                <strong style="color: #065f46; font-size: 1.05em;">🎉 Session complete</strong>
+                <div style="font-size: 0.88em; color: #047857; margin-top: 4px;">All ${selected.length} lessons rated. Click <strong>Generate Practice Questions</strong> above for a new session, or jump to the next session type on the Plan tab.</div>
+            </div>
             ${fallbackBanner}
             ${selected.map((lesson, index) => renderPracticeCard(lesson, index, activeTTTMode)).join('')}
         </div>
@@ -4175,7 +4183,7 @@ function renderPracticeCard(lesson, index, mode) {
     `;
 
     return `
-        <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+        <div id="practice-card-${lesson.id}" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
                 <div style="font-weight: 600; color: ${tierColors[tier]};">Lesson ${index + 1}: ${escapeHtml(lesson.title)}</div>
                 <span class="tier-badge tier-${tier}">Tier ${tier}</span>
@@ -4193,7 +4201,7 @@ function renderPracticeCard(lesson, index, mode) {
                 ${lesson.clientScenarios && !isTeach ? `<div style="background: #faf5ff; padding: 10px; border-radius: 6px; border-left: 3px solid #8b5cf6; margin-top: 10px;"><strong style="color: #6b21a8;">💼 Client Scenarios:</strong><br>${escapeHtml(lesson.clientScenarios)}</div>` : ''}
 
                 <!-- 5-BUTTON RATING -->
-                <div class="rating-section">
+                <div class="rating-section" id="rating-section-${lesson.id}">
                     <div class="rating-prompt">Rate your retrieval honestly — Target mode depends on this</div>
                     <div class="rating-buttons">
                         <button class="rating-btn rating-btn-1" onclick="ratePracticed('${lesson.id}', 1)">1<span class="rating-btn-label">Forgot</span></button>
@@ -4208,7 +4216,8 @@ function renderPracticeCard(lesson, index, mode) {
     `;
 }
 
-// New rating function — replaces markAsPracticed in the TTT flow but stays compatible
+// New rating function — logs the rating, collapses THIS card's rating section,
+// updates progress, scrolls to next unrated card. Does NOT regenerate the queue.
 function ratePracticed(lessonId, rating) {
     const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
     const lesson = lessons.find(l => l.id === lessonId);
@@ -4226,8 +4235,82 @@ function ratePracticed(lessonId, rating) {
 
     localStorage.setItem('mba_lessons', JSON.stringify(lessons));
 
-    updateTierDashboard();
-    generateTierPractice();
+    // Replace THIS card's rating section in place — no queue regenerate
+    const ratingSection = document.getElementById(`rating-section-${lessonId}`);
+    if (ratingSection) {
+        const ratingLabels = ['', 'Forgot', 'Hard', 'OK', 'Good', 'Perfect'];
+        const ratingColors = ['', '#dc2626', '#ea580c', '#ca8a04', '#65a30d', '#059669'];
+        const ratingIcons = ['', '⚠️', '⚠️', '👍', '✓', '🎯'];
+        const masteryArrow = (masteryDelta[rating] > 0) ? '↑' : (masteryDelta[rating] < 0) ? '↓' : '→';
+        const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        ratingSection.innerHTML = `
+            <div style="background: white; border-left: 4px solid ${ratingColors[rating]}; padding: 14px 18px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <div>
+                        <strong style="color: ${ratingColors[rating]}; font-size: 1.05em;">${ratingIcons[rating]} Rated ${rating}/5 — ${ratingLabels[rating]}</strong>
+                        <div style="font-size: 0.82em; color: #64748b; margin-top: 4px;">
+                            Mastery ${masteryArrow} ${newMastery}/5 · Reviewed ${lesson.timesReviewed}× · Logged ${timeNow}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Update session progress indicator
+    updateSessionProgress();
+
+    // Update the tier counts in the dashboard tab (cheap, doesn't disturb practice UI)
+    if (typeof updateTierDashboard === 'function') updateTierDashboard();
+
+    // Auto-scroll to the next unrated card in this session
+    setTimeout(() => scrollToNextUnratedCard(lessonId), 250);
+}
+
+// Walk the rendered cards in DOM order. Find the first card AFTER the just-rated one
+// whose rating section still has buttons. If none after, look from the top.
+function scrollToNextUnratedCard(justRatedId) {
+    const allRatings = Array.from(document.querySelectorAll('[id^="rating-section-"]'));
+    const justRatedIdx = allRatings.findIndex(el => el.id === `rating-section-${justRatedId}`);
+
+    // Look forward first
+    for (let i = justRatedIdx + 1; i < allRatings.length; i++) {
+        if (allRatings[i].querySelector('.rating-btn')) {
+            const card = allRatings[i].closest('[id^="practice-card-"]');
+            (card || allRatings[i]).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+    }
+    // Look backward
+    for (let i = 0; i < justRatedIdx; i++) {
+        if (allRatings[i].querySelector('.rating-btn')) {
+            const card = allRatings[i].closest('[id^="practice-card-"]');
+            (card || allRatings[i]).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+    }
+    // None left — session complete. Scroll to the top so the user sees the banner.
+    const tierPractice = document.getElementById('tierPractice');
+    if (tierPractice) tierPractice.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Update "X of N rated" counter, progress bar, and show completion banner if done
+function updateSessionProgress() {
+    const allRatings = document.querySelectorAll('[id^="rating-section-"]');
+    if (allRatings.length === 0) return;
+
+    const total = allRatings.length;
+    let rated = 0;
+    allRatings.forEach(s => { if (!s.querySelector('.rating-btn')) rated++; });
+
+    const countEl = document.getElementById('sessionProgressCount');
+    const fillEl = document.getElementById('sessionProgressFill');
+    const bannerEl = document.getElementById('sessionCompleteBanner');
+
+    if (countEl) countEl.textContent = rated;
+    if (fillEl) fillEl.style.width = `${(rated / total) * 100}%`;
+    if (bannerEl) bannerEl.style.display = (rated === total) ? 'block' : 'none';
 }
 
 // Legacy markAsPracticed — preserved for warm-up and any other callers
