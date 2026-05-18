@@ -1566,7 +1566,11 @@
 
         <div class="quick-actions" style="margin-top: 20px;">
             <button class="btn btn-secondary btn-small" onclick="startNewWeek()">Start New Week</button>
+            <button class="btn btn-small" style="background: #f59e0b; color: white;" onclick="syncToCurrentWeek()">🔄 Sync to Current Week</button>
             <button class="btn btn-secondary btn-small" onclick="exportTrackerData()">Export Tracker Data</button>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.82em; color: #92400e; background: #fef3c7; padding: 10px 14px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+            <strong>🔄 Sync to Current Week</strong> — use when you've been away and the week dates are stale. Resets the day boxes (they're not from this week anymore) and updates the date range. The stale week is discarded, not added to history. You can manually set the Week # above first if you want the 8-week progression to pick up at a specific point.
         </div>
     </div>
 
@@ -3213,6 +3217,53 @@ function startNewWeek() {
     renderWeekHistory();
     
     alert(`New week started! You're now on Week ${nextWeekNumber} with a ${nextTarget}/5 target.`);
+}
+
+// Sync to current week — for when the tracker is stale (user was away, didn't click Start New Week)
+function syncToCurrentWeek() {
+    const trackerData = JSON.parse(localStorage.getItem('marginal_gains_tracker') || '{}');
+    const currentWeekOf = getCurrentWeekString();
+    const stale = trackerData.currentWeek?.weekOf || 'unknown';
+
+    const msg = `Sync tracker to this week (${currentWeekOf})?\n\n` +
+                `Currently showing: "${stale}"\n\n` +
+                `This will:\n` +
+                `• Update the week dates to ${currentWeekOf}\n` +
+                `• Clear the day boxes (they're from a different week)\n` +
+                `• Discard the stale week (NOT added to history — it wasn't real tracking)\n` +
+                `• Keep the week number AS-IS (manually edit Week # above first if you want a different starting point)\n\n` +
+                `Continue?`;
+
+    if (!confirm(msg)) return;
+
+    // Preserve the current week number and target — user can change those manually before/after
+    const keepWeekNumber = trackerData.currentWeek?.weekNumber || 1;
+    const keepTarget = trackerData.currentWeek?.target || 3;
+
+    trackerData.currentWeek = {
+        weekNumber: keepWeekNumber,
+        weekOf: currentWeekOf,
+        target: keepTarget,
+        days: { mon: false, tue: false, wed: false, thu: false, fri: false },
+        planningDone: false,
+        mondayAdjustment: ''
+    };
+
+    localStorage.setItem('marginal_gains_tracker', JSON.stringify(trackerData));
+
+    // Reset UI elements
+    const mondayInput = document.getElementById('mondayAdjustment');
+    if (mondayInput) mondayInput.value = '';
+    const planningCheckbox = document.getElementById('sundayPlanning');
+    if (planningCheckbox) planningCheckbox.checked = false;
+    const planningBox = document.getElementById('planning-checkbox');
+    if (planningBox) planningBox.classList.remove('checked');
+
+    renderCurrentWeek();
+    updateTrackerStats();
+    renderWeekHistory();
+
+    alert(`✓ Synced to ${currentWeekOf}. Day boxes cleared. Today is the right time to click today's day box if you're studying now.`);
 }
         
 function renderCurrentWeek() {
