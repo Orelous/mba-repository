@@ -739,6 +739,293 @@
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   TTT (Test / Target / Teach) MODE SELECTOR
+   ============================================ */
+.ttt-mode-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.ttt-mode-card {
+    padding: 16px;
+    border-radius: 10px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ttt-mode-card:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+.ttt-mode-card.active {
+    border-width: 2px;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.ttt-mode-card.active[data-mode="test"] {
+    border-color: #8e44ad;
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+}
+
+.ttt-mode-card.active[data-mode="target"] {
+    border-color: #e67e22;
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+}
+
+.ttt-mode-card.active[data-mode="teach"] {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+}
+
+.ttt-mode-card.active[data-mode="sameday"] {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.ttt-mode-icon {
+    font-size: 1.5em;
+    margin-bottom: 4px;
+}
+
+.ttt-mode-name {
+    font-weight: 700;
+    font-size: 0.95em;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+
+.ttt-mode-days {
+    font-size: 0.75em;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.ttt-mode-desc {
+    font-size: 0.82em;
+    color: #475569;
+    line-height: 1.4;
+}
+
+/* ============================================
+   5-BUTTON RATING SYSTEM
+   ============================================ */
+.rating-section {
+    background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+    border-left: 4px solid #eab308;
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+.rating-prompt {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #713f12;
+    margin-bottom: 10px;
+}
+
+.rating-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
+
+.rating-btn {
+    padding: 10px 8px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: white;
+    text-align: center;
+}
+
+.rating-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.rating-btn-1 { background: #dc2626; }
+.rating-btn-2 { background: #ea580c; }
+.rating-btn-3 { background: #ca8a04; }
+.rating-btn-4 { background: #65a30d; }
+.rating-btn-5 { background: #059669; }
+
+.rating-btn-label {
+    display: block;
+    font-size: 0.7em;
+    font-weight: 600;
+    opacity: 0.95;
+    margin-top: 2px;
+}
+
+/* ============================================
+   PLAN TAB STYLES
+   ============================================ */
+.plan-section {
+    background: white;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 18px;
+}
+
+.plan-section h3 {
+    color: #2c3e50;
+    margin-bottom: 12px;
+    font-size: 1.15em;
+}
+
+.plan-week-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.92em;
+}
+
+.plan-week-row:last-child {
+    border-bottom: none;
+}
+
+.plan-day-tag {
+    flex-shrink: 0;
+    width: 90px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.8em;
+    text-align: center;
+}
+
+.plan-time-tag {
+    flex-shrink: 0;
+    width: 75px;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.78em;
+}
+
+.plan-session-tag {
+    flex-shrink: 0;
+    width: 150px;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 0.85em;
+}
+
+.plan-desc {
+    color: #475569;
+    line-height: 1.5;
+    font-size: 0.85em;
+}
+
+.protocol-block {
+    border-left: 4px solid;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 16px;
+}
+
+.protocol-monday {
+    background: linear-gradient(90deg, #ecfdf5 0%, #d1fae5 100%);
+    border-color: #10b981;
+}
+
+.protocol-sunday {
+    background: linear-gradient(90deg, #eff6ff 0%, #dbeafe 100%);
+    border-color: #3b82f6;
+}
+
+.protocol-friday {
+    background: linear-gradient(90deg, #fef3c7 0%, #fde68a 100%);
+    border-color: #f59e0b;
+}
+
+.protocol-block h4 {
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+.protocol-step {
+    display: flex;
+    gap: 12px;
+    padding: 4px 0;
+    font-size: 0.88em;
+    color: #1e293b;
+}
+
+.protocol-step-time {
+    flex-shrink: 0;
+    width: 95px;
+    font-weight: 700;
+    font-size: 0.82em;
+}
+
+.failure-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.failure-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.9em;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.failure-list li:last-child {
+    border-bottom: none;
+}
+
+.failure-list strong {
+    color: #1e293b;
+}
+
+/* ============================================
+   CLASS DAY SELECTOR
+   ============================================ */
+.class-day-btn {
+    padding: 10px 18px;
+    border: 2px solid #fcd34d;
+    background: white;
+    color: #92400e;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: all 0.15s ease;
+}
+
+.class-day-btn:hover {
+    background: #fef3c7;
+    transform: translateY(-1px);
+}
+
+.class-day-btn.active {
+    background: #f59e0b;
+    color: white;
+    border-color: #d97706;
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
 }
 
 .tier-filter {
@@ -993,6 +1280,7 @@
 
         <div class="nav-tabs">
             <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+            <button class="nav-tab" data-tab="plan">📅 Plan</button>
             <button class="nav-tab" data-tab="tracker">📈 Marginal Gains</button>
             <button class="nav-tab" data-tab="practice">Retrieval Practice</button>
             <button class="nav-tab" data-tab="search">Search & Review</button>
@@ -1000,6 +1288,130 @@
             <button class="nav-tab" data-tab="manage">Manage & Export</button>
             <button class="nav-tab" data-tab="chunkmaps">Concept Maps</button>
         </div>
+
+<!-- ============================================================
+     PLAN TAB — Day-to-day schedule + Test/Target/Teach reference
+     ============================================================ -->
+<div class="tab-content" id="plan">
+
+    <!-- HERO STRIP -->
+    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 22px 28px; border-radius: 12px; margin-bottom: 24px;">
+        <h2 style="margin: 0 0 8px 0; font-size: 1.4em; font-weight: 600;">📅 Operating Plan — MBA + ANOH</h2>
+        <p style="margin: 0; opacity: 0.9; font-size: 0.95em;">
+            Four pillars run underneath. The schedule below executes them: <strong>Spacing</strong> (Tier 1/2/3 timing) · <strong>Retrieval</strong> (Test/Target/Teach modes) · <strong>Interleaving</strong> (cross-course bridging on the post-class day) · <strong>Decision Framework</strong> (the USE WHEN / AVOID WHEN / failure patterns / client scenarios already baked into every entry).
+        </p>
+    </div>
+
+    <!-- CLASS DAY SELECTOR -->
+    <div class="plan-section" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #f59e0b;">
+        <h3 style="color: #78350f;">🎓 Class Day Selector</h3>
+        <p style="color: #78350f; font-size: 0.88em; margin-bottom: 12px;">
+            Cohort 30 live sessions rotate. Pick this week's day — the schedule below re-renders around it. Pre-class Test moves to the day before. Post-class Tier 2 + Interleaved moves to the day after. Teach goes on the latest free weekday.
+        </p>
+        <div id="classDaySelector" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
+            <button class="class-day-btn" data-day="mon" onclick="setClassDay('mon')">Monday</button>
+            <button class="class-day-btn" data-day="tue" onclick="setClassDay('tue')">Tuesday</button>
+            <button class="class-day-btn" data-day="wed" onclick="setClassDay('wed')">Wednesday</button>
+            <button class="class-day-btn" data-day="thu" onclick="setClassDay('thu')">Thursday</button>
+            <button class="class-day-btn" data-day="fri" onclick="setClassDay('fri')">Friday</button>
+        </div>
+        <div style="font-size: 0.82em; color: #92400e;" id="classDayStatus">
+            Class is set to <strong>Wednesday</strong> at 7:00 PM ET.
+        </div>
+    </div>
+
+    <!-- DYNAMIC WEEKLY SCHEDULE -->
+    <div class="plan-section" style="background: #1e293b; color: white; border: none;">
+        <h3 style="color: white;">⏱️ Weekly Time Budget — about 3.5 hours total</h3>
+        <div style="color: #cbd5e1; font-size: 0.85em; margin-bottom: 14px;">
+            Study → Same-Day → Test → Target → Pre-Class Test → Class → Post-Class Reinforce → Teach. 3 minutes counts for any session. Total commitment scales with your week.
+        </div>
+        <div id="planSchedule"></div>
+    </div>
+
+    <!-- TEST / TARGET / TEACH REFERENCE -->
+    <div class="plan-section">
+        <h3>🧠 The Three T's — match the mode to the day</h3>
+        <p style="color: #64748b; font-size: 0.9em; margin-bottom: 16px;">
+            Same repository, four different ways to query it. Each mode is a different cognitive task. Using Test every day is what plateaus your learning by Week 6 — the sessions must change character across the week.
+        </p>
+        <div class="ttt-mode-grid">
+            <div class="ttt-mode-card active" data-mode="test" style="cursor: default;">
+                <div class="ttt-mode-icon">🧪</div>
+                <div class="ttt-mode-name">Test</div>
+                <div class="ttt-mode-days">Multiple days</div>
+                <div class="ttt-mode-desc">All due items in your selected tier, shuffled. Standard retrieval practice — produce before revealing. The default cognitive workout.</div>
+            </div>
+            <div class="ttt-mode-card active" data-mode="target" style="cursor: default;">
+                <div class="ttt-mode-icon">🎯</div>
+                <div class="ttt-mode-name">Target</div>
+                <div class="ttt-mode-days">Tuesday</div>
+                <div class="ttt-mode-desc">Entries you rated 1 or 2 last session, OR mastery ≤ 1. Directed attack on weak points. Falls back to Test if nothing qualifies.</div>
+            </div>
+            <div class="ttt-mode-card active" data-mode="teach" style="cursor: default;">
+                <div class="ttt-mode-icon">🎓</div>
+                <div class="ttt-mode-name">Teach</div>
+                <div class="ttt-mode-days">Latest free day</div>
+                <div class="ttt-mode-desc">No retrieval cue. Shown a real client scenario. Explain the concept fully — patterns, USE WHEN, AVOID WHEN, real example, the limitation. Highest difficulty.</div>
+            </div>
+            <div class="ttt-mode-card active" data-mode="sameday" style="cursor: default;">
+                <div class="ttt-mode-icon">🌙</div>
+                <div class="ttt-mode-name">Same-Day</div>
+                <div class="ttt-mode-days">Mon PM</div>
+                <div class="ttt-mode-desc">Only entries you practiced today. The 12-hour spacing interval after Monday's Study Block. Tests memory consolidation, not recency.</div>
+            </div>
+        </div>
+        <div style="margin-top: 14px; padding: 12px 14px; background: #f0f9ff; border-left: 3px solid #0ea5e9; border-radius: 6px; font-size: 0.85em; color: #075985;">
+            <strong>Plus three more tools already on the Practice tab:</strong> ⚡ Warm-Up Retrieval (3 random lessons to prime any session, no rating), 🔀 Interleaved Session (cross-course bridging with AI synthesis — the post-class day's main workout), and the Session Timer (30-min boxed session).
+        </div>
+    </div>
+
+    <!-- DYNAMIC PROTOCOL BLOCKS -->
+    <div id="planProtocols"></div>
+
+    <!-- WHY EACH DAY DIFFERS -->
+    <div class="plan-section">
+        <h3>📐 How the four pillars actually get hit each week</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+            <div style="background: #f8fafc; border-left: 3px solid #3b82f6; padding: 14px; border-radius: 6px;">
+                <div style="font-size: 1.3em; margin-bottom: 4px;">📏</div>
+                <div style="font-weight: 700; color: #1e40af; font-size: 0.9em; margin-bottom: 6px;">Spacing</div>
+                <div style="font-size: 0.85em; color: #475569; line-height: 1.5;">Same-day (Mon PM, 12hr after study) + 1-day (Tue) + multi-day (pre-class + post-class) creates the actual spacing intervals. Tier 1/2/3 in the app respects this once entries are rated.</div>
+            </div>
+            <div style="background: #f8fafc; border-left: 3px solid #8b5cf6; padding: 14px; border-radius: 6px;">
+                <div style="font-size: 1.3em; margin-bottom: 4px;">🧪</div>
+                <div style="font-weight: 700; color: #6c3483; font-size: 0.9em; margin-bottom: 6px;">Retrieval Practice</div>
+                <div style="font-size: 0.85em; color: #475569; line-height: 1.5;">Every session after Monday Study is production-before-reveal — never passive review. Teach mode is the highest difficulty: full explanation from a scenario with no cue.</div>
+            </div>
+            <div style="background: #f8fafc; border-left: 3px solid #10b981; padding: 14px; border-radius: 6px;">
+                <div style="font-size: 1.3em; margin-bottom: 4px;">🔀</div>
+                <div style="font-weight: 700; color: #065f46; font-size: 0.9em; margin-bottom: 6px;">Interleaving</div>
+                <div style="font-size: 0.85em; color: #475569; line-height: 1.5;">Tier filters shuffle across courses automatically. Post-class day adds a dedicated Interleaved Session (cross-course bridging with AI synthesis) — this is where the four-pillar integration actually happens.</div>
+            </div>
+            <div style="background: #f8fafc; border-left: 3px solid #f59e0b; padding: 14px; border-radius: 6px;">
+                <div style="font-size: 1.3em; margin-bottom: 4px;">🧭</div>
+                <div style="font-weight: 700; color: #92400e; font-size: 0.9em; margin-bottom: 6px;">Decision Framework</div>
+                <div style="font-size: 0.85em; color: #475569; line-height: 1.5;">Built into every entry: USE WHEN, AVOID WHEN, failure patterns, client scenarios, cross-course connections. Teach mode forces all five to come out of your mouth, not just be recognized on screen.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAILURE MODES -->
+    <div class="plan-section" style="background: #fef2f2; border-color: #fecaca;">
+        <h3 style="color: #991b1b;">⚠️ What breaks the system</h3>
+        <ul class="failure-list">
+            <li><strong>Skipping Monday Study Block.</strong> Testing on Monday afternoon before encoding means you blank on every new entry. Encoding before retrieval, always. If Monday morning is impossible, move Study to Sunday evening after import — but do not skip it.</li>
+            <li><strong>Skipping the Monday PM Same-Day session.</strong> The 12-hour interval after morning study is the first spacing gap. Skip it and Tuesday is already catching up to forgetting instead of reinforcing fresh encoding.</li>
+            <li><strong>Treating Tier Practice as the only practice.</strong> Interleaved Session (post-class day) is where cross-course bridging happens — that's the Interleaving pillar. Without it you have tier-spaced retrieval but no integration. Warm-Up Retrieval (3 min before any session) primes recall and costs almost nothing.</li>
+            <li><strong>Using Test mode every day instead of rotating Test → Target → Teach.</strong> Test on Friday instead of Teach means you never push to production fluency. The sessions must change character across the week.</li>
+            <li><strong>Inflating ratings.</strong> A 4 in the app that you can't deliver in front of an HVAC contractor is a 2. Rate what comes out of your mouth, not what you recognize. Target mode depends on honest ratings to find real weak points.</li>
+            <li><strong>Ignoring Tier 2 in favor of Tier 1.</strong> Tier 1 feels urgent because it's new. Tier 2 (post-class day) is the actual reinforcement sweet spot — the spacing interval where consolidation happens. Don't let Tier 1 starve Tier 2.</li>
+            <li><strong>Skipping the Sunday export.</strong> Browser localStorage can wipe with no warning. Export JSON monthly minimum, weekly preferred. Treat it like ANOH client IP.</li>
+        </ul>
+    </div>
+
+</div>
+
 <!-- MARGINAL GAINS TRACKER TAB -->
 <div class="tab-content" id="tracker">
     <div class="alert-box alert-info">
@@ -1228,6 +1640,43 @@
                     <strong style="color: #155724;">📌 Suggested Daily Focus:</strong>
                     <span style="color: #155724;" id="dailySuggestion">Loading...</span>
                 </div>
+            </div>
+        </div>
+
+        <!-- TTT (Test / Target / Teach) MODE SELECTOR -->
+        <div class="form-section" style="background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%); border-left-color: #eab308;">
+            <h3 style="color: #713f12;">🧠 Practice Mode — Test / Target / Teach</h3>
+            <p style="color: #854d0e; font-size: 0.9em; margin-bottom: 14px;">
+                Pick the mode that matches today. Each mode filters the same repository differently and prompts differently. See the <strong>📅 Plan</strong> tab for which day uses which mode.
+            </p>
+            <div class="ttt-mode-grid">
+                <div class="ttt-mode-card active" data-mode="test" onclick="selectTTTMode('test')">
+                    <div class="ttt-mode-icon">🧪</div>
+                    <div class="ttt-mode-name">Test</div>
+                    <div class="ttt-mode-days">Mon · Wed · Thu</div>
+                    <div class="ttt-mode-desc">Standard retrieval. All lessons in your tier filter, shuffled.</div>
+                </div>
+                <div class="ttt-mode-card" data-mode="target" onclick="selectTTTMode('target')">
+                    <div class="ttt-mode-icon">🎯</div>
+                    <div class="ttt-mode-name">Target</div>
+                    <div class="ttt-mode-days">Tuesday</div>
+                    <div class="ttt-mode-desc">Only lessons rated 1–2 last time, or mastery ≤ 1. Attack weak points.</div>
+                </div>
+                <div class="ttt-mode-card" data-mode="teach" onclick="selectTTTMode('teach')">
+                    <div class="ttt-mode-icon">🎓</div>
+                    <div class="ttt-mode-name">Teach</div>
+                    <div class="ttt-mode-days">Friday</div>
+                    <div class="ttt-mode-desc">No cue. Real ANOH client scenario. Explain it from scratch.</div>
+                </div>
+                <div class="ttt-mode-card" data-mode="sameday" onclick="selectTTTMode('sameday')">
+                    <div class="ttt-mode-icon">🌙</div>
+                    <div class="ttt-mode-name">Same-Day</div>
+                    <div class="ttt-mode-days">Mon PM</div>
+                    <div class="ttt-mode-desc">12-hour gap. Lessons you practiced today only.</div>
+                </div>
+            </div>
+            <div id="tttModeStatus" style="margin-top: 12px; padding: 10px 14px; background: white; border-radius: 8px; font-size: 0.85em; color: #713f12; font-weight: 600;">
+                Active mode: 🧪 Test — standard retrieval
             </div>
         </div>
 
@@ -1726,11 +2175,17 @@
                         updateTrackerStats();
                         renderWeekHistory();
                     }
+
+                    // Refresh plan when switching to it
+                    if (targetTab === 'plan') {
+                        initPlanTab();
+                    }
                 });
             });
 
             initializeData();
             setupEventHandlers();
+            initPlanTab();
         });
 
         function setupEventHandlers() {
@@ -3120,69 +3575,620 @@ function updateTierDashboard() {
     document.getElementById('dailySuggestion').textContent = suggestion;
 }
 
+// ============================================================
+// PLAN TAB — Dynamic schedule rendering
+// ============================================================
+// The user's class day rotates (Mon/Tue/Wed/Thu/Fri at 7 PM ET).
+// Schedule re-renders around the chosen class day.
+
+const DAY_KEYS = ['mon','tue','wed','thu','fri'];
+const DAY_NAMES = { mon:'Monday', tue:'Tuesday', wed:'Wednesday', thu:'Thursday', fri:'Friday' };
+const DAY_SHORT = { mon:'Mon', tue:'Tue', wed:'Wed', thu:'Thu', fri:'Fri' };
+const DAY_COLOR = { mon:'#10b981', tue:'#f97316', wed:'#8b5cf6', thu:'#0ea5e9', fri:'#ec4899' };
+
+function getClassDay() {
+    return localStorage.getItem('mba_class_day') || 'wed';
+}
+
+function setClassDay(day) {
+    if (!DAY_KEYS.includes(day)) return;
+    localStorage.setItem('mba_class_day', day);
+
+    // Update selector visual
+    document.querySelectorAll('.class-day-btn').forEach(btn => {
+        if (btn.dataset.day === day) btn.classList.add('active');
+        else btn.classList.remove('active');
+    });
+
+    // Update status line
+    const statusEl = document.getElementById('classDayStatus');
+    if (statusEl) {
+        statusEl.innerHTML = `Class is set to <strong>${DAY_NAMES[day]}</strong> at 7:00 PM ET.`;
+    }
+
+    // Re-render schedule and protocols
+    renderPlanSchedule();
+    renderPlanProtocols();
+}
+
+// Compute the day index relative to a base ordering
+function dayIdx(d) {
+    const order = { mon:0, tue:1, wed:2, thu:3, fri:4 };
+    return order[d];
+}
+
+// Returns the "teach day" — the latest free weekday that isn't class, pre-class, post-class, or Monday
+function getTeachDay(classDay) {
+    const postClass = getPostClassDay(classDay);
+    const preClass = getPreClassDay(classDay);
+    for (let i = 4; i >= 0; i--) {
+        const day = DAY_KEYS[i];
+        if (day !== classDay && day !== postClass && day !== preClass && day !== 'mon') return day;
+    }
+    return null; // No free weekday for Teach this week (very rare — only if class/pre/post crowd everything)
+}
+
+function getPreClassDay(classDay) {
+    const idx = dayIdx(classDay);
+    if (idx <= 0) return null; // Monday class has no weekday pre-class
+    return DAY_KEYS[idx - 1];
+}
+
+function getPostClassDay(classDay) {
+    const idx = dayIdx(classDay);
+    if (idx >= 4) return null; // Friday class has no weekday post-class
+    return DAY_KEYS[idx + 1];
+}
+
+// Build the schedule row data structure based on class day
+function buildScheduleRows(classDay) {
+    const preClass = getPreClassDay(classDay);
+    const postClass = getPostClassDay(classDay);
+    const teachDay = getTeachDay(classDay);
+
+    // Interleaved Session needs a home every week. Default: post-class day (when it exists).
+    // Fallback for Friday class: the day before pre-class (typically Wed), since post-class spills past the work week.
+    let interleavedDay = postClass;
+    if (!interleavedDay && preClass) {
+        const candidates = ['wed', 'thu', 'tue']; // prefer mid-week
+        for (const c of candidates) {
+            if (c !== classDay && c !== preClass && c !== teachDay && c !== 'mon') {
+                interleavedDay = c; break;
+            }
+        }
+    }
+
+    const rows = [];
+
+    // Fixed: Saturday Content Creation
+    rows.push({
+        dayLabel: 'Saturday', dayColor: '#2563eb', time: '15–30m',
+        session: '📥 Content Creation',
+        desc: 'Feed this week\'s material to Claude. Generate Part A study guide, Part B repository entries, new-entries-only JSON. Do not study tonight — Monday morning encodes it.'
+    });
+
+    // Fixed: Sunday Import
+    rows.push({
+        dayLabel: 'Sun 9 PM', dayColor: '#3b82f6', time: '20m',
+        session: '🗓️ Import Ritual',
+        desc: 'Manage & Export → import new-entries-only JSON. Front-Load Filter on Marginal Gains. Click Start New Week. Export JSON to iCloud as backup.'
+    });
+
+    // Fixed: Monday Study Block (THE missing piece)
+    rows.push({
+        dayLabel: 'Mon 9 AM', dayColor: '#059669', time: '60m',
+        session: '📚 Study Block (NEW)',
+        desc: 'First-encounter encoding of this week\'s new material. Read the entries on Search & Review tab. Work through frameworks. Take notes. This is encoding, not testing — produce nothing, just absorb. The hour you owe yourself.'
+    });
+
+    // Day-by-day Tue-Fri (plus Mon afternoon/evening)
+    DAY_KEYS.forEach(day => {
+        const isClass = day === classDay;
+        const isPreClass = day === preClass;
+        const isInterleaved = day === interleavedDay; // covers post-class OR Friday-class fallback
+        const isTeach = day === teachDay;
+
+        // Monday is special — it already has morning study; afternoon is something else
+        if (day === 'mon') {
+            // Monday 1:30 PM session
+            let session, desc, time = '20–30m';
+            if (isClass) {
+                session = '🧪 Final Pre-Class Test';
+                desc = 'Tier 1 filter. Last activation before tonight\'s 7 PM class. Test the new material you encoded this morning.';
+            } else if (isPreClass) {
+                session = '🧪 Pre-Class Test';
+                desc = 'Tier 1 filter. Class is tomorrow. Test the new material from this morning\'s Study Block.';
+            } else {
+                session = '🧪 Test — Last Week';
+                desc = 'Tier 1 filter, but on LAST week\'s material (now Day 8+ since their import). New material is still in Same-Day mode tonight. Rate honestly 1–5.';
+            }
+            rows.push({
+                dayLabel: 'Mon 1:30 PM', dayColor: DAY_COLOR.mon, time, session, desc
+            });
+            // Monday 8 PM Same-Day (always)
+            rows.push({
+                dayLabel: 'Mon 8 PM', dayColor: '#6366f1', time: '15m',
+                session: '🌙 Same-Day Session',
+                desc: '12-hour gap after morning Study Block. Practice → Same-Day mode → entries touched today only. Do NOT re-read the cards between this morning and now — let the gap do its work.'
+            });
+            // If class is Monday, add the class itself
+            if (isClass) {
+                rows.push({
+                    dayLabel: 'Mon 7 PM', dayColor: '#1e40af', time: '90m',
+                    session: '🎓 LIVE CLASS',
+                    desc: 'Cohort 30 live session. Participate. Capture new examples or framework limitations for Saturday content gen.'
+                });
+            }
+            return;
+        }
+
+        // Tue-Fri 1:30 PM
+        let session, desc, time = '20m';
+        if (isClass) {
+            session = '🧪 Final Pre-Class Test';
+            desc = 'Tier 1 filter. Tonight\'s class at 7 PM ET. Quick activation — 15 min is enough.';
+            time = '15m';
+        } else if (isPreClass) {
+            session = '🧪 Pre-Class Test';
+            desc = 'Tier 1 filter. Class is tomorrow. Final knowledge check before live session.';
+            time = '15–20m';
+        } else if (isInterleaved) {
+            const isActualPostClass = day === postClass;
+            session = '🔀 Tier 2 + Interleaved Session';
+            desc = isActualPostClass
+                ? 'POST-CLASS reinforcement. Run Tier 2 Test first (sweet spot for consolidation), then click Interleaved Session for cross-course bridging with AI synthesis. This is where the Interleaving pillar actually fires.'
+                : 'Mid-week Interleaved Session — Friday class has no post-class day in the work week, so Interleaving lands here. Run Tier 2 Test, then Interleaved Session with AI bridging. Same purpose, just shifted earlier.';
+            time = '25–35m';
+        } else if (isTeach) {
+            session = '🎓 Teach';
+            desc = 'Practice → Teach mode. No cue. Real ANOH client scenario. Explain to an HVAC contractor with no MBA — patterns, USE WHEN, AVOID WHEN, real example, failure mode. Production fluency check.';
+            time = '15–25m';
+        } else if (day === 'tue') {
+            session = '🎯 Target';
+            desc = 'Practice → Target mode. Surfaces entries rated 1–2 yesterday or mastery ≤ 1. Directed attack on weak points. Falls back to Test if nothing qualifies yet.';
+            time = '15–20m';
+        } else {
+            session = '🧪 Test';
+            desc = 'Standard retrieval. Choose Tier based on what\'s due — Dashboard shows the distribution.';
+            time = '15–20m';
+        }
+
+        rows.push({
+            dayLabel: DAY_SHORT[day] + ' 1:30 PM', dayColor: DAY_COLOR[day], time, session, desc
+        });
+
+        // Add the live class at 7 PM on class day (for Tue-Fri classes)
+        if (isClass) {
+            rows.push({
+                dayLabel: DAY_SHORT[day] + ' 7 PM', dayColor: '#1e40af', time: '90m',
+                session: '🎓 LIVE CLASS',
+                desc: 'Cohort 30 live session, 7–8:30 PM ET. Participate. Capture new examples or framework limitations for Saturday content gen.'
+            });
+        }
+    });
+
+    return rows;
+}
+
+function renderPlanSchedule() {
+    const target = document.getElementById('planSchedule');
+    if (!target) return;
+    const classDay = getClassDay();
+    const rows = buildScheduleRows(classDay);
+
+    target.innerHTML = rows.map(r => `
+        <div class="plan-week-row">
+            <span class="plan-day-tag" style="background: ${r.dayColor};">${r.dayLabel}</span>
+            <span class="plan-time-tag" style="color: #cbd5e1;">${r.time}</span>
+            <span class="plan-session-tag" style="color: #cbd5e1;">${r.session}</span>
+            <span class="plan-desc" style="color: #cbd5e1;">${r.desc}</span>
+        </div>
+    `).join('');
+}
+
+function renderPlanProtocols() {
+    const target = document.getElementById('planProtocols');
+    if (!target) return;
+    const classDay = getClassDay();
+    const preClass = getPreClassDay(classDay);
+    const postClass = getPostClassDay(classDay);
+    const teachDay = getTeachDay(classDay);
+
+    // Same fallback logic as buildScheduleRows — interleaved gets a home even on Friday-class weeks
+    let interleavedDay = postClass;
+    if (!interleavedDay && preClass) {
+        const candidates = ['wed', 'thu', 'tue'];
+        for (const c of candidates) {
+            if (c !== classDay && c !== preClass && c !== teachDay && c !== 'mon') {
+                interleavedDay = c; break;
+            }
+        }
+    }
+
+    let html = '';
+
+    // MONDAY STUDY PROTOCOL — always
+    html += `
+    <div class="protocol-block protocol-monday">
+        <h4 style="color: #065f46;">📚 Monday Study Block — Full Protocol (~95 min across the day)</h4>
+        <div style="font-size: 0.88em; color: #065f46; margin-bottom: 10px;">Encoding → Retrieval → Same-Day. This is the three-step cycle that makes the rest of the week's testing actually work.</div>
+        <div class="protocol-step">
+            <span class="protocol-step-time" style="color: #047857;">9–10 AM (60m)</span>
+            <span><strong>STUDY (encoding).</strong> Open Search & Review tab. Read every new entry from Sunday's import. Work through the frameworks on paper. Take notes. Cross-reference USE WHEN / AVOID WHEN / failure patterns. Produce nothing yet — this hour is for absorbing.</span>
+        </div>
+        <div class="protocol-step">
+            <span class="protocol-step-time" style="color: #047857;">1:30 PM (25m)</span>
+            <span><strong>RETRIEVAL (Test of last week's).</strong> Practice tab → Test mode → Tier 1 filter. This pulls last week's material, not this morning's. Rate each entry honestly 1–5. Note any entry that got 1 or 2 — Tuesday's Target session surfaces them automatically.</span>
+        </div>
+        <div class="protocol-step">
+            <span class="protocol-step-time" style="color: #047857;">8 PM (15m)</span>
+            <span style="font-weight: 600;"><strong>SAME-DAY (this morning's material).</strong> Practice → Same-Day mode. The 12-hour gap after Study. First retrieval of new material. Do NOT re-read the cards between this morning and 8 PM — let the gap do its work.</span>
+        </div>
+        <p style="margin: 12px 0 0 0; font-size: 0.82em; color: #065f46; font-style: italic;">
+            Skipping the Study Block is the most common system failure. Testing on Tuesday without studying Monday means you blank on every new entry. Encoding before retrieval, always.
+        </p>
+    </div>
+    `;
+
+    // SUNDAY ACTIVATION — always
+    html += `
+    <div class="protocol-block protocol-sunday">
+        <h4 style="color: #1e40af;">📥 Sunday — Import Ritual (20 min)</h4>
+        <div style="font-size: 0.88em; color: #1e3a8a; margin-bottom: 10px;">When: 9:00–9:20 PM. After dinner, before planning Monday. Pure setup, no studying yet — that's Monday morning's job.</div>
+        <div class="protocol-step">
+            <span class="protocol-step-time" style="color: #2563eb;">9:00 (10m)</span>
+            <span>Manage & Export tab → import this week's new-entries-only JSON. Verify entry count went up by what Claude delivered. Set tomorrow's class day in the selector above if it changed.</span>
+        </div>
+        <div class="protocol-step">
+            <span class="protocol-step-time" style="color: #2563eb;">9:10 (5m)</span>
+            <span>Front-Load Filter: review last week's Marginal Gains score, identify ONE adjustment for Monday. Write it in the Sunday Planning textarea on Marginal Gains tab.</span>
+        </div>
+        <div class="protocol-step">
+            <span class="protocol-step-time" style="color: #2563eb;">9:15 (3m)</span>
+            <span>Click Start New Week on Marginal Gains. Day boxes reset, week number increments, last week archives to history.</span>
+        </div>
+        <div class="protocol-step">
+            <span class="protocol-step-time" style="color: #2563eb;">9:18 (2m)</span>
+            <span>Manage & Export → Export JSON → save to iCloud / Google Drive. Browser localStorage can wipe. Treat backups like ANOH client IP.</span>
+        </div>
+    </div>
+    `;
+
+    // INTERLEAVED DAY PROTOCOL — uses post-class day if available, else mid-week fallback
+    if (interleavedDay) {
+        const isActualPostClass = interleavedDay === postClass;
+        html += `
+        <div class="protocol-block" style="border-left: 4px solid #8b5cf6; background: linear-gradient(90deg, #faf5ff 0%, #f3e8ff 100%); padding: 16px 20px; border-radius: 0 10px 10px 0; margin-bottom: 16px;">
+            <h4 style="color: #6b21a8;">🔀 ${DAY_NAMES[interleavedDay]} — ${isActualPostClass ? 'Post-Class Reinforcement' : 'Mid-Week Interleaved Session'} (25–35 min)</h4>
+            <div style="font-size: 0.88em; color: #6b21a8; margin-bottom: 10px;">${isActualPostClass
+                ? 'The day after class is where Tier 2 consolidation meets the Interleaving pillar. Material from class is freshest, perfect for cross-course bridging.'
+                : 'Friday class has no in-week post-class day, so Interleaved Session shifts to mid-week. Same workout, earlier.'
+            }</div>
+            <div class="protocol-step">
+                <span class="protocol-step-time" style="color: #7c3aed;">1:30 PM (15m)</span>
+                <span><strong>Tier 2 Test.</strong> Practice tab → Test mode → Tier 2 filter. The reinforcement sweet spot — material from 2–3 weeks ago, fading but reachable. Highest-leverage tier.</span>
+            </div>
+            <div class="protocol-step">
+                <span class="protocol-step-time" style="color: #7c3aed;">1:45 PM (10–20m)</span>
+                <span><strong>Interleaved Session.</strong> Scroll to Interleaved Session card on Practice tab → Generate Interleaved Session. Pulls from different courses in sequence. Use "Ask AI to Bridge" for synthesis challenges that connect MGCONS frameworks to your ANOH consulting work and prior courses.</span>
+            </div>
+            <p style="margin: 12px 0 0 0; font-size: 0.82em; color: #6b21a8; font-style: italic;">
+                This is the only weekday session that explicitly hits all four pillars in one sitting: Spacing (Tier 2), Retrieval (Test), Interleaving (cross-course), Decision Framework (the entry fields surface during reveal).
+            </p>
+        </div>
+        `;
+    }
+
+    // TEACH DAY PROTOCOL — only if we found a free day for it
+    if (teachDay) {
+        html += `
+        <div class="protocol-block protocol-friday">
+            <h4 style="color: #92400e;">🎓 ${DAY_NAMES[teachDay]} — Teach Protocol (15–25 min)</h4>
+            <div style="font-size: 0.88em; color: #92400e; margin-bottom: 10px;">Production fluency check. If you can teach it to a small business owner, you actually own it. ${teachDay !== 'fri' ? '<em>(Moved to ' + DAY_NAMES[teachDay] + ' because class rotation pushed it off Friday.)</em>' : ''}</div>
+            <div class="protocol-step">
+                <span class="protocol-step-time" style="color: #b45309;">Setup</span>
+                <span>Practice tab → Teach mode. The cue is hidden. A real scenario appears instead ("HVAC contractor asks about pricing strategy", "electrical contractor needs hiring framework", "plumbing client questioning your fee").</span>
+            </div>
+            <div class="protocol-step">
+                <span class="protocol-step-time" style="color: #b45309;">Speak it</span>
+                <span>Out loud, no notes, no app. Cover: what the concept is (no jargon first), why it matters, when to USE it, when to AVOID it, one real example, one failure mode.</span>
+            </div>
+            <div class="protocol-step">
+                <span class="protocol-step-time" style="color: #b45309;">Rate it</span>
+                <span>Rate what came out of your mouth, not what you recognize on the card. A 4 in the app you can't deliver in front of a client is a 2.</span>
+            </div>
+        </div>
+        `;
+    } else {
+        // Edge case — no free weekday this week
+        html += `
+        <div class="protocol-block" style="border-left: 4px solid #ef4444; background: #fef2f2; padding: 14px 18px; border-radius: 0 10px 10px 0; margin-bottom: 16px;">
+            <h4 style="color: #991b1b;">⚠️ No Teach day this week</h4>
+            <div style="font-size: 0.88em; color: #991b1b;">Class day plus pre-class and post-class crowded out the Teach slot. Run Teach mode on Saturday morning before content gen, or substitute Teach for the Tuesday Target session this week.</div>
+        </div>
+        `;
+    }
+
+    target.innerHTML = html;
+}
+
+// Initialize plan rendering on first load
+function initPlanTab() {
+    const classDay = getClassDay();
+    // Sync selector buttons
+    document.querySelectorAll('.class-day-btn').forEach(btn => {
+        if (btn.dataset.day === classDay) btn.classList.add('active');
+        else btn.classList.remove('active');
+    });
+    // Sync status line
+    const statusEl = document.getElementById('classDayStatus');
+    if (statusEl) {
+        statusEl.innerHTML = `Class is set to <strong>${DAY_NAMES[classDay]}</strong> at 7:00 PM ET.`;
+    }
+    renderPlanSchedule();
+    renderPlanProtocols();
+}
+
+// ============================================================
+// TTT (Test / Target / Teach) STATE
+// ============================================================
+// Active mode is stored on a module-level variable, not localStorage.
+// Per-entry rating and mastery ARE persisted to localStorage on each entry.
+
+let activeTTTMode = 'test';
+
+const TTT_MODE_CONFIG = {
+    test: {
+        icon: '🧪',
+        name: 'Test',
+        statusText: 'standard retrieval — produce before revealing',
+        borderColor: '#8e44ad'
+    },
+    target: {
+        icon: '🎯',
+        name: 'Target',
+        statusText: 'attacking weak points — lessons rated 1–2 last time or mastery ≤ 1',
+        borderColor: '#e67e22'
+    },
+    teach: {
+        icon: '🎓',
+        name: 'Teach',
+        statusText: 'no cue shown — explain from a client scenario, no notes',
+        borderColor: '#10b981'
+    },
+    sameday: {
+        icon: '🌙',
+        name: 'Same-Day',
+        statusText: '12-hour gap — lessons practiced today only',
+        borderColor: '#3b82f6'
+    }
+};
+
+function selectTTTMode(mode) {
+    if (!TTT_MODE_CONFIG[mode]) return;
+    activeTTTMode = mode;
+
+    // Update card visual state
+    document.querySelectorAll('.ttt-mode-card[onclick]').forEach(card => {
+        if (card.dataset.mode === mode) {
+            card.classList.add('active');
+        } else {
+            card.classList.remove('active');
+        }
+    });
+
+    // Update status line
+    const cfg = TTT_MODE_CONFIG[mode];
+    const statusEl = document.getElementById('tttModeStatus');
+    if (statusEl) {
+        statusEl.innerHTML = `Active mode: ${cfg.icon} <strong>${cfg.name}</strong> — ${cfg.statusText}`;
+    }
+}
+
+// Apply the TTT filter on top of the tier filter
+function applyTTTFilter(lessons, mode) {
+    const today = new Date().toISOString().substring(0, 10);
+
+    if (mode === 'target') {
+        const targeted = lessons.filter(l => {
+            const lastRating = l.lastRating;
+            const mastery = (typeof l.mastery === 'number') ? l.mastery : 0;
+            const hasLowRating = (lastRating !== undefined && lastRating !== null && lastRating <= 2);
+            const hasLowMastery = mastery <= 1 && l.lastPracticed; // only count mastery for entries actually practiced
+            return hasLowRating || hasLowMastery;
+        });
+        // Fallback: if nothing qualifies, return all (with a flag so caller can warn)
+        if (targeted.length === 0) {
+            return { lessons: lessons, fallback: true, fallbackReason: 'No weak entries yet — showing all lessons. Rate honestly and Target mode will surface real gaps next time.' };
+        }
+        return { lessons: targeted, fallback: false };
+    }
+
+    if (mode === 'sameday') {
+        const sameday = lessons.filter(l =>
+            l.lastPracticed && l.lastPracticed.substring(0, 10) === today
+        );
+        if (sameday.length === 0) {
+            return { lessons: [], fallback: false, emptyReason: 'No lessons practiced today yet. Run a Test session first, then come back tonight for the 12-hour Same-Day session.' };
+        }
+        return { lessons: sameday, fallback: false };
+    }
+
+    // 'test' and 'teach' both use the full filtered list
+    return { lessons: lessons, fallback: false };
+}
+
 function generateTierPractice() {
     const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
     const activeTier = document.querySelector('.tier-filter.active').dataset.tier;
-    
+
+    // Step 1: Apply tier filter
     let filteredLessons = lessons;
     if (activeTier !== 'all') {
         const tierNum = parseInt(activeTier);
         filteredLessons = lessons.filter(lesson => calculateLessonTier(lesson) === tierNum);
     }
-    
+
     if (filteredLessons.length === 0) {
         document.getElementById('tierPractice').innerHTML = '<p style="color: #7f8c8d;">No lessons in this tier.</p>';
         return;
     }
-    
-    const count = Math.min(5, filteredLessons.length);
-    const shuffled = [...filteredLessons].sort(() => Math.random() - 0.5);
+
+    // Step 2: Apply TTT mode filter
+    const tttResult = applyTTTFilter(filteredLessons, activeTTTMode);
+    let modeLessons = tttResult.lessons;
+
+    if (modeLessons.length === 0) {
+        document.getElementById('tierPractice').innerHTML = `
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 8px;">
+                <strong style="color: #92400e;">📭 ${TTT_MODE_CONFIG[activeTTTMode].name} mode found no lessons</strong>
+                <p style="margin: 8px 0 0 0; color: #78350f; font-size: 0.9em;">${tttResult.emptyReason || 'No lessons match this combination of filters.'}</p>
+            </div>
+        `;
+        return;
+    }
+
+    const count = Math.min(5, modeLessons.length);
+    const shuffled = [...modeLessons].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, count);
-    
+
+    const cfg = TTT_MODE_CONFIG[activeTTTMode];
+
+    // Fallback banner (Target mode with no weak entries yet)
+    const fallbackBanner = tttResult.fallback ? `
+        <div style="background: #fffbeb; border-left: 3px solid #fcd34d; padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; font-size: 0.88em; color: #92400e;">
+            ⚠ ${tttResult.fallbackReason}
+        </div>
+    ` : '';
+
     const html = `
-        <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db;">
-            <h4 style="color: #2c3e50; margin-bottom: 15px;">Practice Questions:</h4>
-            ${selected.map((lesson, index) => {
-                const tier = calculateLessonTier(lesson);
-                const tierColors = { 1: '#3498db', 2: '#f39c12', 3: '#9b59b6' };
-                return `
-                    <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                            <div style="font-weight: 600; color: ${tierColors[tier]};">Lesson ${index + 1}: ${escapeHtml(lesson.title)}</div>
-                            <span class="tier-badge tier-${tier}">Tier ${tier}</span>
-                        </div>
-                        <div style="color: #7f8c8d; font-size: 0.9em; margin-bottom: 10px;">${lesson.course} • Week ${lesson.week}</div>
-                        <ul style="list-style: none; padding: 0; margin: 10px 0;">
-                            <li style="margin: 8px 0;">❓ What is this concept?</li>
-                            <li style="margin: 8px 0;">❓ What problem does this solve?</li>
-                            <li style="margin: 8px 0;">❓ When would I use this — and when should I avoid it?</li>
-                        </ul>
-                        <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">Check Answer</button>
-                        <button class="btn btn-small btn-primary" onclick="markAsPracticed('${lesson.id}')" style="margin-top: 10px;">Mark as Practiced</button>
-                        <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
-                            ${lesson.quickRef ? `<strong>Quick Reference:</strong> ${escapeHtml(lesson.quickRef)}<br><br>` : ''}
-                            ${lesson.decisionCriteria ? `<div style="background: #e8f4fd; padding: 12px; border-radius: 6px; border-left: 3px solid #3498db; margin-bottom: 10px;"><strong style="color: #1a5276;">USE WHEN / AVOID WHEN:</strong><br>${escapeHtml(lesson.decisionCriteria)}</div>` : ''}
-                            <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}
-                            ${lesson.failurePatterns ? `<div style="background: #fef2f2; padding: 10px; border-radius: 6px; border-left: 3px solid #e74c3c; margin-top: 10px;"><strong style="color: #922b21;">⚠ Failure Patterns:</strong><br>${escapeHtml(lesson.failurePatterns)}</div>` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('')}
+        <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid ${cfg.borderColor};">
+            <h4 style="color: #2c3e50; margin-bottom: 4px;">${cfg.icon} ${cfg.name} Session — ${selected.length} lesson${selected.length !== 1 ? 's' : ''}</h4>
+            <p style="color: #64748b; font-size: 0.82em; margin-bottom: 16px;">${cfg.statusText}</p>
+            ${fallbackBanner}
+            ${selected.map((lesson, index) => renderPracticeCard(lesson, index, activeTTTMode)).join('')}
         </div>
     `;
-    
+
     document.getElementById('tierPractice').innerHTML = html;
 }
 
+// Render an individual practice card — adapts to the active TTT mode
+function renderPracticeCard(lesson, index, mode) {
+    const tier = calculateLessonTier(lesson);
+    const tierColors = { 1: '#3498db', 2: '#f39c12', 3: '#9b59b6' };
+    const cfg = TTT_MODE_CONFIG[mode];
+    const isTeach = mode === 'teach';
+    const isTarget = mode === 'target';
+    const isSameDay = mode === 'sameday';
+
+    // Build a client scenario for Teach mode — uses entry's clientScenarios field if present
+    const teachScenario = (() => {
+        if (lesson.clientScenarios && lesson.clientScenarios.length > 10) {
+            return lesson.clientScenarios;
+        }
+        // Generic fallback scenario for trade contractor consulting context
+        const tradeTypes = ['HVAC contractor', 'electrical contractor', 'plumbing contractor', 'small trade business owner'];
+        const trade = tradeTypes[index % tradeTypes.length];
+        return `An ${trade} client asks for help. Explain how ${lesson.title} applies to their situation — no notes, no jargon first.`;
+    })();
+
+    // Mastery + lastRating display
+    const mastery = (typeof lesson.mastery === 'number') ? lesson.mastery : 0;
+    const lastRating = lesson.lastRating;
+    const statsLine = lastRating
+        ? `Last rating: ${lastRating}/5 · Mastery: ${mastery}/5 · Reviewed: ${lesson.timesReviewed || 0}x`
+        : `Not yet rated · Reviewed: ${lesson.timesReviewed || 0}x`;
+
+    // Mode-specific banner above the cue
+    let modeBanner = '';
+    if (isTarget) {
+        modeBanner = `<div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 8px 12px; margin-bottom: 10px; font-size: 0.82em; color: #9a3412; font-weight: 600;">🎯 Target entry — flagged because of low rating or low mastery. This one needs work.</div>`;
+    } else if (isSameDay) {
+        modeBanner = `<div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 8px 12px; margin-bottom: 10px; font-size: 0.82em; color: #1e40af; font-weight: 600;">🌙 12-hour spacing session — you practiced this earlier today. Retrieve now before sleep.</div>`;
+    }
+
+    // Cue section — Teach mode shows scenario instead
+    const cueSection = isTeach ? `
+        <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 12px 16px; border-radius: 6px; margin: 10px 0;">
+            <div style="font-size: 0.78em; font-weight: 700; color: #065f46; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">🎓 Teach Mode — explain with no prompts</div>
+            <div style="font-size: 0.9em; color: #065f46; line-height: 1.5; margin-bottom: 8px;"><strong>Scenario:</strong> ${escapeHtml(teachScenario)}</div>
+            <div style="font-size: 0.85em; color: #047857;">Cover: what the concept is (no jargon first), why it matters, when to USE it, when to AVOID it, one real example, one failure pattern. Speak it out loud before revealing.</div>
+        </div>
+    ` : `
+        <ul style="list-style: none; padding: 0; margin: 10px 0;">
+            <li style="margin: 8px 0;">❓ What is this concept?</li>
+            <li style="margin: 8px 0;">❓ What problem does this solve?</li>
+            <li style="margin: 8px 0;">❓ When would I use this — and when should I avoid it?</li>
+        </ul>
+    `;
+
+    return `
+        <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
+                <div style="font-weight: 600; color: ${tierColors[tier]};">Lesson ${index + 1}: ${escapeHtml(lesson.title)}</div>
+                <span class="tier-badge tier-${tier}">Tier ${tier}</span>
+            </div>
+            <div style="color: #7f8c8d; font-size: 0.85em; margin-bottom: 4px;">${lesson.course} • Week ${lesson.week}</div>
+            <div style="color: #94a3b8; font-size: 0.75em; margin-bottom: 10px; font-style: italic;">${statsLine}</div>
+            ${modeBanner}
+            ${cueSection}
+            <button class="btn btn-small btn-secondary" onclick="revealAnswer('${lesson.id}')" style="margin-top: 10px;">${isTeach ? 'Reveal Answer' : 'Struggle First, Then Check Answer'}</button>
+            <div id="answer-${lesson.id}" style="display: none; margin-top: 15px; padding: 15px; background: white; border-left: 4px solid #27ae60; border-radius: 4px;">
+                ${lesson.quickRef ? `<strong>Quick Reference:</strong> ${escapeHtml(lesson.quickRef)}<br><br>` : ''}
+                ${lesson.decisionCriteria ? `<div style="background: #e8f4fd; padding: 12px; border-radius: 6px; border-left: 3px solid #3498db; margin-bottom: 10px;"><strong style="color: #1a5276;">USE WHEN / AVOID WHEN:</strong><br>${escapeHtml(lesson.decisionCriteria)}</div>` : ''}
+                <strong>Summary:</strong> ${escapeHtml(lesson.claudeSummary)}
+                ${lesson.failurePatterns ? `<div style="background: #fef2f2; padding: 10px; border-radius: 6px; border-left: 3px solid #e74c3c; margin-top: 10px;"><strong style="color: #922b21;">⚠ Failure Patterns:</strong><br>${escapeHtml(lesson.failurePatterns)}</div>` : ''}
+                ${lesson.clientScenarios && !isTeach ? `<div style="background: #faf5ff; padding: 10px; border-radius: 6px; border-left: 3px solid #8b5cf6; margin-top: 10px;"><strong style="color: #6b21a8;">💼 Client Scenarios:</strong><br>${escapeHtml(lesson.clientScenarios)}</div>` : ''}
+
+                <!-- 5-BUTTON RATING -->
+                <div class="rating-section">
+                    <div class="rating-prompt">Rate your retrieval honestly — Target mode depends on this</div>
+                    <div class="rating-buttons">
+                        <button class="rating-btn rating-btn-1" onclick="ratePracticed('${lesson.id}', 1)">1<span class="rating-btn-label">Forgot</span></button>
+                        <button class="rating-btn rating-btn-2" onclick="ratePracticed('${lesson.id}', 2)">2<span class="rating-btn-label">Hard</span></button>
+                        <button class="rating-btn rating-btn-3" onclick="ratePracticed('${lesson.id}', 3)">3<span class="rating-btn-label">OK</span></button>
+                        <button class="rating-btn rating-btn-4" onclick="ratePracticed('${lesson.id}', 4)">4<span class="rating-btn-label">Good</span></button>
+                        <button class="rating-btn rating-btn-5" onclick="ratePracticed('${lesson.id}', 5)">5<span class="rating-btn-label">Perfect</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// New rating function — replaces markAsPracticed in the TTT flow but stays compatible
+function ratePracticed(lessonId, rating) {
+    const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+    const lesson = lessons.find(l => l.id === lessonId);
+    if (!lesson) return;
+
+    // Mastery delta: 1→-2, 2→-1, 3→0, 4→+1, 5→+2 — clamped 0–5
+    const masteryDelta = { 1: -2, 2: -1, 3: 0, 4: 1, 5: 2 };
+    const currentMastery = (typeof lesson.mastery === 'number') ? lesson.mastery : 0;
+    const newMastery = Math.max(0, Math.min(5, currentMastery + (masteryDelta[rating] || 0)));
+
+    lesson.lastPracticed = new Date().toISOString();
+    lesson.timesReviewed = (lesson.timesReviewed || 0) + 1;
+    lesson.lastRating = rating;
+    lesson.mastery = newMastery;
+
+    localStorage.setItem('mba_lessons', JSON.stringify(lessons));
+
+    updateTierDashboard();
+    generateTierPractice();
+}
+
+// Legacy markAsPracticed — preserved for warm-up and any other callers
 function markAsPracticed(lessonId) {
     const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
     const lesson = lessons.find(l => l.id === lessonId);
-    
+
     if (lesson) {
         lesson.lastPracticed = new Date().toISOString();
         lesson.timesReviewed = (lesson.timesReviewed || 0) + 1;
         localStorage.setItem('mba_lessons', JSON.stringify(lessons));
-        
+
         alert('✓ Marked as practiced! This lesson will move through the spacing tiers.');
         updateTierDashboard();
         generateTierPractice();
