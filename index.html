@@ -1968,6 +1968,33 @@
                             </label>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label>Daily Use Rating <span class="required">*</span></label>
+                        <p style="font-size: 0.85em; color: #7f8c8d; margin: 4px 0 8px 0;">How often this concept fires in real life <em>outside</em> the PKA System. Drill cadence biases toward low-exposure entries. Be honest — most MBA content lands in the 1-3 range.</p>
+                        <div class="rating-grid">
+                            <label class="rating-option">
+                                <input type="radio" name="dailyUseRating" value="5" required>
+                                <div>5<br><small>Fires daily</small></div>
+                            </label>
+                            <label class="rating-option">
+                                <input type="radio" name="dailyUseRating" value="4">
+                                <div>4<br><small>Weekly</small></div>
+                            </label>
+                            <label class="rating-option">
+                                <input type="radio" name="dailyUseRating" value="3">
+                                <div>3<br><small>Occasionally</small></div>
+                            </label>
+                            <label class="rating-option">
+                                <input type="radio" name="dailyUseRating" value="2" checked>
+                                <div>2<br><small>Rarely</small></div>
+                            </label>
+                            <label class="rating-option">
+                                <input type="radio" name="dailyUseRating" value="1">
+                                <div>1<br><small>Drill only</small></div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-section">
@@ -2155,11 +2182,36 @@
         let currentLessonId = null;
 
        function initializeData() {
+    migrateSchemaIfNeeded();
     updateDashboard();
     renderSearchResults();
     initializeTracker();
     updateTierDashboard();
     ilUpdateKeyStatus();
+}
+
+function migrateSchemaIfNeeded() {
+    // One-time self-healing migration for the Drill Cadence Principle (May 22, 2026)
+    // Adds dailyUseRating: 2 to any lesson missing the field. Idempotent — safe to run on every load.
+    try {
+        const lessons = JSON.parse(localStorage.getItem('mba_lessons') || '[]');
+        if (!Array.isArray(lessons) || lessons.length === 0) return;
+
+        let patched = 0;
+        lessons.forEach(lesson => {
+            if (lesson.dailyUseRating === undefined || lesson.dailyUseRating === null) {
+                lesson.dailyUseRating = 2;
+                patched++;
+            }
+        });
+
+        if (patched > 0) {
+            localStorage.setItem('mba_lessons', JSON.stringify(lessons));
+            console.log(`[PKA] Schema migration: added dailyUseRating to ${patched} lesson(s).`);
+        }
+    } catch (e) {
+        console.error('[PKA] Schema migration failed:', e);
+    }
 }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -2407,6 +2459,14 @@ ${lesson.confidenceRating ? `
     <div class="detail-content">${lesson.confidenceRating}/10 | Practiced: ${lesson.timesReviewed || 0} times</div>
 </div>` : ''}
 
+${lesson.dailyUseRating ? `
+<div class="detail-section">
+    <div class="detail-label">Daily Use Rating</div>
+    <div class="detail-content">${lesson.dailyUseRating}/5 — ${
+        {5: 'Fires daily', 4: 'Weekly', 3: 'Occasionally', 2: 'Rarely', 1: 'Drill only'}[lesson.dailyUseRating] || 'Unknown'
+    }</div>
+</div>` : ''}
+
 ${lesson.applicationEvidence ? `
 <div class="detail-section">
     <div class="detail-label">Application Evidence</div>
@@ -2570,6 +2630,7 @@ ${lesson.applicationEvidence ? `
     implementationRisk: document.getElementById('implementationRisk').value,
     clientScenariosFull: document.getElementById('clientScenariosFull').value,
     confidenceRating: 5,
+    dailyUseRating: parseInt(document.querySelector('#add input[name="dailyUseRating"]:checked')?.value || '2', 10),
     applicationEvidence: ''
 };
         }
@@ -2577,6 +2638,10 @@ ${lesson.applicationEvidence ? `
         function validateForm(data) {
             if (!data.course || !data.week || !data.title || !data.claudeSummary || !data.rating) {
                 showStatus('Please fill in all required fields.', 'error');
+                return false;
+            }
+            if (!Number.isInteger(data.dailyUseRating) || data.dailyUseRating < 1 || data.dailyUseRating > 5) {
+                showStatus('Daily Use Rating must be a value between 1 and 5.', 'error');
                 return false;
             }
             return true;
